@@ -116,7 +116,8 @@ header.top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb
 .hero p.lede { max-width: var(--measure); padding-top: var(--space-24); font-size: var(--font-size-lede); line-height: 1.5; }
 /* the "works with" line: plain text chips, square like the install box */
 .works { list-style: none; margin: 0; padding: var(--space-24) 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-8); font: 400 var(--font-size-label)/1 var(--mono); color: var(--text); }
-.works li { border: 1px solid var(--line); padding: var(--space-8) var(--space-12); }
+.works li { display: flex; align-items: center; gap: var(--space-8); border: 1px solid var(--line); padding: var(--space-8) var(--space-12); }
+.works img { width: var(--space-16); height: var(--space-16); }
 .works .lead { border-color: transparent; color: var(--soft); padding-left: 0; padding-right: 0; }
 .meta { padding-top: var(--space-16); font-size: var(--font-size-caption); color: var(--soft); text-wrap: balance; }
 

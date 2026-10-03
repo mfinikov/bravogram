@@ -14,7 +14,7 @@ Not applicable: hand-rolled
 The mark at its default size: `docs/system/examples/logo/default.tsx`.
 
 Real uses, 1 call sites (`rg -n "<Logo\b" app`):
-- Nav: beside the wordmark inside the home link. `app/page.tsx:52`
+- Nav: beside the wordmark inside the home link. `app/page.tsx:60`
 
 Inside the component folder, HeroScene also renders it on top of each sprout, in the accent color, at 18 to 44px (`components/hero-scene.tsx:34`).
 

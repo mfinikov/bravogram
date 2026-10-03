@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { HeroScene } from "@/components/hero-scene";
 import { InstallButton } from "@/components/install-button";
 import { Logo } from "@/components/logo";
@@ -6,7 +7,14 @@ import { TerminalDemo } from "@/components/terminal-demo";
 const GITHUB = "https://github.com/mfinikov/bravogram";
 const NPM = "https://www.npmjs.com/package/bravogram";
 
-const WORKS_WITH = ["Claude Code", "Hermes", "any MCP client", "any shell"];
+// Each tool's own mark, shown beside its name. Claude and MCP come from simple-icons (CC0),
+// Hermes from the hermes-agent repo (MIT); the shell glyph is ours.
+const WORKS_WITH = [
+  { name: "Claude Code", logo: "/logos/claude.svg" },
+  { name: "Hermes", logo: "/logos/hermes.svg" },
+  { name: "any MCP client", logo: "/logos/mcp.svg" },
+  { name: "any shell", logo: "/logos/shell.svg" },
+];
 
 const STEPS = [
   { title: "Install it.", code: "npm i -g bravogram" },
@@ -67,7 +75,9 @@ export default function Home() {
               <InstallButton />
               <ul className="works" aria-label="Works with">
                 <li className="lead" aria-hidden="true">Works with</li>
-                {WORKS_WITH.map((w) => <li key={w}>{w}</li>)}
+                {WORKS_WITH.map((w) => (
+                  <li key={w.name}><Image src={w.logo} alt="" width={16} height={16} />{w.name}</li>
+                ))}
               </ul>
               <p className="meta">Node 24 or newer · zero dependencies · MIT license</p>
             </div>

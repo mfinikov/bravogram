@@ -14,7 +14,7 @@ Not applicable: hand-rolled
 The scene on its own: `docs/system/examples/hero-scene/default.tsx`.
 
 Real uses, 1 call sites (`rg -n "<HeroScene\b" app components`):
-- Hero: under the install box and the meta line, closing the hero section. `app/page.tsx:74`
+- Hero: under the install box and the meta line, closing the hero section. `app/page.tsx:84`
 
 ### Example files
 | File | Covers | Caption |
