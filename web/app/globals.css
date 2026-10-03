@@ -147,6 +147,7 @@ td small { color: var(--soft); font-weight: 400; }
 .steps { counter-reset: s; display: grid; gap: 0; }
 .step { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: var(--space-4) var(--space-12); padding: var(--space-22) 0; border-top: 1px solid var(--line); }
 .step::before { counter-increment: s; content: counter(s); font: 500 var(--font-size-label)/26px var(--mono); color: var(--soft); }
+.step p { max-width: var(--measure); }
 .step b { color: var(--ink); font-weight: 500; }
 .step code.block { grid-column: 2; display: block; margin-top: var(--space-8); background: var(--card); border-radius: var(--radius-code); padding: var(--space-12) var(--space-14); font-size: var(--font-size-code); color: var(--ink); overflow-x: auto; white-space: nowrap; }
 
