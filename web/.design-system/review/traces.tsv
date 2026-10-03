@@ -1,2 +1,2 @@
 surface	commit	gate or decision ids	what changed
-home	3ca4ffb	D-08	At 1440 wide the three step paragraphs stop at 640px (60 characters a line, was 97), so the second one wraps to one more line and the page is 26px taller. Nothing changes at 390. No control, role, name or heading changed.
+home	3ca4ffb	D-08	At 1440 wide the three step paragraphs stop at 640px (60 characters a line, was 97), so the third one wraps to a second line and the page is 26px taller. Nothing changes at 390. No control, role, name or heading changed.

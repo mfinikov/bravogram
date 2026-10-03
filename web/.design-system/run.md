@@ -12,6 +12,14 @@ Workers: 1 (small app, no fan-out)
 Budget: build cap 17:11 on 2026-10-03, set by the boss.
 Clearance: none, and none needed: one route.
 Check command in CI: none yet for web/ (the repo's workflow covers the CLI only).
+Footprint: full. The check scripts, specs and generated docs live in web/ (scripts/, docs/system/, docs/generated/). App root is web/, not the git root, so every script runs with `--root .`.
+Complaint: the bare command, no complaint named. First visible answer: none wanted, the page was approved on 2026-10-03 as it looks, so the build changes no pixel except a named trap fix.
+Skipped (small app): the two-agent rule tests, the review lenses, the fresh-agent trial and the project skills. No agent was started.
+Not built (cut on purpose, each a found-not-fixed row): the HTML docs site (the brief), a writing page with copy-check, CI tiers (the root workflow is out of scope).
+
+Done when: 3 canonical components cover 1 of 1 inventoried families (Button) and the page's two drawings, with 7 page sections kept as page markup (G-07),
+every one of the 62 tokens has a role, the checks fail on 2 seeded violations and exit 0 on a clean clone,
+and the pilot matches its baseline except for D-08.
 
 ## Standing orders
 1. Write only inside your brief's SCOPE. Your scratch lives only in .design-system/tmp/<your worker id>/, deleted at close. Never read, apply or delete another worker's. Shared files (the token source, generated files, the barrel, registries, indexes, the migration map, the check's config, allowlist and drift list) belong to their one writer, so report the change you need.
@@ -30,7 +38,120 @@ Check command in CI: none yet for web/ (the repo's workflow covers the CLI only)
 - Bans: none named today. The 2026-10-01 bans for the old Bravogram app are gate G-01, default "not re-applied", so do not restyle for them.
 
 ## Phases
+| Phase | Status | Artifact | Notes |
+|---|---|---|---|
+| 1 Frame | done | run.md#frame, scripts/check-system.config.json | no complaint named; the page keeps its approved look |
+| 2 Inventory | done | boss/triage/, review/home-before-*.probe.json, inventory/delete-plan.md, delete commit df3286b | control capture diffs at 0% on 6 captures; traps measured before any edit |
+| 3 Foundations | done | app/globals.css token block, AGENTS.md block, commits 41a8cf3 and f7f8e96 | 82 raw values swapped for tokens of the same value, 6 captures at 0% |
+| 4 Components | done | registry.json, docs/system/install-button.md, logo.md, hero-graph.md, commit 7370786 | 3 registry components; page sections stay markup (G-07); no codemod, nothing to move |
+| 5 Checks | done | scripts/, scripts/check-allowlist.json, scripts/check-ratchet.json, package.json check | self-test 76 fixtures pass; 2 seeded violations fail; not in CI |
+| 6 Pilot, then surfaces | done | review/index.html, review/traces.tsv, evidence/home/walk.json, commit 3ca4ffb | 1 trap fixed (D-08), 2 gated with measurements (G-04, G-05); no surface outside the pilot exists |
+| 7 Docs | done | docs/system/, docs/generated/, AGENTS.md index, commit 7370786 | 9 pages pass check-spec; no writing page and no HTML site (G-08, the brief) |
+| 8 Handoff | done | close.md, run.md#handoff-report | clean clone check exit 0 |
+
 ## Decisions
+| ID | Phase | Decision | Why | Evidence | Reversible |
+|---|---|---|---|---|---|
+| D-01 | 1 | Full footprint: check-system, check-spec, gen-docs, props-table and oklch copied to web/scripts. copy-check not kept | The brief asks for the check, specs and generated docs. oklch.mjs is imported by check-system (its self-test fails without it). copy-check needs a writing page, which this run does not write, and it added a lint warning | scripts/, `npm run lint` exit 0 | yes |
+| D-02 | 2 | Delete the `.term` rules and the tokens --term, --term-text, --term-dim | Nothing uses them: 4 searches return 0 | inventory/delete-plan.md, `node .design-system/scripts/validate-delete.mjs` exit 0, commit df3286b | yes |
+| D-03 | 3 | The token source stays one hand-written block in app/globals.css: 62 tokens, each with a role comment (the 15 space steps share one) | One theme, no utility framework, no build step for tokens. 62 is past the usual 40 cutoff for a hand-kept file, and a generator would be a second source for one page | app/globals.css, token count by script (62 tokens, 0 unused), docs/system/decisions.md D3 | yes |
+| D-04 | 3 | Existing token names stay. New ones are named by job; space steps are named by pixel value | The 12 names were in correct use. Every space value keeps its exact pixel, so the name says the value | docs/system/decisions.md D4 | yes |
+| D-05 | 3 | 82 raw values swapped for tokens holding the same value (14 colors, 68 px lengths), plus type sizes inside `font:` shorthands | Identical-value swaps need no clearance | `pixdiff.mjs review tmp/build/swap --surface home`: 6 compared, 0 over 0%, tolerance 0, exit 0, at commit f7f8e96. Computed transitions after: `transform 0.12s, box-shadow 0.12s` and `opacity 0.15s` (evidence/home/walk.json), equal to the source values at c581378 | yes |
+| D-06 | 3 | 16 one-off values stay raw and sit in scripts/check-allowlist.json: `#000` twice (a mask's alpha), `#ffffff` in layout.tsx (metadata cannot read a CSS variable), `left: -999px`, `height: 56px`, `gap: 9px`, `width` and `height` of 24px, 16px and 8px, `max-width` 400px and 440px, and the two `clamp()` paddings of the hero and the section head | Each places one thing once. A token for each would be a name with one reader | `check-system.mjs --left`: 16 allowlisted, close.md; docs/system/colors.md and layout.md, Not tokens | yes |
+| D-07 | 4 | Registry: InstallButton (the Button family's canonical), Logo, HeroGraph, in components/ (uiDir). No file moved | The three files are the app's only components and each has call sites | registry.json, `rg -n` for the three tags in app and components: 4 call sites (2, 1 and 1) | yes |
+| D-08 | 6 | `.step p { max-width: var(--measure) }` | trap/text-measure at 1440: the step text ran 97 characters a line (probe: 95ch), now 60. Every other paragraph kind was already capped, and 640px is the page's own value | evidence/home/walk-before-fix.json and walk.json, review/home-after-1440.probe.json (no text-measure finding), commit 3ca4ffb, traces.tsv | yes |
+| D-09 | 2 | No-change control: a second capture of the same build matches the baseline at 0% on 6 captures | Proves the captures are stable: reduced motion on, so the hero graph draws one still frame | `pixdiff.mjs review tmp/build/control`: 6 compared, 0 over 0%, exit 0 | yes |
+| D-10 | 5 | `npm run check` runs check-system twice (allowlist, then ratchet), check-spec, gen-docs --check, `next typegen`, `tsc --noEmit` and eslint | The ratchet alone would pass a new literal that replaces an allowed one | package.json; seeded `.seeded { color: #123456; padding: 13px; }` fails both runs with exit 1 | yes |
+| D-11 | 7 | The AGENTS.md block tells agents to add `--root .` to script commands and to use `npm run check` and `npm run docs` | web/ is not the git root, and the generated index prints the commands without the flag | AGENTS.md, `node scripts/gen-docs.mjs --check` without the flag prints "no source folder" | yes |
+| D-12 | 6 | The pilot review used the capture probes and a scripted keyboard walk, not a separate ui-review pass | One coordinator, no agents (small app) | evidence/home/walk.json, review/*.probe.json | yes |
+
 ## Gates
+| ID | Question | Default | Status | Commit | From |
+|---|---|---|---|---|---|
+| G-04 | Under 521px the nav hides "How it works" and shows no menu button (trap/narrow-hidden-nav, measured at 390). Show a cue? The four items need about 399px at the nav's 20px gap, so they do not fit 390, and a real fix is a menu button or a two-row header | keep it hidden: the link is an in-page anchor to a section two screens down, and the page was approved today | default (unanswered) | | probe.mjs on review/home-before-390.probe.json |
+| G-05 | At 390 wide the step text runs 26 characters a line (probe: 24ch, wants 30 to 75), because the step number takes a 44px column. Stack the number above the text on phones? | keep the two columns | default (unanswered) | | probe.mjs, evidence/home/walk.json |
+| G-06 | Text in --soft (black at 40%) is 2.85:1 on white, under 4.5:1, on 15 small texts at 12 to 14px: eyebrow, meta line, table headers and units, the note, the footer, and 5 mock title bars hidden from assistive technology. Darken it? --text (55%) measures 4.74:1 | keep --soft as approved | default (unanswered) | | review/home-after-1440.probe.json |
+| G-07 | Should the page's sections (card and mock window, steps, numbers table, questions, nav, footer, section head) become components with specs? | no: each is used in one place, so they stay markup in app/page.tsx with a Meanwhile row each | default (unanswered) | 7370786 | D-07 |
+| G-08 | Areas with no decision: a dark theme, loading, error and empty states, imagery beyond the three drawings, and a writing page with voice rules | none decided: coverage-gaps.md gives a Meanwhile for each | default (unanswered) | 7370786 | docs/system/coverage-gaps.md |
+| G-09 | Merge the near-duplicates the token block now shows? Text sizes 12.5, 13 and 13.5px; three line heights for 16px text (25px, 26px, 1.7); space steps 9, 14, 18, 22, 26px off a 4px grid; a 16px mock corner inside a 14px card | not merged: every token holds the value the approved page used | default (unanswered) | f7f8e96 | D-05 |
+| G-10 | Should the generated docs and llms.txt be served by the live site at /system/*.md and /llms.txt? | no: they are written to docs/generated/, which the site does not serve. An llms.txt at the root of a product site would describe the design system, not the product | default (unanswered) | 7370786 | gen-docs |
+
+G-01, G-02 and G-03 are the boss's gates, in boss/state.md.
+
 ## Ledger
+| Unit | Owner | Branch | Commit | Status | Verdict | Evidence |
+|---|---|---|---|---|---|---|
+| setup | coordinator | ds/2026-10-03-full | 552e5ec | done | verified | check-system --self-test with the skill's fixtures: 76 fixtures and 13 checks, exit 0 |
+| delete:term | coordinator | ds/2026-10-03-full | df3286b | done | verified | validate-delete.mjs exit 0; pixdiff 0% on 6 captures |
+| tokens | coordinator | ds/2026-10-03-full | 41a8cf3 | done | verified | 62 tokens, 0 unused (script) |
+| swaps | coordinator | ds/2026-10-03-full | f7f8e96 | done | verified | pixdiff 6 compared, 0 over 0%, tolerance 0 |
+| check | coordinator | ds/2026-10-03-full | 7370786 | done | verified | npm run check exit 0; seeded violations exit 1 |
+| family:install-button | coordinator | ds/2026-10-03-full | 7370786 | done | verified with gaps | check-spec 0 failures; gap: no interaction test file, keyboard rows walked by script |
+| component:logo | coordinator | ds/2026-10-03-full | 7370786 | done | verified with gaps | check-spec 0 failures; gap: optical size and alignment not measured |
+| component:hero-graph | coordinator | ds/2026-10-03-full | 7370786 | done | verified with gaps | check-spec 0 failures; gap: contrast of text over moving dots not measured |
+| docs generator | coordinator | ds/2026-10-03-full | 7370786 | done | verified | gen-docs --check: 16 outputs, all fresh; a stale twin fails it |
+| pilot:home | coordinator | ds/2026-10-03-full | 3ca4ffb | done | verified | montage --diff exit 0; 390 at 0%; 1440 taller by 26px, traced to D-08 |
+| clean clone | coordinator | ds/2026-10-03-full | CLONE_SHA | done | verified | CLONE_EVIDENCE |
+
 ## Handoff report
+
+### Summary
+Asked: a design system for the Bravogram landing page (the bare command, no complaint named). Answered: the page's 98 raw values are now 62 named tokens in app/globals.css plus 16 listed one-off values, three components have specs, and `npm run check` fails on a new raw color or px length. The page looks the same at 390 wide (0% pixel difference). At 1440 wide one thing changed: the step text stops at 640px.
+Predicate: met on all four parts (3 components for 1 of 1 families and the two drawings, 62 of 62 tokens with a role, checks fail on 2 seeded violations and exit 0 on a clean clone, pilot matches except D-08).
+
+### Gates, unanswered first
+G-04 default (unanswered), nav link stays hidden under 521px. G-05 default (unanswered), steps keep two columns at 390. G-06 default (unanswered), --soft stays at 2.85:1. G-07 default (unanswered), sections stay page markup. G-08 default (unanswered), no dark theme, data states, imagery or writing rules decided. G-09 default (unanswered), near-duplicate values not merged. G-10 default (unanswered), generated docs not served by the site.
+
+### Checks
+npm run check → exit 0 in web/ and on a clean clone (allowlist: 16 entries in 2 files, scripts/check-allowlist.json; ratchet: scripts/check-ratchet.json)
+npm run lint → exit 0. npm run build → exit 0. capture.mjs --status on the production server → / answers 200, exit 0
+node <skills>/build-design-system/scripts/montage.mjs --root . --diff --widths 390,1440 → exit 0, 1 surface: 1 changed (traced to D-08), 0 unchanged
+Pilot traps: trap/text-measure at 1440 fixed, 97 to 60 characters a line (evidence/home/walk-before-fix.json, walk.json). trap/narrow-hidden-nav gated (G-04). trap/text-measure at 390 gated, 26 characters a line (G-05)
+CI: runs locally, not in CI. The repo's workflow covers the CLI only and is outside this run's scope
+
+### Screens
+Changed on ds/2026-10-03-full: / (D-08, at 1440 wide only). There is no other route. Review page: .design-system/review/index.html (the PNGs beside it are local, not committed).
+
+### What exists
+- Token source: the block at the top of app/globals.css (62 tokens, hand-written, no generator)
+- Components components/ (install-button, logo, hero-graph), registry.json, specs docs/system/, changelog docs/system/changelog.md
+- Twins, rules, index and llms.txt in docs/generated/ (npm run docs), checks in npm run check
+- AGENTS.md block and generated index. No codemod and no migration map: one route, nothing to migrate
+
+### Readiness
+| Component | Grade | Reason |
+|---|---|---|
+| InstallButton | ready | |
+| Logo | ready with gaps | optical size and alignment not measured; traced from an image, no original vector |
+| HeroGraph | ready with gaps | contrast of the hero text over the moving dots not measured |
+
+### Next screen
+The next likely change is a new section on the same page. It hits coverage gap "A new section" (Meanwhile: `section.pad` with a `.head` and one h2) and, if it needs a second action, "Other buttons".
+
+### Trial
+skipped (small app): no agent was started in this run.
+
+### The check cannot see
+Copied from `node scripts/check-system.mjs --list-blind-spots`: rendered contrast, behavior (click, Enter, Escape, focus order), layout at each viewport and target sizes, visual overrides built at runtime, loading states shown without a label ternary, class names and values built at runtime, bg-white and text-black, files outside app/ and components/, whether a token's role comment still matches its use, rules marked review, motion that is only measured, and whether a pressed style covers a removed tap highlight.
+
+### Next
+From .design-system/close.md. Raw values left: 16 on 1 route (was 98), all listed one-offs. Tokens: 62 (was 15). Nothing is left to migrate: the one route is the pilot.
+
+### Found, not fixed
+| ID | Severity | Route | What | Why not fixed | Fix |
+|---|---|---|---|---|---|
+| G-06 | blocking | / | --soft text is 2.85:1 on white on 15 small texts, under 4.5:1 | gate | Raise --soft to at least the 55% of --text (4.74:1), or use --text for the 10 texts assistive technology reads |
+| G-04 | should-fix | / | "How it works" is hidden under 521px with no menu button | gate | A menu button, or a nav that wraps to a second row |
+| F-01 | should-fix | / | Nav and footer links are 22px tall, under the 24px target size (30 to 87px wide, 20px apart) | out of scope | Padding or a min-height of 24px on `.nav a.link` |
+| G-05 | note | / | Step text runs 26 characters a line at 390 wide | gate | Stack the step number above the text under 521px |
+| G-09 | note | / | Near-duplicate values: 12.5, 13 and 13.5px text; 25px, 26px and 1.7 line heights for 16px text; space steps 9, 14, 18, 22 and 26px; a 16px corner inside a 14px card | gate | Merge each group to one value and delete the spare tokens |
+| F-02 | note | / | At 390 wide the two scrolling command blocks take focus and show the browser's ring, not the page's accent ring | out of scope | Add `.step code.block:focus-visible` to the shared outline rule |
+| F-03 | note | / | No interaction test file: the keyboard and copy behavior were walked by script once, in .design-system/scripts/walk.mjs | out of scope | A test runner is a new dependency. With one, port walk.mjs to a test |
+| F-04 | note | shared | `npm run check` is not in CI | out of scope | A web job in the root workflow: `npm ci && npm run check` in web/ |
+| F-05 | note | shared | No writing page, so no copy check (G-08) | gate | Write docs/system/writing.md and add copy-check.mjs to the check |
+| F-06 | note | / | Not measured: Logo optical size and alignment, hero text contrast over the moving dots, zoom to 200%, reflow at 320px | out of scope | Measure each on the running page and fill the NEEDS REVIEW lines in the docs |
+| F-07 | note | shared | The token tables in docs/system/colors.md, typography.md, layout.md, materials.md and motion.md are hand-written copies of the token block, with no drift check | out of scope | Generate the tables from the role comments, or delete the Value column |
+| F-08 | note | / | `td small` renders at the browser's own 13.33px, a 16th text size no token names | out of scope | `td small { font-size: var(--font-size-caption) }`, a 0.33px change |
+| F-09 | note | shared | Not done on this small app: the fresh-agent trial, the review lenses, the two-agent rule tests, the four project skills, a CODEOWNERS line, a separate ui-review pass | out of scope | Run them when a second person or agent starts working on the page |
+| F-10 | note | shared | The generated AGENTS.md index prints script commands without `--root .`, which web/ needs | out of scope | Kept as generated. The hand-written block above it says to add the flag (D-11) |
+Rows past 30: none
