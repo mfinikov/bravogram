@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bravogram memory</title>
+<style>
+  :root { --bg: #0f1115; --panel: #171a21; --text: #e6e8ee; --muted: #8b93a7; --line: #2a2f3a; --accent: #7aa2ff; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 -apple-system, system-ui, sans-serif; overflow: hidden; }
+  #bar { position: fixed; top: 12px; left: 12px; right: 12px; display: flex; gap: 8px; flex-wrap: wrap; z-index: 2; }
+  #bar input, #bar select { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font: inherit; }
+  #bar input { flex: 1 1 220px; max-width: 360px; }
+  #stats { color: var(--muted); align-self: center; font-size: 12px; }
+  #panel { position: fixed; top: 0; right: 0; width: min(420px, 100%); height: 100%; background: var(--panel); border-left: 1px solid var(--line);
+           padding: 64px 20px 20px; overflow-y: auto; transform: translateX(100%); transition: transform .2s; z-index: 1; }
+  #panel.open { transform: none; }
+  #panel h2 { margin: 0 0 4px; font-size: 18px; }
+  #meta { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
+  #body { white-space: pre-wrap; word-wrap: break-word; font-size: 13px; }
+  #panel h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 20px 0 6px; }
+  #panel a { color: var(--accent); cursor: pointer; display: block; text-decoration: none; padding: 2px 0; }
+  #panel .ghost { color: var(--muted); font-style: italic; }
+  #close { position: absolute; top: 16px; right: 16px; background: none; border: 0; color: var(--muted); font-size: 22px; cursor: pointer; }
+  #legend { position: fixed; left: 12px; bottom: 12px; display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  #legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
+</style>
+</head>
+<body>
+<div id="bar">
+  <input id="q" type="search" placeholder="Search memories" autocomplete="off">
+  <select id="project"><option value="">All projects</option></select>
+  <select id="source"><option value="">All agents</option></select>
+  <span id="stats"></span>
+</div>
+<div id="graph"></div>
+<aside id="panel">
+  <button id="close" aria-label="Close">×</button>
+  <h2 id="title"></h2>
+  <div id="meta"></div>
+  <div id="body"></div>
+  <h3>Links</h3><div id="links"></div>
+  <h3>Backlinks</h3><div id="backlinks"></div>
+</aside>
+<div id="legend"></div>
+<script src="https://cdn.jsdelivr.net/npm/force-graph@1.52.0/dist/force-graph.min.js"></script>
+<script>
+// Memories are written by agents, so every piece of their text is treated as untrusted:
+// textContent everywhere, and esc() for the one place force-graph renders HTML (the hover label).
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
+const COLORS = { project: '#7aa2ff', decision: '#f7b955', lesson: '#ef6f6c', system: '#56c2a6', fact: '#b48cf2', state: '#e88bd0',
+  person: '#f2d16b', reference: '#6cc3f0', note: '#a3abbd', ghost: '#5b6273' }
+const $ = id => document.getElementById(id)
+let data, focus = null
+
+const visible = n => n.ghost || (!$('project').value || n.project === $('project').value) && (!$('source').value || n.source === $('source').value)
+const matches = n => { const q = $('q').value.trim().toLowerCase(); return !q || n.title.toLowerCase().includes(q) }
+const radius = n => 3 + Math.sqrt(n.degree) * 1.8
+
+const g = ForceGraph()($('graph'))
+  .backgroundColor('#0f1115')
+  .nodeId('id')
+  .nodeLabel(n => esc(n.title))
+  .nodeVisibility(visible)
+  .linkVisibility(l => visible(l.source) && visible(l.target))
+  .linkColor(() => 'rgba(140,150,170,0.25)')
+  .linkDirectionalArrowLength(3)
+  .linkDirectionalArrowRelPos(1)
+  .nodeCanvasObject((n, ctx, scale) => {
+    const r = radius(n)
+    ctx.globalAlpha = matches(n) ? 1 : 0.12
+    ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, 2 * Math.PI)
+    if (n.ghost) { ctx.strokeStyle = COLORS.ghost; ctx.lineWidth = 1 / scale + 0.5; ctx.stroke() }
+    else { ctx.fillStyle = COLORS[n.type] || COLORS.note; ctx.fill() }
+    if (n.id === focus) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2 / scale; ctx.stroke() }
+    if (scale > 2 || n.degree >= 5 || n.id === focus) {
+      ctx.font = `${11 / scale}px -apple-system, system-ui, sans-serif`
+      ctx.fillStyle = '#c9cfdc'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'
+      ctx.fillText(n.title, n.x, n.y + r + 2 / scale)
+    }
+    ctx.globalAlpha = 1
+  })
+  .nodePointerAreaPaint((n, color, ctx) => { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(n.x, n.y, radius(n) + 2, 0, 2 * Math.PI); ctx.fill() })
+  .onNodeClick(n => open(n))
+  .onBackgroundClick(() => close())
+  .cooldownTicks(200)
+  .onEngineStop(() => { if (!fitted) { fitted = true; g.zoomToFit(400, 80) } })
+g.d3Force('charge').strength(-140)
+g.d3Force('link').distance(50)
+let fitted = false
+
+addEventListener('resize', () => g.width(innerWidth).height(innerHeight))
+
+async function open(n) {
+  if (n.ghost) {
+    focus = n.id
+    $('title').textContent = n.title; $('meta').textContent = 'Not written yet (a link points here)'
+    $('body').textContent = ''; $('links').replaceChildren(); $('backlinks').replaceChildren()
+  } else {
+    const m = await (await fetch(`/api/memory/${n.id}`)).json()
+    focus = m.id
+    $('title').textContent = m.title
+    $('meta').textContent = [m.type, m.project, `by ${m.source}`, `updated ${m.updated.slice(0, 10)}`].filter(Boolean).join(' · ')
+    $('body').textContent = m.body
+    $('links').replaceChildren(...list(m.links))
+    $('backlinks').replaceChildren(...list(m.backlinks))
+  }
+  $('panel').classList.add('open')
+  g.centerAt(n.x, n.y, 400)
+}
+function close() { focus = null; $('panel').classList.remove('open') }
+function list(items) {
+  if (!items.length) { const s = document.createElement('span'); s.className = 'ghost'; s.textContent = 'none'; return [s] }
+  return items.map(it => {
+    const a = document.createElement('a')
+    a.textContent = it.title + (it.kind && it.kind !== 'wiki' ? ` (${it.kind})` : '')
+    if (it.ghost) a.className = 'ghost'
+    a.onclick = () => { const n = data.nodes.find(x => x.id === (it.ghost ? `ghost:${it.title.toLowerCase()}` : it.id)); if (n) open(n) }
+    return a
+  })
+}
+function options(sel, values) {
+  for (const v of [...new Set(values.filter(Boolean))].sort()) { const o = document.createElement('option'); o.value = o.textContent = v; sel.append(o) }
+}
+function refresh() {
+  const shown = data.nodes.filter(n => visible(n) && !n.ghost)
+  $('stats').textContent = `${shown.length} memories · ${shown.filter(matches).length} match`
+  g.nodeVisibility(visible).linkVisibility(l => visible(l.source) && visible(l.target))
+}
+$('q').oninput = refresh
+$('project').onchange = $('source').onchange = refresh
+$('close').onclick = close
+
+fetch('/api/graph').then(r => r.json()).then(d => {
+  data = d
+  options($('project'), d.nodes.map(n => n.project)); options($('source'), d.nodes.map(n => n.source))
+  g.width(innerWidth).height(innerHeight).graphData(d)
+  for (const [type, color] of Object.entries(COLORS)) {
+    if (!d.nodes.some(n => n.type === type)) continue
+    const s = document.createElement('span'); const i = document.createElement('i'); i.style.background = color
+    s.append(i, type); $('legend').append(s)
+  }
+  refresh()
+})
+</script>
+</body>
+</html>
