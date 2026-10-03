@@ -5,6 +5,8 @@ Changes to the design system docs and tokens, newest first.
 
 ## 2026-10-03
 
+- Stack a step's number above its text under 521px (G-05) (`8f310fe`)
+- Redesign the landing page on the design system (`2c5fd6f`)
 - Give the table's unit text a named size (F-08) (`e704580`)
 - Give focusable code blocks the accent focus ring (F-02) (`6ebf1b2`)
 - Make nav and footer links at least 24px tall (F-01) (`c8b51a7`)

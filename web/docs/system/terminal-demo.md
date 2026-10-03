@@ -52,7 +52,7 @@ The component takes no props.
 - The block shows a file, a list or a graph, not a terminal session. Use a static mock window instead, per coverage-gaps row "Cards and mock windows".
 
 ### Rules
-- `rule/terminal-demo-finished-first`: When the component first renders, show every line (`tick` starts at `DONE`), because people with scripts off or reduced motion on never get the typing and would see an empty box. Evidence: measured 0 hidden characters under reduced motion, .design-system/evidence/home/walk-redesign.json; single use components/terminal-demo.tsx:24. Check: probe `node .design-system/scripts/walk.mjs`.
+- `rule/terminal-demo-finished-first`: When the component first renders, show every line (`tick` starts at `DONE`), because people with scripts off or reduced motion on never get the typing and would see an empty box. Evidence: measured 0 hidden characters under reduced motion, .design-system/evidence/home/walk-redesign.json; single use components/terminal-demo.tsx:26. Check: probe `node .design-system/scripts/walk.mjs`.
   - Don't: `const [tick, setTick] = useState(0)`
   - Do: `const [tick, setTick] = useState(DONE)`
 - `rule/terminal-demo-keep-box`: When text is not typed yet, render it with the class `ghost` instead of leaving it out, because text that is left out makes the box grow line by line and pushes the page down. Evidence: measured 1 height from the first tick to the last, 255px at 390 wide and 189px at 1440, .design-system/evidence/home/walk-redesign.json. Check: probe `node .design-system/scripts/walk.mjs`.
@@ -65,7 +65,7 @@ The component takes no props.
   - Do: `out: 'saved #1 Ship on Fridays only after the smoke test passes'`
 
 ### Anti-slop
-- `rule/terminal-demo-once`: When the typing has finished, call `clearInterval(timer)` and leave the text finished instead of starting over in a loop, because a loop retypes the text under someone who is reading it. Evidence: single use components/terminal-demo.tsx:32, the observer disconnects on first sight; measured 1 play of 4.1 seconds, .design-system/evidence/home/walk-redesign.json. Check: review that the interval clears at `DONE` and nothing restarts it.
+- `rule/terminal-demo-once`: When the typing has finished, call `clearInterval(timer)` and leave the text finished instead of starting over in a loop, because a loop retypes the text under someone who is reading it. Evidence: single use components/terminal-demo.tsx:34, the observer disconnects on first sight; measured 1 play of 4.1 seconds, .design-system/evidence/home/walk-redesign.json. Check: review that the interval clears at `DONE` and nothing restarts it.
   - Don't: `if (t >= DONE) t = 0`
   - Do: `if (t >= DONE) clearInterval(timer)`
 

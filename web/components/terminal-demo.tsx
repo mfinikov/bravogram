@@ -14,6 +14,8 @@ const LINES = [
   },
 ]
 const PAUSE = 10 // ticks between the end of a command and its output
+// The tick each line starts at, and the tick the whole script ends at.
+const STARTS = LINES.map((_, i) => LINES.slice(0, i).reduce((n, l) => n + l.cmd.length + PAUSE, 0))
 const DONE = LINES.reduce((n, l) => n + l.cmd.length + PAUSE, 0)
 
 // The live demo: types two commands and shows what the CLI prints. It renders finished, so it reads
@@ -38,13 +40,12 @@ export function TerminalDemo() {
     return () => { seen.disconnect(); clearInterval(timer) }
   }, [])
 
-  let left = tick
   return (
     <pre ref={ref}>
-      {LINES.map((l) => {
+      {LINES.map((l, i) => {
+        const left = tick - STARTS[i]
         const typed = Math.max(0, Math.min(l.cmd.length, left))
         const shown = left >= l.cmd.length + PAUSE
-        left -= l.cmd.length + PAUSE
         return (
           <span key={l.cmd}>
             <b>$ {l.cmd.slice(0, typed)}</b><b className="ghost">{l.cmd.slice(typed)}</b>{'\n'}

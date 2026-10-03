@@ -156,7 +156,7 @@
         "className": "install copied",
         "focusStays": true,
         "box": "269x54",
-        "clearedAfterMs": 1619
+        "clearedAfterMs": 1604
       },
       "Space": {
         "clipboard": "npm i -g bravogram",
@@ -164,7 +164,7 @@
         "className": "install copied",
         "focusStays": true,
         "box": "269x54",
-        "clearedAfterMs": 1605
+        "clearedAfterMs": 1604
       },
       "idleBox": "269x54"
     },
@@ -320,7 +320,7 @@
         "className": "install copied",
         "focusStays": true,
         "box": "337x59",
-        "clearedAfterMs": 1614
+        "clearedAfterMs": 1608
       },
       "Space": {
         "clipboard": "npm i -g bravogram",
@@ -328,7 +328,7 @@
         "className": "install copied",
         "focusStays": true,
         "box": "337x59",
-        "clearedAfterMs": 1606
+        "clearedAfterMs": 1611
       },
       "idleBox": "337x59"
     },
