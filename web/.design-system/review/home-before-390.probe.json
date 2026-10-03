@@ -1,0 +1,1075 @@
+{
+ "url": "/",
+ "width": 390,
+ "height": 900,
+ "controls": [
+  {
+   "key": "link \"Skip to content\"",
+   "role": "link",
+   "name": "Skip to content",
+   "tag": "a",
+   "disabled": false,
+   "ariaDisabled": null,
+   "ariaBusy": null,
+   "ariaInvalid": null,
+   "ariaCurrent": null,
+   "ariaExpanded": null,
+   "ariaSelected": null,
+   "required": false,
+   "type": null,
+   "href": "",
+   "box": {
+    "x": -999,
+    "y": 0,
+    "w": 121,
+    "h": 26
+   }
+  },
+  {
+   "key": "link \"Bravogram, home\"",
+   "role": "link",
+   "name": "Bravogram, home",
+   "tag": "a",
+   "disabled": false,
+   "ariaDisabled": null,
+   "ariaBusy": null,
+   "ariaInvalid": null,
+   "ariaCurrent": null,
+   "ariaExpanded": null,
+   "ariaSelected": null,
+   "required": false,
+   "type": null,
+   "href": "",
+   "box": {
+    "x": 24,
+    "y": 16,
+    "w": 127,
+    "h": 24
+   }
+  },
+  {
+   "key": "link \"npm\"",
+   "role": "link",
+   "name": "npm",
+   "tag": "a",
+   "disabled": false,
+   "ariaDisabled": null,
+   "ariaBusy": null,
+   "ariaInvalid": null,
+   "ariaCurrent": null,
+   "ariaExpanded": null,
+   "ariaSelected": null,
+   "required": false,
+   "type": null,
+   "href": "https://www.npmjs.com/package/bravogram",
+   "box": {
+    "x": 270,
+    "y": 17,
+    "w": 30,
+    "h": 22
+   }
+  },
+  {
+   "key": "link \"GitHub\"",
+   "role": "link",
+   "name": "GitHub",
+   "tag": "a",
+   "disabled": false,
+   "ariaDisabled": null,
+   "ariaBusy": null,
+   "ariaInvalid": null,
+   "ariaCurrent": null,
+   "ariaExpanded": null,
+   "ariaSelected": null,
+   "required": false,
+   "type": null,
+   "href": "https://github.com/mfinikov/bravogram",
+   "box": {
+    "x": 320,
+    "y": 17,
+    "w": 46,
+    "h": 22
+   }
+  },
+  {
+   "key": "button \"Copy install command: npm i -g bravogram\"",
+   "role": "button",
+   "name": "Copy install command: npm i -g bravogram",
+   "tag": "button",
+   "disabled": false,
+   "ariaDisabled": null,
+   "ariaBusy": null,
+   "ariaInvalid": null,
+   "ariaCurrent": null,
+   "ariaExpanded": null,
+   "ariaSelected": null,
+   "required": false,
+   "type": "button",
+   "href": null,
+   "box": {
+    "x": 61,
+    "y": 434,
+    "w": 269,
+    "h": 54
+   }
+  },
+  {
+   "key": "button \"Copy install command: npm i -g bravogram\" #2",
+   "role": "button",
+   "name": "Copy install command: npm i -g bravogram",
+   "tag": "button",
+   "disabled": false,
+   "ariaDisabled": null,
+   "ariaBusy": null,
+   "ariaInvalid": null,
+   "ariaCurrent": null,
+   "ariaExpanded": null,
+   "ariaSelected": null,
+   "required": false,
+   "type": "button",
+   "href": null,
+   "box": {
+    "x": 61,
+    "y": 4786,
+    "w": 269,
+    "h": 54
+   }
+  },
+  {
+   "key": "link \"GitHub\" #2",
+   "role": "link",
+   "name": "GitHub",
+   "tag": "a",
+   "disabled": false,
+   "ariaDisabled": null,
+   "ariaBusy": null,
+   "ariaInvalid": null,
+   "ariaCurrent": null,
+   "ariaExpanded": null,
+   "ariaSelected": null,
+   "required": false,
+   "type": null,
+   "href": "https://github.com/mfinikov/bravogram",
+   "box": {
+    "x": 269,
+    "y": 4917,
+    "w": 46,
+    "h": 22
+   }
+  },
+  {
+   "key": "link \"npm\" #2",
+   "role": "link",
+   "name": "npm",
+   "tag": "a",
+   "disabled": false,
+   "ariaDisabled": null,
+   "ariaBusy": null,
+   "ariaInvalid": null,
+   "ariaCurrent": null,
+   "ariaExpanded": null,
+   "ariaSelected": null,
+   "required": false,
+   "type": null,
+   "href": "https://www.npmjs.com/package/bravogram",
+   "box": {
+    "x": 335,
+    "y": 4917,
+    "w": 30,
+    "h": 22
+   }
+  },
+  {
+   "key": "link \"Docs\"",
+   "role": "link",
+   "name": "Docs",
+   "tag": "a",
+   "disabled": false,
+   "ariaDisabled": null,
+   "ariaBusy": null,
+   "ariaInvalid": null,
+   "ariaCurrent": null,
+   "ariaExpanded": null,
+   "ariaSelected": null,
+   "required": false,
+   "type": null,
+   "href": "https://github.com/mfinikov/bravogram",
+   "box": {
+    "x": 25,
+    "y": 4959,
+    "w": 34,
+    "h": 22
+   }
+  }
+ ],
+ "headings": [
+  {
+   "key": "heading \"One memory for all your agents.\"",
+   "level": "1",
+   "text": "One memory for all your agents."
+  },
+  {
+   "key": "heading \"What Bravogram does.\"",
+   "level": "2",
+   "text": "What Bravogram does."
+  },
+  {
+   "key": "heading \"Remember\"",
+   "level": "3",
+   "text": "Remember"
+  },
+  {
+   "key": "heading \"Recall\"",
+   "level": "3",
+   "text": "Recall"
+  },
+  {
+   "key": "heading \"See the graph\"",
+   "level": "3",
+   "text": "See the graph"
+  },
+  {
+   "key": "heading \"Undo anything\"",
+   "level": "3",
+   "text": "Undo anything"
+  },
+  {
+   "key": "heading \"Three commands to a shared memory.\"",
+   "level": "2",
+   "text": "Three commands to a shared memory."
+  },
+  {
+   "key": "heading \"Less text for the same answer.\"",
+   "level": "2",
+   "text": "Less text for the same answer."
+  },
+  {
+   "key": "heading \"Common questions.\"",
+   "level": "2",
+   "text": "Common questions."
+  },
+  {
+   "key": "heading \"Give your agents a memory.\"",
+   "level": "2",
+   "text": "Give your agents a memory."
+  }
+ ],
+ "texts": [
+  {
+   "key": "a \"Skip to content\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 17,
+   "weight": 400
+  },
+  {
+   "key": "a \"bravogram\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 21,
+   "weight": 500
+  },
+  {
+   "key": "a \"npm\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 14,
+   "weight": 500
+  },
+  {
+   "key": "a \"GitHub\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 14,
+   "weight": 500
+  },
+  {
+   "key": "span \"Open source · runs on your machine\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 12,
+   "weight": 500
+  },
+  {
+   "key": "h1 \"One memory\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": true,
+   "size": 44,
+   "weight": 500
+  },
+  {
+   "key": "span \"for all your agents.\"",
+   "color": "#2f5bff",
+   "bg": "#ffffff",
+   "ratio": 5.17,
+   "large": true,
+   "size": 44,
+   "weight": 500
+  },
+  {
+   "key": "p \"Bravogram is a local memory that Claude,\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 17,
+   "weight": 400
+  },
+  {
+   "key": "span \"$\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 15,
+   "weight": 400
+  },
+  {
+   "key": "span \"npm i -g bravogram\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 15,
+   "weight": 400
+  },
+  {
+   "key": "p \"Node 24 or newer · zero dependencies · M\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 13,
+   "weight": 400
+  },
+  {
+   "key": "h2 \"What Bravogram does.\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": true,
+   "size": 38,
+   "weight": 500
+  },
+  {
+   "key": "p \"Four things an agent’s memory has to get\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "h3 \"Remember\"",
+   "color": "#000000/0.92",
+   "bg": "#f5f5f4",
+   "ratio": 17,
+   "large": true,
+   "size": 26,
+   "weight": 500
+  },
+  {
+   "key": "p \"Any agent saves a fact, a decision or a \"",
+   "color": "#000000/0.55",
+   "bg": "#f5f5f4",
+   "ratio": 4.64,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "span \"~/.bravogram/memory.db\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 12,
+   "weight": 400
+  },
+  {
+   "key": "pre \"\\\"Ship on Fridays only after the smoke te\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 12.5,
+   "weight": 400
+  },
+  {
+   "key": "b \"$ bravogram remember\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 12.5,
+   "weight": 500
+  },
+  {
+   "key": "h3 \"Recall\"",
+   "color": "#000000/0.92",
+   "bg": "#f5f5f4",
+   "ratio": 17,
+   "large": true,
+   "size": 26,
+   "weight": 500
+  },
+  {
+   "key": "p \"Ranked full-text search that returns sho\"",
+   "color": "#000000/0.55",
+   "bg": "#f5f5f4",
+   "ratio": 4.64,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "span \"bravogram recall \\\"smoke test\\\"\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 12,
+   "weight": 400
+  },
+  {
+   "key": "pre \"[decision] …only after the passes [proje\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 12.5,
+   "weight": 400
+  },
+  {
+   "key": "b \"#24 Ship on Fridays only…\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 12.5,
+   "weight": 500
+  },
+  {
+   "key": "mark \"smoke\"",
+   "color": "#1f3fc4",
+   "bg": "#dee5ff",
+   "ratio": 6.53,
+   "large": false,
+   "size": 12.5,
+   "weight": 400
+  },
+  {
+   "key": "mark \"test\"",
+   "color": "#1f3fc4",
+   "bg": "#dee5ff",
+   "ratio": 6.53,
+   "large": false,
+   "size": 12.5,
+   "weight": 400
+  },
+  {
+   "key": "b \"#11 release checklist\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 12.5,
+   "weight": 500
+  },
+  {
+   "key": "mark \"smoke\" #2",
+   "color": "#1f3fc4",
+   "bg": "#dee5ff",
+   "ratio": 6.53,
+   "large": false,
+   "size": 12.5,
+   "weight": 400
+  },
+  {
+   "key": "mark \"test\" #2",
+   "color": "#1f3fc4",
+   "bg": "#dee5ff",
+   "ratio": 6.53,
+   "large": false,
+   "size": 12.5,
+   "weight": 400
+  },
+  {
+   "key": "h3 \"See the graph\"",
+   "color": "#000000/0.92",
+   "bg": "#f5f5f4",
+   "ratio": 17,
+   "large": true,
+   "size": 26,
+   "weight": 500
+  },
+  {
+   "key": "p \"Memories link to each other with . One c\"",
+   "color": "#000000/0.55",
+   "bg": "#f5f5f4",
+   "ratio": 4.64,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "code \"[[wikilinks]]\"",
+   "color": "#000000/0.55",
+   "bg": "#f5f5f4",
+   "ratio": 4.64,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "span \"127.0.0.1:4747\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 12,
+   "weight": 400
+  },
+  {
+   "key": "h3 \"Undo anything\"",
+   "color": "#000000/0.92",
+   "bg": "#f5f5f4",
+   "ratio": 17,
+   "large": true,
+   "size": 26,
+   "weight": 500
+  },
+  {
+   "key": "p \"Every change and every delete is kept. I\"",
+   "color": "#000000/0.55",
+   "bg": "#f5f5f4",
+   "ratio": 4.64,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "span \"bravogram history roadmap\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 12,
+   "weight": 400
+  },
+  {
+   "key": "pre \": current #9, 1,231 chars rev 3 10-03 15\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 12.5,
+   "weight": 400
+  },
+  {
+   "key": "b \"roadmap\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 12.5,
+   "weight": 500
+  },
+  {
+   "key": "b \"$ bravogram restore\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 12.5,
+   "weight": 500
+  },
+  {
+   "key": "h2 \"Three commands to a shared memory.\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": true,
+   "size": 38,
+   "weight": 500
+  },
+  {
+   "key": "p \"One global package, nothing else to set \"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 17,
+   "weight": 400
+  },
+  {
+   "key": "b \"Install it.\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 17,
+   "weight": 500
+  },
+  {
+   "key": "code \"npm i -g bravogram\"",
+   "color": "#000000/0.92",
+   "bg": "#f5f5f4",
+   "ratio": 17,
+   "large": false,
+   "size": 13.5,
+   "weight": 400
+  },
+  {
+   "key": "p \"Any MCP client uses the same command. Ag\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 17,
+   "weight": 400
+  },
+  {
+   "key": "b \"Connect your agents.\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 17,
+   "weight": 500
+  },
+  {
+   "key": "code \"claude mcp add --scope user bravogram --\"",
+   "color": "#000000/0.92",
+   "bg": "#f5f5f4",
+   "ratio": 17,
+   "large": false,
+   "size": 13.5,
+   "weight": 400
+  },
+  {
+   "key": "p \"Bring in an existing Obsidian vault if y\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 17,
+   "weight": 400
+  },
+  {
+   "key": "b \"Look at what they know.\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 17,
+   "weight": 500
+  },
+  {
+   "key": "code \"bravogram import ~/notes && bravogram gr\"",
+   "color": "#000000/0.92",
+   "bg": "#f5f5f4",
+   "ratio": 17,
+   "large": false,
+   "size": 13.5,
+   "weight": 400
+  },
+  {
+   "key": "h2 \"Less text for the same answer.\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": true,
+   "size": 38,
+   "weight": 500
+  },
+  {
+   "key": "p \"The same three questions, asked of a fol\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "th \"Question\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 13,
+   "weight": 500
+  },
+  {
+   "key": "th \"Markdown notes, grep\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 13,
+   "weight": 500
+  },
+  {
+   "key": "th \"Bravogram\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 13,
+   "weight": 500
+  },
+  {
+   "key": "td \"“turso”\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 14,
+   "weight": 400
+  },
+  {
+   "key": "td \"1,696 characters\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "td \"307\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 16,
+   "weight": 500
+  },
+  {
+   "key": "small \"characters\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 13.3333,
+   "weight": 400
+  },
+  {
+   "key": "td \"“chapter 2”\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 14,
+   "weight": 400
+  },
+  {
+   "key": "td \"3,962 characters\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "td \"632\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 16,
+   "weight": 500
+  },
+  {
+   "key": "small \"characters\" #2",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 13.3333,
+   "weight": 400
+  },
+  {
+   "key": "td \"“sqlite lock”\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 14,
+   "weight": 400
+  },
+  {
+   "key": "td \"found nothing\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "td \"found it\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 16,
+   "weight": 500
+  },
+  {
+   "key": "small \"· 559 characters\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 13.3333,
+   "weight": 400
+  },
+  {
+   "key": "p \"Measured on October 3, 2026 on one real \"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 14,
+   "weight": 400
+  },
+  {
+   "key": "code \"bravogram recall\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 14,
+   "weight": 400
+  },
+  {
+   "key": "h2 \"Common questions.\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": true,
+   "size": 38,
+   "weight": 500
+  },
+  {
+   "key": "summary \"Where does my data live?\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 18,
+   "weight": 500
+  },
+  {
+   "key": "p \"In one SQLite file at on your own comput\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "code \"~/.bravogram/memory.db\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "summary \"Which agents work with it?\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 18,
+   "weight": 500
+  },
+  {
+   "key": "p \"Anything that speaks MCP, and anything t\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "summary \"Can two agents write at the same time?\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 18,
+   "weight": 500
+  },
+  {
+   "key": "p \"Yes. Writes take turns under a lock, so \"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "summary \"Is it a replacement for Obsidian?\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 18,
+   "weight": 500
+  },
+  {
+   "key": "p \"For agents, yes: it imports a vault and \"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "summary \"What doesn’t it do yet?\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 18,
+   "weight": 500
+  },
+  {
+   "key": "p \"Search is keyword based, so it won’t mat\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "summary \"What does it cost?\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 18,
+   "weight": 500
+  },
+  {
+   "key": "p \"Nothing. It’s MIT licensed and the code \"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 16,
+   "weight": 400
+  },
+  {
+   "key": "h2 \"Give your agents a memory.\"",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": true,
+   "size": 44,
+   "weight": 500
+  },
+  {
+   "key": "span \"$\" #2",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 15,
+   "weight": 400
+  },
+  {
+   "key": "span \"npm i -g bravogram\" #2",
+   "color": "#000000/0.92",
+   "bg": "#ffffff",
+   "ratio": 18.42,
+   "large": false,
+   "size": 15,
+   "weight": 400
+  },
+  {
+   "key": "span \"© 2026 Bravogram · MIT license\"",
+   "color": "#000000/0.40",
+   "bg": "#ffffff",
+   "ratio": 2.85,
+   "large": false,
+   "size": 13,
+   "weight": 400
+  },
+  {
+   "key": "a \"GitHub\" #2",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 14,
+   "weight": 500
+  },
+  {
+   "key": "a \"npm\" #2",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 14,
+   "weight": 500
+  },
+  {
+   "key": "a \"Docs\"",
+   "color": "#000000/0.55",
+   "bg": "#ffffff",
+   "ratio": 4.74,
+   "large": false,
+   "size": 14,
+   "weight": 500
+  }
+ ],
+ "links": [],
+ "heightMismatch": [],
+ "wrappedButtons": [],
+ "flatSurfaces": [],
+ "clipped": [
+  {
+   "key": "nav link \"How it works\"",
+   "by": "hidden, and no visible menu button",
+   "cue": false
+  }
+ ],
+ "tallOverlays": [],
+ "textMeasure": [
+  {
+   "key": "p \"Connect your agent . Any MCP client u e \"",
+   "ch": 24,
+   "chars": 29,
+   "lines": 5,
+   "w": 284,
+   "count": 1
+  }
+ ],
+ "reducedMotion": true,
+ "motion": []
+}

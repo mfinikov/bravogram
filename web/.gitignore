@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# design system run: captures and scratch stay local
+.design-system/review/**/*.png
+.design-system/tmp/
