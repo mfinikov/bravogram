@@ -1,9 +1,68 @@
+/* The token source. One theme. Each token's comment is its role: pick a token by the job, not by the value. */
 :root {
-  --bg: #ffffff; --ink: rgb(0 0 0 / .92); --text: rgb(0 0 0 / .55); --soft: rgb(0 0 0 / .4);
-  --line: rgb(0 0 0 / .08); --card: #f5f5f4; --panel: #ffffff; --accent: #2f5bff; --accent-ink: #1f3fc4;
-  --title: var(--font-familjen), var(--font-inter), system-ui, sans-serif;
-  --body: var(--font-inter), system-ui, -apple-system, sans-serif;
-  --mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  /* color: surfaces */
+  --bg: #ffffff; /* page background, and text on the dark skip link */
+  --card: #f5f5f4; /* card and command block background */
+  --panel: #ffffff; /* raised white surface: install box, mock window */
+  /* color: text and lines */
+  --ink: rgb(0 0 0 / .92); /* headings, strong text, the install box border and its hover shadow */
+  --text: rgb(0 0 0 / .55); /* body text */
+  --soft: rgb(0 0 0 / .4); /* captions, labels, table headers, graph lines */
+  --line: rgb(0 0 0 / .08); /* hairline borders and dividers */
+  --accent: #2f5bff; /* headline accent, focus ring, search-hit tint */
+  --accent-ink: #1f3fc4; /* text on the accent tint */
+  /* color: graph node kinds, the same six as the real graph view */
+  --graph-project: #7aa2ff; /* project node */
+  --graph-system: #56c2a6; /* system node */
+  --graph-decision: #f7b955; /* decision node */
+  --graph-lesson: #ef6f6c; /* lesson node */
+  --graph-fact: #b48cf2; /* fact node */
+  --graph-note: #a3abbd; /* note node */
+
+  /* type: families (loaded in app/layout.tsx) */
+  --title: var(--font-familjen), var(--font-inter), system-ui, sans-serif; /* h1 to h3 and the brand, weight 500 */
+  --body: var(--font-inter), system-ui, -apple-system, sans-serif; /* all other text, weight 400 */
+  --mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace; /* commands, code, small labels */
+  /* type: sizes, one per text role */
+  --font-size-display: clamp(44px, 7.8vw, 112px); /* h1 */
+  --font-size-closing: clamp(44px, 6.4vw, 92px); /* the closing h2 */
+  --font-size-h2: clamp(38px, 4.44vw, 64px); /* section h2 */
+  --font-size-h3: 26px; /* card h3, and the FAQ plus and minus sign */
+  --font-size-brand: 21px; /* the wordmark in the nav */
+  --font-size-command: clamp(15px, 2.2vw, 21px); /* the install command */
+  --font-size-question: clamp(18px, 2vw, 21px); /* FAQ question */
+  --font-size-lede: clamp(17px, 1.6vw, 20px); /* hero paragraph */
+  --font-size-body: 17px; /* default text */
+  --font-size-text: 16px; /* section intro, card text, table, FAQ answer */
+  --font-size-small: 14px; /* nav links, first table column, the note */
+  --font-size-code: 13.5px; /* command blocks in the steps */
+  --font-size-caption: 13px; /* hero meta line, table headers, footer */
+  --font-size-mock: 12.5px; /* text inside a mock window */
+  --font-size-label: 12px; /* mono labels: eyebrow, mock title bar, step number */
+  --leading-h3: 32px; /* line height of h3 */
+  --leading-intro: 26px; /* line height of the section intro */
+  --leading-card: 25px; /* line height of card text */
+
+  /* layout */
+  --page-width: 1152px; /* the bordered column and the nav */
+  --gutter: 24px; /* left and right padding of the column */
+  --section-y: clamp(48px, 9vw, 120px); /* top and bottom padding of a section */
+  --measure: 640px; /* widest reading text */
+  --mock-height: 190px; /* a mock window and the graph drawing inside it */
+  /* space: padding, margin and gap. The number is the pixel value */
+  --space-2: 2px; --space-4: 4px; --space-6: 6px; --space-8: 8px; --space-12: 12px; --space-14: 14px;
+  --space-16: 16px; --space-18: 18px; --space-20: 20px; --space-22: 22px; --space-24: 24px;
+  --space-26: 26px; --space-28: 28px; --space-32: 32px; --space-48: 48px;
+
+  /* radius */
+  --radius-card: 14px; /* cards */
+  --radius-window: 16px; /* top corners of a mock window */
+  --radius-code: 8px; /* command blocks */
+  --radius-mark: 3px; /* search-hit highlight */
+
+  /* motion */
+  --motion-micro: .12s ease; /* hover lift of the install box */
+  --motion-swap: .15s; /* copy icon to check mark */
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
