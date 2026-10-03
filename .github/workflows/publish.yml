@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write # npm provenance
+  id-token: write # npm trusted publishing (and provenance)
 
 jobs:
   test:
@@ -32,6 +32,9 @@ jobs:
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
+      # Trusted publishing: npm trusts this workflow through GitHub's OIDC token, no NPM_TOKEN secret.
+      # It needs npm 11.5.1 or newer.
+      - run: npm install -g npm@latest
       # npm refuses to publish a version twice, so only publish when package.json has a new version.
       - name: publish if this version is not on npm yet
         run: |
@@ -39,7 +42,5 @@ jobs:
           if npm view "bravogram@$v" version >/dev/null 2>&1; then
             echo "bravogram@$v is already on npm, nothing to publish. Bump the version to release."
           else
-            npm publish --provenance --access public
+            npm publish --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
