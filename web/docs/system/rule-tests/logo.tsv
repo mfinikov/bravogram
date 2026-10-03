@@ -1,0 +1,3 @@
+rule_id	falsify	negation	two_agent	sweep	verdict	notes
+rule/logo-hidden-mark	pass	pass	n/a: falsify and sweep cover it	pass	ship	
+rule/logo-current-color	pass	pass	n/a: skipped (small app), one coordinator runs every phase	pass	ship	check-system fails the Don't line

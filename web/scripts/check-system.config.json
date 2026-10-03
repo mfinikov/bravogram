@@ -8,5 +8,6 @@
   ],
   "registry": "registry.json",
   "driftList": "scripts/ui-drift.tsv",
-  "allowlist": "scripts/check-allowlist.json"
+  "allowlist": "scripts/check-allowlist.json",
+  "uiDir": "components"
 }

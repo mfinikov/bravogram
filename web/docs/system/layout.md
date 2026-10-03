@@ -1,0 +1,41 @@
+# Layout
+
+## Description
+The page is one bordered column, 1152px at most, with hairlines left and right and sections split by hairlines. This page lists its widths and its space values.
+
+## Tokens
+| Token | Value | Role |
+|---|---|---|
+| `--page-width` | `1152px` | the bordered column and the nav |
+| `--gutter` | `24px` | left and right padding of the column |
+| `--section-y` | `clamp(48px, 9vw, 120px)` | top and bottom padding of a section |
+| `--measure` | `640px` | widest reading text |
+| `--mock-height` | `190px` | a mock window and the graph drawing inside it |
+| `--space-2` to `--space-48` | `2, 4, 6, 8, 12, 14, 16, 18, 20, 22, 24, 26, 28, 32, 48px` | padding, margin and gap. The number is the pixel value |
+
+Breakpoints, written in the media queries of `app/globals.css`: 520px (the "How it works" nav link hides below it), 640px (the hero graph fades to half below it), 720px (cards go two across from it), 900px (a section intro sits right of its h2 from it).
+
+## Usage
+- `rule/layout-measure`: When a paragraph is reading text, cap its width at `var(--measure)` or less, because a line past 75 characters loses the eye on the way back. Evidence: measured 97 characters a line in the steps at 1440 wide before the cap and 60 after, .design-system/evidence/home/walk.json; app 6/6 paragraph kinds are capped (lede, section intro, card text, step, answer, note), `rg -n "max-width" app/globals.css`. Check: probe `trap/text-measure` in the capture's `.probe.json`.
+  - Don't: `.step p { max-width: none; }`
+  - Do: `.step p { max-width: var(--measure); }`
+- `rule/layout-space-token`: When a rule sets padding, margin or gap, read a `--space-{pixels}` token, `--gutter` or `--section-y` instead of a px value, because the scale already has 15 steps and a raw value adds one nobody chose. Evidence: measured 3 raw spacing values left, all listed under Not tokens, `node scripts/check-system.mjs --root . --no-self-test --left`. Check: lint `rule/css-px`.
+  - Don't: `.card { padding: 30px; }`
+  - Do: `.card { padding: var(--space-28) var(--space-28) 0; }`
+- Gated: `rule/layout-narrow-nav` (G-04). Should the "How it works" link stay hidden under 521px with no menu button?
+- Gated: `rule/layout-narrow-steps` (G-05). Should the step text run wider than 26 characters a line at 390 wide?
+
+## Accessibility
+Measured on the production build (`.design-system/evidence/home/walk.json`): the page does not scroll sideways at 390 or 1440 wide (`scrollWidth` 390 and 1440). Every tab stop is inside the viewport at both widths. The nav and footer links are 22px tall (30 to 87px wide), under the 24px target size, with 20px between them. Reflow at 320px is not measured: NEEDS REVIEW.
+
+## Not tokens
+One-off sizes that place a single thing, listed in `scripts/check-allowlist.json`:
+- `left: -999px`: parks the skip link off screen until it has focus.
+- `height: 56px`: the nav bar.
+- `gap: 9px`: between the mark and the wordmark.
+- `24px` and `16px` and `8px` squares: the mark, the copy icon, the dots in a mock title bar.
+- `max-width: 400px` and `440px`: the section intro and card text.
+- `clamp(72px, 12vw, 150px) 20px clamp(56px, 8vw, 100px)`: hero padding.
+- `clamp(32px, 5vw, 64px)`: space under a section heading.
+
+Off-grid steps kept as approved (decision D5, gate G-09): 9, 14, 18, 22 and 26px.

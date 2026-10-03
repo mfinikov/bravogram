@@ -1,0 +1,7 @@
+{
+  "name": "Bravogram landing page",
+  "checkCommand": "npm run check",
+  "out": "docs/generated/system",
+  "llms": "docs/generated/llms.txt",
+  "base": "system"
+}

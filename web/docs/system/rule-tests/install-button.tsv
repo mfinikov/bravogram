@@ -1,0 +1,6 @@
+rule_id	falsify	negation	two_agent	sweep	verdict	notes
+rule/install-button-keep-label	pass	pass	n/a: falsify and sweep cover it	pass	ship	walk.mjs fails the snippet: the box width changes
+rule/install-button-announce	pass	pass	n/a: falsify and sweep cover it	pass	ship	walk.mjs waits on the status text and times out without it
+rule/install-button-name	pass	pass	n/a: falsify and sweep cover it	pass	ship	
+rule/install-button-one-source	pass	pass	n/a: skipped (small app), one coordinator runs every phase	pass	ship	2 of 2 call sites follow it
+rule/install-button-command-length	pass	pass	n/a: skipped (small app), one coordinator runs every phase	pass	ship	the one command is 18 characters

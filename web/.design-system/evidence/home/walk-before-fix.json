@@ -1,0 +1,333 @@
+{
+  "390": {
+    "scrollWidth": 390,
+    "transition": {
+      "install": "transform 0.12s, box-shadow 0.12s",
+      "icon": "opacity 0.15s"
+    },
+    "stepText": [
+      {
+        "width": 284,
+        "ch": 26
+      },
+      {
+        "width": 284,
+        "ch": 26
+      },
+      {
+        "width": 284,
+        "ch": 26
+      }
+    ],
+    "tabOrder": [
+      {
+        "el": "a.skip",
+        "name": "Skip to content",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "145x42",
+        "inView": true
+      },
+      {
+        "el": "a.brand",
+        "name": "Bravogram, home",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "127x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "npm",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "30x22",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "GitHub",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "46x22",
+        "inView": true
+      },
+      {
+        "el": "button.install",
+        "name": "Copy install command: npm i -g bravogram",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "269x54",
+        "inView": true
+      },
+      {
+        "el": "code.block",
+        "name": "claude mcp add --scope user bravogram -- bravogram",
+        "outline": "1px auto rgb(0, 95, 204)",
+        "box": "284x45",
+        "inView": true
+      },
+      {
+        "el": "code.block",
+        "name": "bravogram import ~/notes && bravogram graph",
+        "outline": "1px auto rgb(0, 95, 204)",
+        "box": "284x45",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Where does my data live?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Which agents work with it?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Can two agents write at the same time?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x95",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Is it a replacement for Obsidian?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "What doesn’t it do yet?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "What does it cost?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "button.install",
+        "name": "Copy install command: npm i -g bravogram",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "269x54",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "GitHub",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "46x22",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "npm",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "30x22",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "Docs",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "34x22",
+        "inView": true
+      }
+    ],
+    "copy": {
+      "Enter": {
+        "clipboard": "npm i -g bravogram",
+        "status": "Copied: npm i -g bravogram",
+        "className": "install copied",
+        "focusStays": true,
+        "box": "269x54",
+        "clearedAfterMs": 1610
+      },
+      "Space": {
+        "clipboard": "npm i -g bravogram",
+        "status": "Copied: npm i -g bravogram",
+        "className": "install copied",
+        "focusStays": true,
+        "box": "269x54",
+        "clearedAfterMs": 1616
+      },
+      "idleBox": "269x54"
+    },
+    "hover": {
+      "transform": "matrix(1, 0, 0, 1, -2, -2)",
+      "boxShadow": "rgba(0, 0, 0, 0.92) 4px 4px 0px 0px"
+    },
+    "faq": {
+      "open": true,
+      "focusStays": true
+    }
+  },
+  "1440": {
+    "scrollWidth": 1440,
+    "transition": {
+      "install": "transform 0.12s, box-shadow 0.12s",
+      "icon": "opacity 0.15s"
+    },
+    "stepText": [
+      {
+        "width": 1046,
+        "ch": 97
+      },
+      {
+        "width": 1046,
+        "ch": 97
+      },
+      {
+        "width": 1046,
+        "ch": 97
+      }
+    ],
+    "tabOrder": [
+      {
+        "el": "a.skip",
+        "name": "Skip to content",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "145x42",
+        "inView": true
+      },
+      {
+        "el": "a.brand",
+        "name": "Bravogram, home",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "127x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "How it works",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "87x22",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "npm",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "30x22",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "GitHub",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "46x22",
+        "inView": true
+      },
+      {
+        "el": "button.install",
+        "name": "Copy install command: npm i -g bravogram",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "337x59",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Where does my data live?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Which agents work with it?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Can two agents write at the same time?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Is it a replacement for Obsidian?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "What doesn’t it do yet?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "What does it cost?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "button.install",
+        "name": "Copy install command: npm i -g bravogram",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "337x59",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "GitHub",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "46x22",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "npm",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "30x22",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "Docs",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "34x22",
+        "inView": true
+      }
+    ],
+    "copy": {
+      "Enter": {
+        "clipboard": "npm i -g bravogram",
+        "status": "Copied: npm i -g bravogram",
+        "className": "install copied",
+        "focusStays": true,
+        "box": "337x59",
+        "clearedAfterMs": 1608
+      },
+      "Space": {
+        "clipboard": "npm i -g bravogram",
+        "status": "Copied: npm i -g bravogram",
+        "className": "install copied",
+        "focusStays": true,
+        "box": "337x59",
+        "clearedAfterMs": 1616
+      },
+      "idleBox": "337x59"
+    },
+    "hover": {
+      "transform": "matrix(1, 0, 0, 1, -2, -2)",
+      "boxShadow": "rgba(0, 0, 0, 0.92) 4px 4px 0px 0px"
+    },
+    "faq": {
+      "open": true,
+      "focusStays": true
+    }
+  }
+}

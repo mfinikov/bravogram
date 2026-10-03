@@ -1,0 +1,3 @@
+rule_id	falsify	negation	two_agent	sweep	verdict	notes
+rule/typography-title-face	pass	pass	n/a: falsify and sweep cover it	pass	ship	
+rule/typography-size-token	pass	pass	n/a: falsify and sweep cover it	pass	ship	check-system failed 81 raw px lengths before the swaps, font sizes among them

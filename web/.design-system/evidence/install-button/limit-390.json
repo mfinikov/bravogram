@@ -1,0 +1,16 @@
+{
+  "width": 390,
+  "command": "npm i -g bravogram",
+  "commandLength": 18,
+  "buttonWidth": 269,
+  "heroInnerWidth": 348,
+  "firstBreakAtLength": 27,
+  "contrastOnWhite": {
+    "text": 18.36,
+    "dollar": 2.98,
+    "icon": 3.47,
+    "border": 18.36,
+    "focusRing": 5.17
+  },
+  "background": "rgb(255, 255, 255)"
+}

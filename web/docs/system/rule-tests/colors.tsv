@@ -1,0 +1,3 @@
+rule_id	falsify	negation	two_agent	sweep	verdict	notes
+rule/colors-token-only	pass	pass	n/a: falsify and sweep cover it	pass	ship	check-system failed 17 raw colors before the swaps
+rule/colors-soft-contrast	pass	pass	n/a: falsify and sweep cover it	pass	gate	G-06

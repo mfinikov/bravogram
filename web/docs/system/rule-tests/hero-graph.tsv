@@ -1,0 +1,4 @@
+rule_id	falsify	negation	two_agent	sweep	verdict	notes
+rule/hero-graph-decoration	pass	pass	n/a: falsify and sweep cover it	pass	ship	
+rule/hero-graph-token-colors	pass	pass	n/a: falsify and sweep cover it	pass	ship	check-system failed the old COLORS line before the swap
+rule/hero-graph-once	pass	pass	n/a: skipped (small app), one coordinator runs every phase	pass	ship	

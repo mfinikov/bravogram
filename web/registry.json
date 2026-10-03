@@ -1,0 +1,70 @@
+{
+  "components": [
+    {
+      "id": "install-button",
+      "name": "InstallButton",
+      "import": "@/components/install-button",
+      "source": "components/install-button.tsx",
+      "docs": "/system/install-button",
+      "markdown": "/system/install-button.md",
+      "entry": "docs/system/install-button.md",
+      "variants": {},
+      "states": [
+        "copied"
+      ],
+      "tokens": [
+        "--ink",
+        "--panel",
+        "--accent",
+        "--mono",
+        "--font-size-command",
+        "--space-16",
+        "--space-18",
+        "--space-24",
+        "--space-32",
+        "--motion-micro",
+        "--motion-swap"
+      ],
+      "replaces": [],
+      "status": "ready"
+    },
+    {
+      "id": "logo",
+      "name": "Logo",
+      "import": "@/components/logo",
+      "source": "components/logo.tsx",
+      "docs": "/system/logo",
+      "markdown": "/system/logo.md",
+      "entry": "docs/system/logo.md",
+      "variants": {},
+      "states": [],
+      "tokens": [],
+      "replaces": [],
+      "status": "ready"
+    },
+    {
+      "id": "hero-graph",
+      "name": "HeroGraph",
+      "import": "@/components/hero-graph",
+      "source": "components/hero-graph.tsx",
+      "docs": "/system/hero-graph",
+      "markdown": "/system/hero-graph.md",
+      "entry": "docs/system/hero-graph.md",
+      "variants": {},
+      "states": [
+        "still"
+      ],
+      "tokens": [
+        "--soft",
+        "--graph-project",
+        "--graph-system",
+        "--graph-decision",
+        "--graph-lesson",
+        "--graph-fact",
+        "--graph-note"
+      ],
+      "replaces": [],
+      "status": "ready"
+    }
+  ]
+}

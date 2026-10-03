@@ -1,0 +1,5 @@
+rule_id	falsify	negation	two_agent	sweep	verdict	notes
+rule/layout-measure	pass	pass	n/a: falsify and sweep cover it	pass	ship	the probe flagged 95ch before the cap
+rule/layout-space-token	pass	pass	n/a: falsify and sweep cover it	pass	ship	
+rule/layout-narrow-nav	pass	pass	n/a: falsify and sweep cover it	pass	gate	G-04
+rule/layout-narrow-steps	pass	pass	n/a: falsify and sweep cover it	pass	gate	G-05

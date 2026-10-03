@@ -1,0 +1,28 @@
+# Materials
+
+## Description
+Corners, borders, shadow and surface levels. The page is flat: hairlines split it, cards are a tinted fill with no border, and the only shadow is the hard offset under the install box on hover.
+
+## Tokens
+| Token | Value | Role |
+|---|---|---|
+| `--radius-card` | `14px` | cards |
+| `--radius-window` | `16px` | top corners of a mock window |
+| `--radius-code` | `8px` | command blocks |
+| `--radius-mark` | `3px` | search-hit highlight |
+
+Surface levels use the color tokens: the page is `--bg`, a card is `--card`, and a raised white surface on a card (mock window) or on the page (install box) is `--panel`.
+
+## Usage
+Borders are `1px solid var(--line)`, except the install box, which is `1.5px solid var(--ink)` and square. The focus ring is `2px solid var(--accent)` at `3px` offset on the install box, links and questions.
+
+A mock window (16px) sits inside a card (14px) with a 28px inset, so the inner corner is rounder than the outer one. It is kept as approved (decision D5, gate G-09).
+
+## Accessibility
+The focus ring is 5.17:1 on white (`.design-system/evidence/install-button/limit-390.json`) and showed on 15 of 17 tab stops at 390 wide and 16 of 16 at 1440 (`.design-system/evidence/home/walk.json`). The other two are the scrolling command blocks at 390 wide, which take focus so they can be scrolled by keyboard and show the browser's own ring.
+
+## Not tokens
+- `1px`, `1.5px` and `2px` border and outline widths, and the `3px` outline offset.
+- `box-shadow: 4px 4px 0 var(--ink)` and `translate(-2px, -2px)`: the install box's hover lift, used once.
+- `border-radius: 50%` on the mock title bar dots, and `0` on the install box.
+- `blur(12px)` behind the sticky header.

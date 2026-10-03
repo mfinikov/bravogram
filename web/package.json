@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check": "node scripts/check-system.mjs --root . && node scripts/check-system.mjs --root . --ratchet scripts/check-ratchet.json && node scripts/check-spec.mjs --root . docs/system && node scripts/gen-docs.mjs --root . --check && next typegen && tsc --noEmit && eslint",
+    "docs": "node scripts/gen-docs.mjs --root ."
   },
   "dependencies": {
     "next": "16.3.8",
