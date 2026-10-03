@@ -109,7 +109,7 @@ header.top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb
   font: 400 var(--font-size-command)/1 var(--mono); cursor: pointer; border-radius: 0; transition: transform var(--motion-micro), box-shadow var(--motion-micro); }
 .install:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
 .install:active { transform: none; box-shadow: none; }
-.install:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.install:focus-visible, a:focus-visible, summary:focus-visible, code:focus-visible, pre:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .install .dollar { opacity: .45; user-select: none; }
 .install .cmd { white-space: nowrap; }
 .install .state { display: grid; opacity: .5; width: 16px; height: 16px; }
