@@ -90,3 +90,59 @@ No new writing step after 17:11 (70%), except decided defaults.
 Next action: none. The run is closed; the Report section is the handoff.
 
 ## Report
+The landing page now has a design system and is redesigned in your direction. Both are merged into `main` at 3cea31a and pushed, and GitHub's checks pass, including a new one for the site.
+
+**Screens.** There is one screen, `/`, and it changed (1 of 1 routes).
+- Hero: the same headline and install box, a shorter lede, a "Works with" row of text chips, and a one-color line-art scene of memories sprouting on dashed ground, in place of the multi-color dots.
+- What it does: four cards with two lines of text each.
+- Live demo: a terminal that types two real Bravogram commands and shows the real output, beside the three setup commands.
+- Numbers and questions: the same facts with shorter text, under the labels "Receipts" and "You were going to ask".
+- The closing section is gone. The footer carries the second install box.
+- Before and after pictures: `web/.design-system/review/redesign/index.html`.
+
+**Questions that ran on a default.** Overturn any of them by telling me.
+- G-01: your 2026-10-01 bans (no gradients, no shadows beyond a hairline, no decorative illustrations, no emoji, almost no colour) were not re-applied to this page.
+- G-02: no new bans were named.
+- G-05: under 521px a step's number sits above its text.
+- G-06: small grey text was darkened to pass contrast (2.85:1 to 4.95:1).
+- G-07: page sections stay page markup. They are not separate components.
+- G-08: no dark theme, loading or error states, imagery rules or writing page were decided.
+- G-09: near-duplicate sizes and spacings were not merged.
+- G-10: the generated design docs are not served by the live site.
+- G-11: body text was darkened from 55% to 70% black so it still reads above the captions.
+- G-12: the redesign's cuts and its three dry labels were kept.
+- G-13: the hero scene loops for as long as the page is open, with no pause control.
+
+**Numbers** (from `web/.design-system/close.md`).
+- Tokens: 15 definitions before, 66 after.
+- Token use: 60 references before, 174 after. Adoption 86 percent before, 99 percent after.
+- Raw color lines: 9 before, 1 after (the browser theme color, which cannot take a CSS variable).
+- Components with a spec in the registry: 0 before, 4 after (InstallButton, Logo, HeroScene, TerminalDemo).
+- Texts under 4.5:1 contrast: 15 before, 0 of 98 after.
+- One-off values on the allowlist: 13.
+
+**Checks.**
+- `npm run check` in `web/` exits 0. It fails on a new raw color or pixel value, a stale spec or doc, a type error or a lint error.
+- A clean clone of the branch at 388cb19 passed `npm ci`, `npm run check` and `npm run build`, all exit 0.
+- GitHub ran the new `web` job on `main` and it passed.
+- The worker's keyboard walk passed: every tab stop is 24px or taller with a visible focus ring, and Enter and Space both copy the command.
+- Not checked by eye: the motion. The sway and the typing were measured by script on still captures.
+
+**Next.**
+- The site is not online. Say "deploy it to Vercel" and approve the prompt.
+- There is nothing to migrate: the page is the only screen.
+
+**Found, not fixed.**
+
+| ID | Severity | What | Fix |
+|---|---|---|---|
+| G-13 | should-fix | The hero scene loops with no pause control and keeps running off screen | Stop the sway after a few cycles, or add a pause button |
+| G-09 | note | Near-duplicate text sizes, line heights, spacings and radii | Merge each group and delete the spare tokens |
+| F-12 | note | Two card mocks show memory #24 in a stylized form, while the terminal shows real output | Paste real output into the two card mocks |
+| F-11 | note | The terminal and mock windows are hidden from screen readers; the same facts are in the text | Add a text alternative if the terminal ever says more than the page |
+| F-06 | note | Not measured: logo optical size, zoom to 200%, reflow at 320px | Measure each |
+| F-03 | note | No interaction test file; behavior was walked by script | Needs a test runner, which is a new dependency |
+| F-05 | note | No writing page, so no copy check | Write `docs/system/writing.md` |
+| F-07 | note | Token tables in the docs are hand-written copies | Generate them from the token comments |
+| F-09 | note | Review lenses and two-agent tests were skipped as a small app | Run them when a second person works on the page |
+| F-10 | note | The generated AGENTS.md index omits `--root .` | The hand-written block above it covers it |
