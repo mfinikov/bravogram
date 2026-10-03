@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bravogram: one memory for all your agents</title>
+<meta name="description" content="Bravogram is an open source, local memory shared by all your AI agents. A CLI, an MCP server and a graph view. npm i -g bravogram">
+<meta property="og:title" content="Bravogram: one memory for all your agents">
+<meta property="og:description" content="Open source, local memory shared by Claude, Hermes and any MCP agent. Search in milliseconds, see it as a graph.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111'/%3E%3Ccircle cx='10' cy='11' r='3.2' fill='%237aa2ff'/%3E%3Ccircle cx='22' cy='13' r='2.4' fill='%2356c2a6'/%3E%3Ccircle cx='15' cy='22' r='2.8' fill='%23f7b955'/%3E%3Cpath d='M10 11L22 13M10 11L15 22M22 13L15 22' stroke='%23fff' stroke-opacity='.45' stroke-width='1.2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff; --ink: rgb(0 0 0 / .92); --text: rgb(0 0 0 / .55); --soft: rgb(0 0 0 / .4);
+    --line: rgb(0 0 0 / .08); --card: #f5f5f4; --panel: #ffffff; --accent: #2f5bff; --accent-ink: #1f3fc4;
+    --term: #0f1115; --term-text: #d7dbe5; --term-dim: #7d8598;
+    --title: "Familjen Grotesk", "Inter", system-ui, sans-serif;
+    --body: "Inter", system-ui, -apple-system, sans-serif;
+    --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; overflow-x: clip; background: var(--bg); color: var(--text); font: 400 17px/1.55 var(--body); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--title); font-weight: 500; color: var(--ink); margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(44px, 7.8vw, 112px); line-height: .93; letter-spacing: -.05em; overflow-wrap: anywhere; }
+  h1 .accent { display: block; }
+  h2 { font-size: clamp(38px, 4.44vw, 64px); line-height: .96; letter-spacing: -.05em; }
+  h3 { font-size: 26px; line-height: 32px; letter-spacing: -.03em; }
+  p { margin: 0; }
+  code, pre, kbd { font-family: var(--mono); }
+  .accent { color: var(--accent); }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 16px; top: 16px; background: var(--ink); color: var(--bg); padding: 8px 12px; z-index: 10; }
+
+  /* the page is one bordered column, hairlines left and right, sections split by hairlines */
+  .wrap { max-width: 1152px; margin: 0 auto; border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+  section, header.top, footer { border-bottom: 1px solid var(--line); }
+  .pad { padding: clamp(48px, 9vw, 120px) 24px; }
+
+  header.top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); }
+  .nav { max-width: 1152px; margin: 0 auto; height: 56px; padding: 0 24px; display: flex; align-items: center; gap: 20px; }
+  .brand { font: 500 21px/1 var(--title); letter-spacing: -.04em; color: var(--ink); text-decoration: none; margin-right: auto; display: flex; align-items: center; gap: 9px; }
+  .brand svg { width: 22px; height: 22px; }
+  .nav a.link { font-size: 14px; font-weight: 500; color: var(--text); text-decoration: none; }
+  .nav a.link:hover { color: var(--ink); }
+  @media (max-width: 520px) { .nav a.wide { display: none; } }
+
+  .hero { position: relative; overflow: hidden; text-align: center; }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+    mask-image: radial-gradient(ellipse 58% 66% at 50% 50%, transparent 42%, #000 96%);
+    -webkit-mask-image: radial-gradient(ellipse 58% 66% at 50% 50%, transparent 42%, #000 96%); }
+  @media (max-width: 640px) { .hero canvas { opacity: .5; } }
+  .hero-in { position: relative; padding: clamp(72px, 12vw, 150px) 20px clamp(56px, 8vw, 100px); display: flex; flex-direction: column; align-items: center; }
+  .eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin-bottom: 28px; }
+  .hero p.lede { max-width: 640px; padding-top: 24px; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.5; }
+  .meta { padding-top: 16px; font-size: 13px; color: var(--soft); text-wrap: balance; }
+
+  /* the install box: a mono command you copy with one click */
+  .install { margin-top: 32px; display: inline-flex; align-items: center; gap: 16px; max-width: 100%;
+    border: 1.5px solid var(--ink); background: var(--panel); color: var(--ink); padding: 18px 24px;
+    font: 400 clamp(15px, 2.2vw, 21px)/1 var(--mono); cursor: pointer; border-radius: 0; transition: transform .12s ease, box-shadow .12s ease; }
+  .install:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .install:active { transform: none; box-shadow: none; }
+  .install:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .install .dollar { opacity: .45; user-select: none; }
+  .install .cmd { white-space: nowrap; }
+  .install .state { display: grid; opacity: .5; width: 16px; height: 16px; }
+  .install .state svg { grid-area: 1 / 1; transition: opacity .15s; }
+  .install .ok, .install.copied .copy { opacity: 0; }
+  .install.copied .ok { opacity: 1; }
+
+  .head { display: grid; gap: 14px; padding-bottom: clamp(32px, 5vw, 64px); }
+  @media (min-width: 900px) { .head.split { grid-template-columns: minmax(0, 1fr) 400px; align-items: end; gap: 48px; } }
+  .head p { max-width: 400px; font-size: 16px; line-height: 26px; }
+
+  .grid { display: grid; gap: 24px; }
+  @media (min-width: 720px) { .grid.two { grid-template-columns: 1fr 1fr; } }
+  .card { background: var(--card); border-radius: 14px; padding: 28px 28px 0; display: flex; flex-direction: column; gap: 22px; overflow: hidden; }
+  .card p { font-size: 16px; line-height: 25px; max-width: 440px; }
+  .card h3 { margin-bottom: 8px; }
+
+  /* small product mockups inside the cards */
+  .mock { background: var(--panel); border: 1px solid var(--line); border-bottom: 0; border-radius: 16px 16px 0 0; margin-top: auto; min-height: 190px; overflow: hidden; font-size: 13px; }
+  .mock .bar { display: flex; align-items: center; gap: 6px; padding: 12px 14px; border-bottom: 1px solid var(--line); font: 400 12px/1 var(--mono); color: var(--soft); }
+  .mock .bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .mock .bar span { margin-left: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mock pre { margin: 0; padding: 14px 16px 22px; font-size: 12.5px; line-height: 1.75; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+  .mock pre b { color: var(--ink); font-weight: 500; }
+  .mock pre mark { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-ink); padding: 0 2px; border-radius: 3px; }
+  .mock svg { display: block; width: 100%; height: 190px; }
+
+  .term { background: var(--term); border-radius: 14px; padding: 22px 24px; overflow-x: auto; }
+  .term pre { margin: 0; font-size: 13.5px; line-height: 1.8; color: var(--term-text); }
+  .term .c { color: var(--term-dim); }
+  .term .p { color: #7aa2ff; user-select: none; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th, td { text-align: left; padding: 18px 12px 18px 0; border-top: 1px solid var(--line); vertical-align: baseline; }
+  th { font-weight: 500; color: var(--soft); font-size: 13px; border-top: 0; }
+  td:first-child { color: var(--ink); font-family: var(--mono); font-size: 14px; }
+  td.win { color: var(--ink); font-weight: 500; }
+  td small { color: var(--soft); font-weight: 400; }
+  .note { padding-top: 18px; font-size: 14px; color: var(--soft); max-width: 640px; }
+
+  .steps { counter-reset: s; display: grid; gap: 0; }
+  .step { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 4px 12px; padding: 22px 0; border-top: 1px solid var(--line); }
+  .step::before { counter-increment: s; content: counter(s); font: 500 12px/26px var(--mono); color: var(--soft); }
+  .step b { color: var(--ink); font-weight: 500; }
+  .step code.block { grid-column: 2; display: block; margin-top: 8px; background: var(--card); border-radius: 8px; padding: 12px 14px; font-size: 13.5px; color: var(--ink); overflow-x: auto; white-space: nowrap; }
+
+  details { border-top: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; padding: 24px 0; display: flex; justify-content: space-between; gap: 16px; font: 500 clamp(18px, 2vw, 21px)/1.3 var(--body); letter-spacing: -.02em; color: var(--ink); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-weight: 300; font-size: 26px; line-height: 1; color: var(--soft); }
+  details[open] summary::after { content: "−"; }
+  details p { padding-bottom: 26px; max-width: 58ch; font-size: 16px; line-height: 1.7; }
+
+  .closing { text-align: center; }
+  .closing .pad { display: flex; flex-direction: column; align-items: center; }
+  footer .nav { height: auto; padding: 28px 24px; flex-wrap: wrap; font-size: 13px; color: var(--soft); }
+  footer .nav span { margin-right: auto; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .install { transition: none; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <nav class="nav" aria-label="Site">
+    <a class="brand" href="#top" aria-label="Bravogram, home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M10 11L22 13M10 11L15 22M22 13L15 22" stroke="var(--bg)" stroke-opacity=".5" stroke-width="1.2"/><circle cx="10" cy="11" r="3.2" fill="#7aa2ff"/><circle cx="22" cy="13" r="2.4" fill="#56c2a6"/><circle cx="15" cy="22" r="2.8" fill="#f7b955"/></svg>
+      bravogram
+    </a>
+    <a class="link wide" href="#how">How it works</a>
+    <a class="link" href="https://www.npmjs.com/package/bravogram">npm</a>
+    <a class="link" href="https://github.com/mfinikov/bravogram">GitHub</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="wrap" id="top">
+
+  <section class="hero">
+    <canvas id="field" aria-hidden="true"></canvas>
+    <div class="hero-in">
+      <span class="eyebrow">Open source · runs on your machine</span>
+      <h1>One memory <span class="accent">for all your agents.</span></h1>
+      <p class="lede">Bravogram is a local memory that Claude, Hermes and any MCP agent share. They save what they learn, find it again in milliseconds, and you see all of it as a graph.</p>
+      <button class="install" type="button" data-copy="npm i -g bravogram" aria-label="Copy install command: npm i -g bravogram">
+        <span class="dollar">$</span><span class="cmd">npm i -g bravogram</span>
+        <span class="state" aria-hidden="true">
+          <svg class="copy" viewBox="0 0 16 16" fill="none"><rect x="5.5" y="1.5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 5.5h-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="ok" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 4.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+      <span class="sr" role="status" aria-live="polite" style="position:absolute;left:-999px"></span>
+      <p class="meta">Node 24 or newer · zero dependencies · MIT license</p>
+    </div>
+  </section>
+
+  <section class="pad" id="what">
+    <div class="head split">
+      <h2>What Bravogram does.</h2>
+      <p>Four things an agent's memory has to get right, in one small tool.</p>
+    </div>
+    <div class="grid two">
+      <article class="card">
+        <div><h3>Remember</h3><p>Any agent saves a fact, a decision or a lesson with one call. Everything lives in a single file on your machine.</p></div>
+        <div class="mock" aria-hidden="true">
+          <div class="bar"><i></i><i></i><i></i><span>~/.bravogram/memory.db</span></div>
+<pre><b>$ bravogram remember</b> "Ship on Fridays only
+after the smoke test passes" --type decision
+saved #24 Ship on Fridays only after the smoke…</pre>
+        </div>
+      </article>
+      <article class="card">
+        <div><h3>Recall</h3><p>Ranked full-text search that returns short snippets, not whole notes, so agents spend fewer tokens on every lookup.</p></div>
+        <div class="mock" aria-hidden="true">
+          <div class="bar"><i></i><i></i><i></i><span>bravogram recall "smoke test"</span></div>
+<pre><b>#24 Ship on Fridays only…</b> [decision]
+    …only after the <mark>smoke</mark> <mark>test</mark> passes
+<b>#11 release checklist</b> [project]
+    …run the <mark>smoke</mark> <mark>test</mark> against staging…</pre>
+        </div>
+      </article>
+      <article class="card">
+        <div><h3>See the graph</h3><p>Memories link to each other with <code>[[wikilinks]]</code>. One command opens them as a graph you can search and click through.</p></div>
+        <div class="mock" aria-hidden="true">
+          <div class="bar"><i></i><i></i><i></i><span>127.0.0.1:4747</span></div>
+          <svg viewBox="0 0 440 190" fill="none">
+            <g stroke="var(--soft)" stroke-opacity=".5" stroke-width="1"><path d="M96 60L190 96M190 96L300 56M190 96L250 150M300 56L360 110M250 150L360 110M96 60L70 130M190 96L140 158M300 56L384 40"/></g>
+            <circle cx="190" cy="96" r="13" fill="#7aa2ff"/><circle cx="96" cy="60" r="8" fill="#56c2a6"/><circle cx="300" cy="56" r="10" fill="#f7b955"/>
+            <circle cx="250" cy="150" r="7" fill="#ef6f6c"/><circle cx="360" cy="110" r="8" fill="#b48cf2"/><circle cx="70" cy="130" r="6" fill="#a3abbd"/>
+            <circle cx="140" cy="158" r="6" fill="#a3abbd"/><circle cx="384" cy="40" r="6" stroke="var(--soft)" stroke-width="1.4"/>
+          </svg>
+        </div>
+      </article>
+      <article class="card">
+        <div><h3>Undo anything</h3><p>Every change and every delete is kept. If an agent overwrites a note, one command brings the old version back.</p></div>
+        <div class="mock" aria-hidden="true">
+          <div class="bar"><i></i><i></i><i></i><span>bravogram history roadmap</span></div>
+<pre><b>roadmap</b>: current #9, 1,231 chars
+  rev 3  10-03 15:22  update  by claude-code
+  rev 2  10-03 14:10  update  by hermes
+<b>$ bravogram restore</b> roadmap --rev 2</pre>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="pad" id="how">
+    <div class="head">
+      <h2>Three commands to a shared memory.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><p><b>Install it.</b> One global package, nothing else to set up.</p><code class="block">npm i -g bravogram</code></div>
+      <div class="step"><p><b>Connect your agents.</b> Any MCP client uses the same command. Agents get five tools: recall, remember, append, show and link. Only you can delete.</p><code class="block">claude mcp add --scope user bravogram -- bravogram mcp</code></div>
+      <div class="step"><p><b>Look at what they know.</b> Bring in an existing Obsidian vault if you have one, then open the graph.</p><code class="block">bravogram import ~/notes &amp;&amp; bravogram graph</code></div>
+    </div>
+  </section>
+
+  <section class="pad" id="numbers">
+    <div class="head split">
+      <h2>Less text for the same answer.</h2>
+      <p>The same three questions, asked of a folder of Markdown notes and of Bravogram.</p>
+    </div>
+    <table>
+      <thead><tr><th scope="col">Question</th><th scope="col">Markdown notes, grep</th><th scope="col">Bravogram</th></tr></thead>
+      <tbody>
+        <tr><td>"turso"</td><td>1,696 characters</td><td class="win">307 <small>characters</small></td></tr>
+        <tr><td>"chapter 2"</td><td>3,962 characters</td><td class="win">632 <small>characters</small></td></tr>
+        <tr><td>"sqlite lock"</td><td>found nothing</td><td class="win">found it <small>· 559 characters</small></td></tr>
+      </tbody>
+    </table>
+    <p class="note">Measured on October 3, 2026 on one real 19-note vault: grep plus the first 15 lines of each hit, against <code>bravogram recall</code>. It's a small sample, so treat it as a first data point and run it on your own notes.</p>
+  </section>
+
+  <section class="pad" id="faq">
+    <div class="head"><h2>Common questions.</h2></div>
+    <details><summary>Where does my data live?</summary><p>In one SQLite file at <code>~/.bravogram/memory.db</code> on your own computer. Nothing is sent anywhere. There are no accounts and no telemetry.</p></details>
+    <details><summary>Which agents work with it?</summary><p>Anything that speaks MCP, and anything that can run a shell command. It is tested with Claude Code. Each memory records which agent wrote it.</p></details>
+    <details><summary>Can two agents write at the same time?</summary><p>Yes. Writes take turns under a lock, so one agent can't overwrite another's work halfway through. This is covered by the test suite.</p></details>
+    <details><summary>Is it a replacement for Obsidian?</summary><p>For agents, yes: it imports a vault and can export back to Markdown. For you writing long notes by hand, Obsidian is still the better editor.</p></details>
+    <details><summary>What doesn't it do yet?</summary><p>Search is keyword based, so it won't match by meaning. There is no sync between machines. The graph page loads its drawing library from a CDN, so it needs a connection the first time. It's version 0.1.</p></details>
+    <details><summary>What does it cost?</summary><p>Nothing. It's MIT licensed and the code is on GitHub.</p></details>
+  </section>
+
+  <section class="closing">
+    <div class="pad">
+      <h1 style="font-size:clamp(44px,6.4vw,92px)">Give your agents<br>a memory.</h1>
+      <button class="install" type="button" data-copy="npm i -g bravogram" aria-label="Copy install command: npm i -g bravogram">
+        <span class="dollar">$</span><span class="cmd">npm i -g bravogram</span>
+        <span class="state" aria-hidden="true">
+          <svg class="copy" viewBox="0 0 16 16" fill="none"><rect x="5.5" y="1.5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 5.5h-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="ok" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 4.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="nav">
+      <span>© 2026 Bravogram · MIT license</span>
+      <a class="link" href="https://github.com/mfinikov/bravogram">GitHub</a>
+      <a class="link" href="https://www.npmjs.com/package/bravogram">npm</a>
+      <a class="link" href="https://github.com/mfinikov/bravogram#readme">Docs</a>
+    </div>
+  </footer>
+</div>
+</main>
+
+<script>
+// copy the install command; the icon flips to a check for a moment and a live region says it
+const status = document.querySelector('[role="status"]')
+for (const btn of document.querySelectorAll('[data-copy]')) {
+  btn.addEventListener('click', async () => {
+    const text = btn.dataset.copy
+    try { await navigator.clipboard.writeText(text) }
+    catch { // clipboard API blocked (http or old browser): fall back to a hidden textarea
+      const t = Object.assign(document.createElement('textarea'), { value: text })
+      document.body.append(t); t.select(); document.execCommand('copy'); t.remove()
+    }
+    btn.classList.add('copied'); status.textContent = 'Copied: ' + text
+    setTimeout(() => { btn.classList.remove('copied'); status.textContent = '' }, 1600)
+  })
+}
+
+// the hero background: a slow drifting memory graph, colored like the real graph view
+const canvas = document.getElementById('field'), ctx = canvas.getContext('2d')
+const COLORS = ['#7aa2ff', '#56c2a6', '#f7b955', '#ef6f6c', '#b48cf2', '#a3abbd']
+let seed = 7
+const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647 // fixed seed: the same layout on every load
+const nodes = Array.from({ length: 46 }, (_, i) => ({ x: rand(), y: rand(), r: 2.5 + rand() * 5, p: rand() * 6.28, s: .25 + rand() * .5, c: COLORS[i % COLORS.length] }))
+const links = []
+nodes.forEach((a, i) => nodes.forEach((b, j) => { if (j > i && Math.hypot(a.x - b.x, (a.y - b.y) * .6) < .15) links.push([a, b]) }))
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+let w = 0, h = 0, visible = true
+function size() {
+  const r = canvas.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2)
+  w = r.width; h = r.height; canvas.width = w * d; canvas.height = h * d; ctx.setTransform(d, 0, 0, d, 0, 0)
+}
+function draw(t) {
+  ctx.clearRect(0, 0, w, h)
+  const line = getComputedStyle(document.documentElement).getPropertyValue('--soft')
+  const at = n => [n.x * w + Math.cos(t * n.s + n.p) * 10, n.y * h + Math.sin(t * n.s * .8 + n.p) * 10]
+  ctx.strokeStyle = line; ctx.globalAlpha = .5; ctx.lineWidth = 1
+  for (const [a, b] of links) { const [x1, y1] = at(a), [x2, y2] = at(b); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke() }
+  ctx.globalAlpha = .85
+  for (const n of nodes) { const [x, y] = at(n); ctx.fillStyle = n.c; ctx.beginPath(); ctx.arc(x, y, n.r, 0, 6.2832); ctx.fill() }
+  ctx.globalAlpha = 1
+}
+function loop(ms) { if (visible) draw(ms / 1000); requestAnimationFrame(loop) }
+size(); addEventListener('resize', () => { size(); if (still) draw(0) })
+new IntersectionObserver(([e]) => { visible = e.isIntersecting }).observe(canvas) // don't animate off screen
+still ? draw(0) : requestAnimationFrame(loop)
+</script>
+</body>
+</html>
