@@ -91,7 +91,7 @@ G-01, G-02 and G-03 are the boss's gates, in boss/state.md.
 | component:hero-graph | coordinator | ds/2026-10-03-full | 7370786 | done | verified with gaps | check-spec 0 failures; gap: contrast of text over moving dots not measured |
 | docs generator | coordinator | ds/2026-10-03-full | 7370786 | done | verified | gen-docs --check: 16 outputs, all fresh; a stale twin fails it |
 | pilot:home | coordinator | ds/2026-10-03-full | 3ca4ffb | done | verified | montage --diff exit 0; 390 at 0%; 1440 taller by 26px, traced to D-08 |
-| clean clone | coordinator | ds/2026-10-03-full | CLONE_SHA | done | verified | CLONE_EVIDENCE |
+| clean clone | coordinator | ds/2026-10-03-full | d96b4ac | done | verified | fresh `git clone` of the branch at d96b4ac, `npm ci` exit 0, `npm run check` exit 0, `npm run build` exit 0. The clone holds the committed .design-system/evidence and review probe files, which the spec check reads for cited paths |
 
 ## Handoff report
 

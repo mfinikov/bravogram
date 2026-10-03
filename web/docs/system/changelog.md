@@ -5,6 +5,7 @@ Changes to the design system docs and tokens, newest first.
 
 ## 2026-10-03
 
+- Design system docs, registry and the check command (`7370786`)
 - Cap the step text at the page's reading width (`3ca4ffb`)
 - Read tokens instead of raw values across the page (`f7f8e96`)
 - Token source: name every color, text size, space, radius and motion value (`41a8cf3`)
