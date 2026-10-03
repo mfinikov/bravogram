@@ -1,0 +1,6 @@
+rule_id	falsify	negation	two_agent	sweep	verdict	notes
+rule/terminal-demo-finished-first	pass	pass	n/a: falsify and sweep cover it	pass	ship	
+rule/terminal-demo-keep-box	pass	pass	n/a: falsify and sweep cover it	pass	ship	
+rule/terminal-demo-real-output	pass	pass	n/a: falsify and sweep cover it	pass	ship	
+rule/terminal-demo-once	pass	pass	n/a: skipped (small app), one coordinator runs every phase	pass	ship	
+rule/terminal-demo-length	pass	pass	n/a: skipped (small app), one coordinator runs every phase	pass	ship	

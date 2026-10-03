@@ -14,14 +14,14 @@ Not applicable: hand-rolled
 The install box on its own: `docs/system/examples/install-button/default.tsx`.
 
 Real uses, 2 call sites (`rg -n "<InstallButton\b" app components`):
-- Hero: the page's main action, under the lede. `app/page.tsx:87`
-- Closing section: the same action again under the last heading. `app/page.tsx:203`
+- Hero: the page's main action, under the lede. `app/page.tsx:67`
+- Footer: the same action again under the last label. `app/page.tsx:194`
 
 ### Example files
 | File | Covers | Caption |
 |---|---|---|
 | `docs/system/examples/install-button/default.tsx` | default | The install box on its own. One press copies the command. |
-| `docs/system/examples/install-button/in-closing.tsx` | composition:Closing | The install box under the closing heading, as at the end of the page. |
+| `docs/system/examples/install-button/in-closing.tsx` | composition:Closing | The install box under the last label, at the top of the footer. |
 | Not applicable: the copied state is internal, starts on a press and ends 1.6 seconds later, so no prop reaches it | state:copied | The check mark in place of the copy icon. |
 
 Example: The install box on its own. One press copies the command. (`docs/system/examples/install-button/default.tsx`)
@@ -34,19 +34,17 @@ export default function Example() {
 }
 ```
 
-Example: The install box under the closing heading, as at the end of the page. (`docs/system/examples/install-button/in-closing.tsx`)
+Example: The install box under the last label, at the top of the footer. (`docs/system/examples/install-button/in-closing.tsx`)
 
 ```tsx
 import { InstallButton } from "@/components/install-button";
 
 export default function Example() {
   return (
-    <section className="closing">
-      <div className="pad">
-        <h2>Give your agents a memory.</h2>
-        <InstallButton />
-      </div>
-    </section>
+    <div className="closing pad">
+      <span className="eyebrow">That&rsquo;s the whole pitch</span>
+      <InstallButton />
+    </div>
   );
 }
 ```
@@ -91,7 +89,7 @@ The component takes no props.
 - The action is anything other than copying the install command. Follow coverage-gaps row "Other buttons" instead.
 
 ### Rules
-- `rule/install-button-keep-label`: When the command has been copied, keep the command text in `.cmd` and swap only the 16px icon, because a label that changes moves the box under the pointer and renames the button mid-press. Evidence: measured 269x54 idle and copied at 390 wide and 337x59 at 1440, .design-system/evidence/home/walk.json. Check: probe `node .design-system/scripts/walk.mjs`.
+- `rule/install-button-keep-label`: When the command has been copied, keep the command text in `.cmd` and swap only the 16px icon, because a label that changes moves the box under the pointer and renames the button mid-press. Evidence: measured 269x54 idle and copied at 390 wide and 337x59 at 1440, .design-system/evidence/home/walk-redesign.json. Check: probe `node .design-system/scripts/walk.mjs`.
   - Don't: `<span className="cmd">{copied ? "Copied" : COMMAND}</span>`
   - Do: `<span className="cmd">{COMMAND}</span>`
 - `rule/install-button-announce`: When a copy succeeds, write `Copied: {command}` into the `role="status"` element beside the button, because the icon swap is silent to a screen reader. Evidence: measured 2 of 2 keys (Enter, Space) set the status text "Copied: npm i -g bravogram" at both widths, .design-system/evidence/home/walk.json; principle wcag: 4.1.3 Status Messages, a result the user did not move focus to is announced. Check: probe `node .design-system/scripts/walk.mjs`.
@@ -149,3 +147,4 @@ The by-hand rows below were walked by script on 2026-10-03: `node .design-system
 
 ## Related
 - Logo: the mark, when the job is to name the product, not to act.
+- TerminalDemo: shows what the commands print. It copies nothing.

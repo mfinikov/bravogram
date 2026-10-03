@@ -10,13 +10,9 @@
       "max-width: 400px": 1,
       "max-width: 440px": 1,
       "padding-bottom: clamp(32px, 5vw, 64px)": 1,
-      "padding: clamp(72px, 12vw, 150px) 20px clamp(56px, 8vw, 100px)": 1,
       "width: 16px": 1,
       "width: 24px": 1,
       "width: 8px": 1
-    },
-    "rule/raw-value": {
-      "#000": 2
     }
   },
   "app/layout.tsx": {

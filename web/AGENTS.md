@@ -26,21 +26,22 @@ Before writing UI, read the page for what you touch in `docs/generated/system/` 
 
 Tokens by role (app/globals.css):
 - color: --bg, --card, --panel, --ink, --text, --soft, --line, --accent, --accent-ink, --graph-project, --graph-system, --graph-decision, --graph-lesson, --graph-fact, --graph-note
-- type: --font-size-display, --font-size-closing, --font-size-h2, --font-size-h3, --font-size-brand, --font-size-command, --font-size-question, --font-size-lede, --font-size-body, --font-size-text, --font-size-small, --font-size-code, --font-size-caption, --font-size-mock, --font-size-label, --leading-h3, --leading-intro, --leading-card
+- type: --font-size-display, --font-size-h2, --font-size-h3, --font-size-brand, --font-size-command, --font-size-question, --font-size-lede, --font-size-body, --font-size-text, --font-size-small, --font-size-code, --font-size-caption, --font-size-mock, --font-size-label, --leading-h3, --leading-intro, --leading-card
 - space: --gutter, --space-2, --space-4, --space-6, --space-8, --space-12, --space-14, --space-16, --space-18, --space-20, --space-22, --space-24, --space-26, --space-28, --space-32, --space-48
 - radius: --radius-card, --radius-window, --radius-code, --radius-mark
-- motion: --motion-micro, --motion-swap
-- size: --page-width, --mock-height
-- other: --title, --body, --mono, --section-y, --measure
+- motion: --motion-micro, --motion-swap, --motion-sway, --motion-flow
+- size: --page-width, --scene-height, --mock-height
+- other: --title, --body, --mono, --section-y, --hero-top, --measure, --target-min
 
 Components (import, job):
-- HeroGraph `@/components/hero-graph`: Draws a slowly drifting memory graph behind the hero text, as decoration.
+- HeroScene `@/components/hero-scene`: Draws the hero's line-art scene: memories sprouting from dashed ground as small Bravogram marks, joined by dashed links.
 - InstallButton `@/components/install-button`: Copies the install command to the clipboard with one press and confirms it.
 - Logo `@/components/logo`: Draws the Bravogram mark, four leaning ellipses, in the current text color.
+- TerminalDemo `@/components/terminal-demo`: Types two Bravogram commands and shows what the CLI prints, once, when it scrolls into view.
 
-Rule ids: rule/arbitrary-value, rule/colors-soft-contrast, rule/colors-token-only, rule/component-override, rule/css-px, rule/deprecated-import, rule/doubled-utility, rule/hero-graph-decoration, rule/hero-graph-once, rule/hero-graph-token-colors, rule/inline-px, rule/install-button-announce, rule/install-button-command-length, rule/install-button-keep-label, rule/install-button-name, rule/install-button-one-source, rule/layout-measure, rule/layout-narrow-nav, rule/layout-narrow-steps, rule/layout-space-token, rule/logo-current-color, rule/logo-hidden-mark, rule/named-color, rule/outside-name, rule/palette-use, rule/raw-value, rule/stock-edit, rule/token-parity, rule/typography-size-token, rule/typography-title-face, rule/unregistered-ui
+Rule ids: rule/arbitrary-value, rule/colors-soft-contrast, rule/colors-token-only, rule/component-override, rule/css-px, rule/deprecated-import, rule/doubled-utility, rule/hero-scene-decoration, rule/hero-scene-one-color, rule/hero-scene-still, rule/inline-px, rule/install-button-announce, rule/install-button-command-length, rule/install-button-keep-label, rule/install-button-name, rule/install-button-one-source, rule/layout-measure, rule/layout-space-token, rule/layout-target-size, rule/logo-current-color, rule/logo-hidden-mark, rule/named-color, rule/outside-name, rule/palette-use, rule/raw-value, rule/stock-edit, rule/terminal-demo-finished-first, rule/terminal-demo-keep-box, rule/terminal-demo-length, rule/terminal-demo-once, rule/terminal-demo-real-output, rule/token-parity, rule/typography-size-token, rule/typography-title-face, rule/unregistered-ui
 
-Trap ids: trap/button-clone, trap/button-div, trap/button-icon-name, trap/button-type, trap/control-height, trap/decor-pointer, trap/disabled-still-hovers, trap/focus-ring-shape, trap/hover-beats-focus, trap/hover-unguarded, trap/icon-optical-align, trap/icon-optical-size, trap/label-unbound, trap/link-as-button, trap/link-wraps-button, trap/loading-label-swap, trap/loading-layout-shift, trap/loop-offscreen, trap/motion-ease-in-enter, trap/motion-layout-property, trap/motion-linear, trap/motion-overshoot, trap/motion-transition-all, trap/native-control, trap/overlay-conditional-render, trap/press-delayed, trap/reduced-motion-ignored, trap/role-button, trap/submit-repeat, trap/text-measure, trap/touch-autofocus, trap/touch-tap-highlight, trap/viewport-height, trap/weight-shift, trap/zoom-disabled
+Trap ids: trap/button-clone, trap/button-div, trap/button-icon-name, trap/button-type, trap/control-height, trap/decor-pointer, trap/disabled-still-hovers, trap/focus-ring-shape, trap/hover-beats-focus, trap/hover-unguarded, trap/icon-optical-align, trap/icon-optical-size, trap/label-unbound, trap/link-as-button, trap/link-wraps-button, trap/loading-label-swap, trap/loading-layout-shift, trap/loop-offscreen, trap/motion-blocks-input, trap/motion-ease-in-enter, trap/motion-layout-property, trap/motion-linear, trap/motion-overshoot, trap/motion-transition-all, trap/native-control, trap/overlay-conditional-render, trap/press-delayed, trap/reduced-motion-ignored, trap/role-button, trap/submit-repeat, trap/text-measure, trap/touch-autofocus, trap/touch-tap-highlight, trap/viewport-height, trap/weight-shift, trap/zoom-disabled
 
 Commands:
 - `npm run check`: the check. Run it before you finish

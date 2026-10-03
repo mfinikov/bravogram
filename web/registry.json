@@ -43,25 +43,43 @@
       "status": "ready"
     },
     {
-      "id": "hero-graph",
-      "name": "HeroGraph",
-      "import": "@/components/hero-graph",
-      "source": "components/hero-graph.tsx",
-      "docs": "/system/hero-graph",
-      "markdown": "/system/hero-graph.md",
-      "entry": "docs/system/hero-graph.md",
+      "id": "hero-scene",
+      "name": "HeroScene",
+      "import": "@/components/hero-scene",
+      "source": "components/hero-scene.tsx",
+      "docs": "/system/hero-scene",
+      "markdown": "/system/hero-scene.md",
+      "entry": "docs/system/hero-scene.md",
       "variants": {},
       "states": [
         "still"
       ],
       "tokens": [
-        "--soft",
-        "--graph-project",
-        "--graph-system",
-        "--graph-decision",
-        "--graph-lesson",
-        "--graph-fact",
-        "--graph-note"
+        "--accent",
+        "--scene-height",
+        "--motion-sway",
+        "--motion-flow"
+      ],
+      "replaces": [],
+      "status": "ready-with-gaps"
+    },
+    {
+      "id": "terminal-demo",
+      "name": "TerminalDemo",
+      "import": "@/components/terminal-demo",
+      "source": "components/terminal-demo.tsx",
+      "docs": "/system/terminal-demo",
+      "markdown": "/system/terminal-demo.md",
+      "entry": "docs/system/terminal-demo.md",
+      "variants": {},
+      "states": [
+        "typing"
+      ],
+      "tokens": [
+        "--mono",
+        "--font-size-mock",
+        "--text",
+        "--ink"
       ],
       "replaces": [],
       "status": "ready"

@@ -1,0 +1,101 @@
+# HeroScene
+
+## Description
+Draws the hero's line-art scene: memories sprouting from dashed ground as small Bravogram marks, joined by dashed links.
+
+`import { HeroScene } from "@/components/hero-scene"`, source `components/hero-scene.tsx`, status `ready-with-gaps`.
+Foundation: `hand-rolled`. Traps checked: `trap/reduced-motion-ignored`, `trap/decor-pointer`, `trap/motion-layout-property`, `trap/motion-linear` (the dash flow is a loop, so linear is right; the sway eases in and out), `trap/loop-offscreen` (NEEDS REVIEW: the loops are CSS and keep running off screen).
+
+### Foundation
+Not applicable: hand-rolled
+
+## Examples
+The scene on its own: `docs/system/examples/hero-scene/default.tsx`.
+
+Real uses, 1 call sites (`rg -n "<HeroScene\b" app components`):
+- Hero: under the install box and the meta line, closing the hero section. `app/page.tsx:74`
+
+### Example files
+| File | Covers | Caption |
+|---|---|---|
+| `docs/system/examples/hero-scene/default.tsx` | default | The scene on its own: seven sprouts on dashed ground, joined by dashed links. |
+| `docs/system/examples/hero-scene/in-hero.tsx` | composition:Hero | The scene under the hero text, closing the hero section. |
+| Not applicable: the still state follows the reduced motion setting of the system, so no prop reaches it | state:still | The same drawing, not moving. |
+
+## Variants
+Not applicable: the component takes no props. The sprouts and seeds are constants in the source file.
+
+## States
+| State | Trigger | What the user can do | Shown by, besides color | Checked by |
+|---|---|---|---|---|
+| moving | page load, when motion is allowed | nothing, it is decoration | each sprout leans 1.5 degrees left and right, and dashes run along the links | by hand |
+| still | the system asks for reduced motion | nothing | the same drawing with no movement | screenshot |
+
+### State precedence
+Not applicable: the two states exclude each other, since the system setting picks one.
+
+### Motion
+| Trigger | Kind | Preset | Properties | Reduced motion |
+|---|---|---|---|---|
+| page load | announce | `--motion-sway` | transform (rotate) on each sprout | no animation, the sprouts stand still |
+| page load | announce | `--motion-flow` | stroke-dashoffset on each link | no animation, the dashes stand still |
+
+`stroke-dashoffset` is a paint-only change on seven thin paths, not layout (`trap/motion-layout-property`).
+
+## Props
+The component takes no props.
+
+## Usage
+
+### When to use
+- The hero needs its scene.
+
+### When not to use
+- A section wants to show a graph the reader should read. Draw it as an inline `svg` inside a mock window instead, as coverage-gaps row "Cards and mock windows" describes.
+- A second section wants a drawing. Leave it plain instead, per coverage-gaps row "Imagery".
+
+### Rules
+- `rule/hero-scene-decoration`: When the scene renders, keep `aria-hidden="true"` on the svg and `pointer-events: none` in its CSS, because it carries no information and sits right under the install box. Evidence: single use components/hero-scene.tsx:24 and app/globals.css:100; principle wcag: 1.1.1 Non-text Content, decoration is hidden from assistive technology. Check: review the svg tag and the `.scene` rule.
+  - Don't: `<svg className="scene" role="img" viewBox="0 0 1152 260">`
+  - Do: `<svg className="scene" viewBox="0 0 1152 260" aria-hidden="true">`
+- `rule/hero-scene-still`: When the scene gets an animation, write it inside `@media (prefers-reduced-motion: no-preference)` instead of at the top level, because the drawing has to hold still for people who ask for less motion. Evidence: measured 0 running animations under reduced motion and 13 without it, .design-system/evidence/home/walk-redesign.json; principle wcag: 2.3.3 Animation from Interactions, motion can be turned off. Check: probe `node .design-system/scripts/walk.mjs`.
+  - Don't: `.scene .sprout { animation: sway var(--motion-sway); }`
+  - Do: `@media (prefers-reduced-motion: no-preference) { .scene .sprout { animation: sway var(--motion-sway); } }`
+
+### Content
+Not applicable: it renders no text.
+
+### Anti-slop
+- `rule/hero-scene-one-color`: When the scene gains a shape, draw it as a stroke in `currentColor` or as a `Logo`, instead of a filled shape in a second color, because the scene is line art in the one accent. Evidence: person D7. Check: lint `rule/raw-value` fails a hex stroke or fill.
+  - Don't: `<circle cx="96" cy="60" r="8" fill="#56c2a6" />`
+  - Do: `<circle cx="96" cy="206" r="2.5" />`
+
+### Limits
+Not applicable: the scene has a fixed seven sprouts and eight seeds, and no prop changes them.
+
+## Accessibility
+Rests on an inline `svg` with `aria-hidden="true"`. It takes no focus and no pointer events.
+
+Measured on the production build (`.design-system/evidence/home/walk-redesign.json`): 13 animations run when motion is allowed and 0 under reduced motion. The scene sways for as long as the page is open and has no pause control other than the system's reduced motion setting: NEEDS REVIEW against WCAG 2.2.2.
+
+### Keyboard
+| Key | Where focus is | Effect | Focus after | Checked by |
+|---|---|---|---|---|
+| Tab | the install button | focus passes the scene and lands on the next control | the next control | by hand |
+
+### ARIA
+| Part | Role | Accessible name from | States and properties | Announced | Checked by |
+|---|---|---|---|---|---|
+| the svg | none, `aria-hidden` | none | none | nothing | snapshot |
+
+## Tokens
+| Part | State | Token |
+|---|---|---|
+| every stroke and mark | all | `--accent`, through `currentColor` |
+| height | all | `--scene-height` |
+| sprouts | moving | `--motion-sway` |
+| links | moving | `--motion-flow` |
+
+## Related
+- Logo: the mark each sprout carries.
+- TerminalDemo: the other thing on the page that moves.

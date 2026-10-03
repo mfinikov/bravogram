@@ -5,6 +5,10 @@ Changes to the design system docs and tokens, newest first.
 
 ## 2026-10-03
 
+- Give the table's unit text a named size (F-08) (`e704580`)
+- Give focusable code blocks the accent focus ring (F-02) (`6ebf1b2`)
+- Make nav and footer links at least 24px tall (F-01) (`c8b51a7`)
+- Darken --soft so small text passes 4.5:1 on white (G-06) (`62e6097`)
 - Design system docs, registry and the check command (`7370786`)
 - Cap the step text at the page's reading width (`3ca4ffb`)
 - Read tokens instead of raw values across the page (`f7f8e96`)

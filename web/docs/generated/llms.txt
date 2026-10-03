@@ -11,9 +11,10 @@
 - [Typography](system/typography.md): The typefaces and text sizes of the page.
 
 ## Components
-- [HeroGraph](system/hero-graph.md): Draws a slowly drifting memory graph behind the hero text, as decoration.
+- [HeroScene](system/hero-scene.md): Draws the hero's line-art scene: memories sprouting from dashed ground as small Bravogram marks, joined by dashed links.
 - [InstallButton](system/install-button.md): Copies the install command to the clipboard with one press and confirms it.
 - [Logo](system/logo.md): Draws the Bravogram mark, four leaning ellipses, in the current text color.
+- [TerminalDemo](system/terminal-demo.md): Types two Bravogram commands and shows what the CLI prints, once, when it scrolls into view.
 
 ## Rules
 - [Coverage gaps](system/coverage-gaps.md): What the system has not decided yet, and what to do meanwhile.

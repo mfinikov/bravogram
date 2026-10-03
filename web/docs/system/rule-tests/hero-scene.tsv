@@ -1,0 +1,4 @@
+rule_id	falsify	negation	two_agent	sweep	verdict	notes
+rule/hero-scene-decoration	pass	pass	n/a: falsify and sweep cover it	pass	ship	
+rule/hero-scene-still	pass	pass	n/a: falsify and sweep cover it	pass	ship	walk.mjs counts running animations under reduced motion
+rule/hero-scene-one-color	pass	pass	n/a: skipped (small app), one coordinator runs every phase	pass	ship	

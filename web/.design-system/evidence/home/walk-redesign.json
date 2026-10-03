@@ -1,0 +1,348 @@
+{
+  "390": {
+    "scrollWidth": 390,
+    "transition": {
+      "install": "transform 0.12s, box-shadow 0.12s",
+      "icon": "opacity 0.15s"
+    },
+    "stepText": [
+      {
+        "width": 340,
+        "ch": 32
+      },
+      {
+        "width": 340,
+        "ch": 32
+      },
+      {
+        "width": 340,
+        "ch": 32
+      }
+    ],
+    "animationsRunning": 13,
+    "terminal": {
+      "played": true,
+      "seconds": 4.1,
+      "heights": [
+        255
+      ],
+      "text": "$ bravogram remember \"Ship on Fridays only after the smoke test passes\" --type decision\nsaved #1 Ship on Fridays only after the smoke test passes\n$ bravogram recall \"smoke test\"\n#1 Ship on Fridays only after the smoke test passes [decision]\n    Ship on Fridays only after the [smoke] [test] passes\n"
+    },
+    "tabOrder": [
+      {
+        "el": "a.skip",
+        "name": "Skip to content",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "145x42",
+        "inView": true
+      },
+      {
+        "el": "a.brand",
+        "name": "Bravogram, home",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "127x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "npm",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "30x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "GitHub",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "46x24",
+        "inView": true
+      },
+      {
+        "el": "button.install",
+        "name": "Copy install command: npm i -g bravogram",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "269x54",
+        "inView": true
+      },
+      {
+        "el": "code.block",
+        "name": "claude mcp add --scope user bravogram -- bravogram",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x45",
+        "inView": true
+      },
+      {
+        "el": "code.block",
+        "name": "bravogram import ~/notes && bravogram graph",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x45",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Where does my data live?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Which agents work with it?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Can two agents write at the same time?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x95",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Is it a replacement for Obsidian?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "What doesn’t it do yet?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "What does it cost?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "340x74",
+        "inView": true
+      },
+      {
+        "el": "button.install",
+        "name": "Copy install command: npm i -g bravogram",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "269x54",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "GitHub",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "46x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "npm",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "30x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "Docs",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "34x24",
+        "inView": true
+      }
+    ],
+    "copy": {
+      "Enter": {
+        "clipboard": "npm i -g bravogram",
+        "status": "Copied: npm i -g bravogram",
+        "className": "install copied",
+        "focusStays": true,
+        "box": "269x54",
+        "clearedAfterMs": 1619
+      },
+      "Space": {
+        "clipboard": "npm i -g bravogram",
+        "status": "Copied: npm i -g bravogram",
+        "className": "install copied",
+        "focusStays": true,
+        "box": "269x54",
+        "clearedAfterMs": 1605
+      },
+      "idleBox": "269x54"
+    },
+    "hover": {
+      "transform": "matrix(1, 0, 0, 1, -2, -2)",
+      "boxShadow": "rgba(0, 0, 0, 0.92) 4px 4px 0px 0px"
+    },
+    "faq": {
+      "open": true,
+      "focusStays": true
+    }
+  },
+  "1440": {
+    "scrollWidth": 1440,
+    "transition": {
+      "install": "transform 0.12s, box-shadow 0.12s",
+      "icon": "opacity 0.15s"
+    },
+    "stepText": [
+      {
+        "width": 471,
+        "ch": 44
+      },
+      {
+        "width": 471,
+        "ch": 44
+      },
+      {
+        "width": 471,
+        "ch": 44
+      }
+    ],
+    "animationsRunning": 13,
+    "terminal": {
+      "played": true,
+      "seconds": 4.1,
+      "heights": [
+        189
+      ],
+      "text": "$ bravogram remember \"Ship on Fridays only after the smoke test passes\" --type decision\nsaved #1 Ship on Fridays only after the smoke test passes\n$ bravogram recall \"smoke test\"\n#1 Ship on Fridays only after the smoke test passes [decision]\n    Ship on Fridays only after the [smoke] [test] passes\n"
+    },
+    "tabOrder": [
+      {
+        "el": "a.skip",
+        "name": "Skip to content",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "145x42",
+        "inView": true
+      },
+      {
+        "el": "a.brand",
+        "name": "Bravogram, home",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "127x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "npm",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "30x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "GitHub",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "46x24",
+        "inView": true
+      },
+      {
+        "el": "button.install",
+        "name": "Copy install command: npm i -g bravogram",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "337x59",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Where does my data live?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Which agents work with it?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Can two agents write at the same time?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "Is it a replacement for Obsidian?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "What doesn’t it do yet?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "summary",
+        "name": "What does it cost?",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "1102x75",
+        "inView": true
+      },
+      {
+        "el": "button.install",
+        "name": "Copy install command: npm i -g bravogram",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "337x59",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "GitHub",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "46x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "npm",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "30x24",
+        "inView": true
+      },
+      {
+        "el": "a.link",
+        "name": "Docs",
+        "outline": "2px solid rgb(47, 91, 255)",
+        "box": "34x24",
+        "inView": true
+      }
+    ],
+    "copy": {
+      "Enter": {
+        "clipboard": "npm i -g bravogram",
+        "status": "Copied: npm i -g bravogram",
+        "className": "install copied",
+        "focusStays": true,
+        "box": "337x59",
+        "clearedAfterMs": 1614
+      },
+      "Space": {
+        "clipboard": "npm i -g bravogram",
+        "status": "Copied: npm i -g bravogram",
+        "className": "install copied",
+        "focusStays": true,
+        "box": "337x59",
+        "clearedAfterMs": 1606
+      },
+      "idleBox": "337x59"
+    },
+    "hover": {
+      "transform": "matrix(1, 0, 0, 1, -2, -2)",
+      "boxShadow": "rgba(0, 0, 0, 0.92) 4px 4px 0px 0px"
+    },
+    "faq": {
+      "open": true,
+      "focusStays": true
+    }
+  },
+  "reducedMotion": {
+    "animationsRunning": 0,
+    "terminalHiddenCharacters": 0
+  }
+}

@@ -1,22 +1,17 @@
-import { HeroGraph } from "@/components/hero-graph";
+import { HeroScene } from "@/components/hero-scene";
 import { InstallButton } from "@/components/install-button";
 import { Logo } from "@/components/logo";
+import { TerminalDemo } from "@/components/terminal-demo";
 
 const GITHUB = "https://github.com/mfinikov/bravogram";
 const NPM = "https://www.npmjs.com/package/bravogram";
 
+const WORKS_WITH = ["Claude Code", "Hermes", "any MCP client", "any shell"];
+
 const STEPS = [
-  { title: "Install it.", text: "One global package, nothing else to set up.", code: "npm i -g bravogram" },
-  {
-    title: "Connect your agents.",
-    text: "Any MCP client uses the same command. Agents get five tools: recall, remember, append, show and link. Only you can delete.",
-    code: "claude mcp add --scope user bravogram -- bravogram mcp",
-  },
-  {
-    title: "Look at what they know.",
-    text: "Bring in an existing Obsidian vault if you have one, then open the graph.",
-    code: "bravogram import ~/notes && bravogram graph",
-  },
+  { title: "Install it.", code: "npm i -g bravogram" },
+  { title: "Connect your agents.", code: "claude mcp add --scope user bravogram -- bravogram mcp" },
+  { title: "Look at what they know.", code: "bravogram import ~/notes && bravogram graph" },
 ];
 
 // Measured on 2026-10-03 on one real 19-note vault: grep plus the first 15 lines of each hit, against `bravogram recall`.
@@ -29,24 +24,12 @@ const NUMBERS = [
 const FAQ = [
   {
     q: "Where does my data live?",
-    a: <>In one SQLite file at <code>~/.bravogram/memory.db</code> on your own computer. Nothing is sent anywhere. There are no accounts and no telemetry.</>,
+    a: <>In one SQLite file at <code>~/.bravogram/memory.db</code> on your computer. No accounts, no telemetry, nothing sent anywhere.</>,
   },
-  {
-    q: "Which agents work with it?",
-    a: "Anything that speaks MCP, and anything that can run a shell command. It is tested with Claude Code. Each memory records which agent wrote it.",
-  },
-  {
-    q: "Can two agents write at the same time?",
-    a: "Yes. Writes take turns under a lock, so one agent can’t overwrite another’s work halfway through. This is covered by the test suite.",
-  },
-  {
-    q: "Is it a replacement for Obsidian?",
-    a: "For agents, yes: it imports a vault and can export back to Markdown. For you writing long notes by hand, Obsidian is still the better editor.",
-  },
-  {
-    q: "What doesn’t it do yet?",
-    a: "Search is keyword based, so it won’t match by meaning. There is no sync between machines. The graph page loads its drawing library from a CDN, so it needs a connection the first time. It’s version 0.1.",
-  },
+  { q: "Which agents work with it?", a: "Anything that speaks MCP or can run a shell command. It is tested with Claude Code." },
+  { q: "Can two agents write at the same time?", a: "Yes. Writes take turns under a lock, and the test suite covers it." },
+  { q: "Is it a replacement for Obsidian?", a: "For agents, yes: it imports a vault and exports back to Markdown. For long notes by hand, keep Obsidian." },
+  { q: "What doesn’t it do yet?", a: "No search by meaning, no sync between machines, and the graph page needs a connection the first time. It’s version 0.1." },
   { q: "What does it cost?", a: "Nothing. It’s MIT licensed and the code is on GitHub." },
 ];
 
@@ -67,7 +50,6 @@ export default function Home() {
       <header className="top">
         <nav className="nav" aria-label="Site">
           <a className="brand" href="#top" aria-label="Bravogram, home"><Logo />bravogram</a>
-          <a className="link wide" href="#how">How it works</a>
           <a className="link" href={NPM}>npm</a>
           <a className="link" href={GITHUB}>GitHub</a>
         </nav>
@@ -76,29 +58,30 @@ export default function Home() {
       <main id="main">
         <div className="wrap" id="top">
           <section className="hero">
-            <HeroGraph />
             <div className="hero-in">
               <span className="eyebrow">Open source · runs on your machine</span>
               <h1>One memory <span className="accent">for all your agents.</span></h1>
               <p className="lede">
-                Bravogram is a local memory that Claude, Hermes and any MCP agent share. They save what they learn,
-                find it again in milliseconds, and you see all of it as a graph.
+                A local memory shared by Claude, Hermes and any MCP agent. They save what they learn and find it again in milliseconds.
               </p>
               <InstallButton />
+              <ul className="works" aria-label="Works with">
+                <li className="lead" aria-hidden="true">Works with</li>
+                {WORKS_WITH.map((w) => <li key={w}>{w}</li>)}
+              </ul>
               <p className="meta">Node 24 or newer · zero dependencies · MIT license</p>
             </div>
+            <HeroScene />
           </section>
 
           <section className="pad" id="what">
-            <div className="head split">
-              <h2>What Bravogram does.</h2>
-              <p>Four things an agent&rsquo;s memory has to get right, in one small tool.</p>
-            </div>
+            <span className="eyebrow">What it does</span>
+            <div className="head"><h2>Four things, one small tool.</h2></div>
             <div className="grid two">
               <article className="card">
                 <div>
                   <h3>Remember</h3>
-                  <p>Any agent saves a fact, a decision or a lesson with one call. Everything lives in a single file on your machine.</p>
+                  <p>Any agent saves a fact, a decision or a lesson with one call, into one file on your machine.</p>
                 </div>
                 <Mock label="~/.bravogram/memory.db">
                   <pre>
@@ -109,7 +92,7 @@ export default function Home() {
               <article className="card">
                 <div>
                   <h3>Recall</h3>
-                  <p>Ranked full-text search that returns short snippets, not whole notes, so agents spend fewer tokens on every lookup.</p>
+                  <p>Ranked full-text search returns short snippets, not whole notes, so every lookup costs fewer tokens.</p>
                 </div>
                 <Mock label={'bravogram recall "smoke test"'}>
                   <pre>
@@ -121,7 +104,7 @@ export default function Home() {
               <article className="card">
                 <div>
                   <h3>See the graph</h3>
-                  <p>Memories link to each other with <code>[[wikilinks]]</code>. One command opens them as a graph you can search and click through.</p>
+                  <p>Memories link with <code>[[wikilinks]]</code>. One command opens them as a graph you can search.</p>
                 </div>
                 <Mock label="127.0.0.1:4747">
                   <svg viewBox="0 0 440 190" fill="none">
@@ -138,7 +121,7 @@ export default function Home() {
               <article className="card">
                 <div>
                   <h3>Undo anything</h3>
-                  <p>Every change and every delete is kept. If an agent overwrites a note, one command brings the old version back.</p>
+                  <p>Every change and delete is kept. One command brings an old version back.</p>
                 </div>
                 <Mock label="bravogram history roadmap">
                   <pre>
@@ -151,18 +134,25 @@ export default function Home() {
           </section>
 
           <section className="pad" id="how">
+            <span className="eyebrow">Live demo</span>
             <div className="head"><h2>Three commands to a shared memory.</h2></div>
-            <div className="steps">
-              {STEPS.map((s) => (
-                <div className="step" key={s.title}>
-                  <p><b>{s.title}</b> {s.text}</p>
-                  <code className="block">{s.code}</code>
-                </div>
-              ))}
+            <div className="demo">
+              <div className="card">
+                <Mock label="zsh"><TerminalDemo /></Mock>
+              </div>
+              <div className="steps">
+                {STEPS.map((s) => (
+                  <div className="step" key={s.title}>
+                    <p><b>{s.title}</b></p>
+                    <code className="block">{s.code}</code>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
           <section className="pad" id="numbers">
+            <span className="eyebrow">Receipts</span>
             <div className="head split">
               <h2>Less text for the same answer.</h2>
               <p>The same three questions, asked of a folder of Markdown notes and of Bravogram.</p>
@@ -183,11 +173,12 @@ export default function Home() {
             </table>
             <p className="note">
               Measured on October 3, 2026 on one real 19-note vault: grep plus the first 15 lines of each hit, against{" "}
-              <code>bravogram recall</code>. It&rsquo;s a small sample, so treat it as a first data point and run it on your own notes.
+              <code>bravogram recall</code>. A small sample, so run it on your own notes.
             </p>
           </section>
 
           <section className="pad" id="faq">
+            <span className="eyebrow">You were going to ask</span>
             <div className="head"><h2>Common questions.</h2></div>
             {FAQ.map((f) => (
               <details key={f.q}>
@@ -197,14 +188,11 @@ export default function Home() {
             ))}
           </section>
 
-          <section className="closing">
-            <div className="pad">
-              <h2>Give your agents a memory.</h2>
+          <footer>
+            <div className="closing pad">
+              <span className="eyebrow">That&rsquo;s the whole pitch</span>
               <InstallButton />
             </div>
-          </section>
-
-          <footer>
             <div className="nav">
               <span>© 2026 Bravogram · MIT license</span>
               <a className="link" href={GITHUB}>GitHub</a>

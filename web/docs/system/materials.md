@@ -14,12 +14,12 @@ Corners, borders, shadow and surface levels. The page is flat: hairlines split i
 Surface levels use the color tokens: the page is `--bg`, a card is `--card`, and a raised white surface on a card (mock window) or on the page (install box) is `--panel`.
 
 ## Usage
-Borders are `1px solid var(--line)`, except the install box, which is `1.5px solid var(--ink)` and square. The focus ring is `2px solid var(--accent)` at `3px` offset on the install box, links and questions.
+Borders are `1px solid var(--line)`, except the install box, which is `1.5px solid var(--ink)` and square. The "works with" chips are square too, with the hairline border. The focus ring is `2px solid var(--accent)` at `3px` offset on the install box, links, questions and any code block that takes focus.
 
 A mock window (16px) sits inside a card (14px) with a 28px inset, so the inner corner is rounder than the outer one. It is kept as approved (decision D5, gate G-09).
 
 ## Accessibility
-The focus ring is 5.17:1 on white (`.design-system/evidence/install-button/limit-390.json`) and showed on 15 of 17 tab stops at 390 wide and 16 of 16 at 1440 (`.design-system/evidence/home/walk.json`). The other two are the scrolling command blocks at 390 wide, which take focus so they can be scrolled by keyboard and show the browser's own ring.
+The focus ring is 5.17:1 on white (`.design-system/evidence/install-button/limit-390.json`) and showed on 17 of 17 tab stops at 390 wide and 15 of 15 at 1440 (`.design-system/evidence/home/walk-redesign.json`). Two of the 17 are the scrolling command blocks at 390 wide, which take focus so they can be scrolled by keyboard.
 
 ## Not tokens
 - `1px`, `1.5px` and `2px` border and outline widths, and the `3px` outline offset.

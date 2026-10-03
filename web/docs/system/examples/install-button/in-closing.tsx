@@ -1,13 +1,11 @@
-// Caption: The install box under the closing heading, as at the end of the page.
+// Caption: The install box under the last label, at the top of the footer.
 import { InstallButton } from "@/components/install-button";
 
 export default function Example() {
   return (
-    <section className="closing">
-      <div className="pad">
-        <h2>Give your agents a memory.</h2>
-        <InstallButton />
-      </div>
-    </section>
+    <div className="closing pad">
+      <span className="eyebrow">That&rsquo;s the whole pitch</span>
+      <InstallButton />
+    </div>
   );
 }

@@ -25,6 +25,21 @@ for (const width of [390, 1440]) {
     const w = ch.getBoundingClientRect().width; ch.remove()
     return { width: Math.round(p.getBoundingClientRect().width), ch: Math.round(p.getBoundingClientRect().width / w) }
   }))
+  // The terminal demo: scroll it into view, then watch it type. Its box must not change size.
+  r.animationsRunning = await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running').length)
+  const pre = page.locator('#how .mock pre')
+  await pre.scrollIntoViewIfNeeded()
+  const t0 = Date.now(), heights = new Set()
+  let sawTyping = false
+  for (;;) {
+    const s = await pre.evaluate((el) => ({ h: Math.round(el.getBoundingClientRect().height), hidden: [...el.querySelectorAll('.ghost')].reduce((n, g) => n + g.textContent.length, 0) }))
+    heights.add(s.h)
+    if (s.hidden) sawTyping = true
+    else if (sawTyping || Date.now() - t0 > 1500) break
+    await page.waitForTimeout(50)
+  }
+  r.terminal = { played: sawTyping, seconds: +((Date.now() - t0) / 1000).toFixed(1), heights: [...heights], text: await pre.evaluate((el) => el.textContent) }
+  await page.evaluate(() => scrollTo(0, 0))
   // Tab through every stop and record what has focus and its outline.
   r.tabOrder = []
   for (let i = 0; i < 20; i++) {
@@ -63,6 +78,19 @@ for (const width of [390, 1440]) {
   const summary = page.locator('#faq summary').first()
   await summary.focus(); await page.keyboard.press('Enter')
   r.faq = await page.evaluate(() => ({ open: document.querySelector('#faq details').open, focusStays: document.activeElement === document.querySelector('#faq summary') }))
+  await ctx.close()
+}
+// Reduced motion: nothing may run, and the terminal shows its finished state.
+{
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' })
+  const page = await ctx.newPage()
+  await page.goto(base, { waitUntil: 'networkidle' })
+  await page.locator('#how .mock pre').scrollIntoViewIfNeeded()
+  await page.waitForTimeout(600)
+  result.reducedMotion = await page.evaluate(() => ({
+    animationsRunning: document.getAnimations().filter((a) => a.playState === 'running').length,
+    terminalHiddenCharacters: [...document.querySelectorAll('#how .mock pre .ghost')].reduce((n, g) => n + g.textContent.length, 0),
+  }))
   await ctx.close()
 }
 await browser.close()

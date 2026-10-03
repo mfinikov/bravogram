@@ -1,0 +1,7 @@
+$ bravogram --version
+0.1.1
+$ bravogram remember "Ship on Fridays only after the smoke test passes" --type decision
+saved #1 Ship on Fridays only after the smoke test passes
+$ bravogram recall "smoke test"
+#1 Ship on Fridays only after the smoke test passes [decision]
+    Ship on Fridays only after the [smoke] [test] passes
