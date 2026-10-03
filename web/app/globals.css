@@ -142,7 +142,7 @@ th, td { text-align: left; padding: var(--space-18) var(--space-12) var(--space-
 th { font-weight: 500; color: var(--soft); font-size: var(--font-size-caption); border-top: 0; }
 td:first-child { color: var(--ink); font-family: var(--mono); font-size: var(--font-size-small); }
 td.win { color: var(--ink); font-weight: 500; }
-td small { color: var(--soft); font-weight: 400; }
+td small { color: var(--soft); font-weight: 400; font-size: var(--font-size-caption); }
 .note { padding-top: var(--space-18); font-size: var(--font-size-small); color: var(--soft); max-width: var(--measure); }
 
 .steps { counter-reset: s; display: grid; gap: 0; }
