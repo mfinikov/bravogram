@@ -101,7 +101,7 @@ export function link(db, from, to, kind = 'relates') {
 
 // Exact id only, never a search, so nothing gets deleted by a fuzzy match.
 export function forget(db, id) {
-  if (!/^#?\d+$/.test(String(id).trim())) throw new Error('forget takes an exact id, like: bravo forget 12')
+  if (!/^#?\d+$/.test(String(id).trim())) throw new Error('forget takes an exact id, like: bravogram forget 12')
   const m = byId(db, String(id).replace('#', ''))
   if (!m) throw new Error(`no memory #${id}`)
   db.prepare('DELETE FROM memories WHERE id = ?').run(m.id)

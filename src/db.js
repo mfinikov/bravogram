@@ -3,7 +3,7 @@ import { mkdirSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { dirname, join } from 'node:path'
 
-export const dbPath = () => process.env.BRAVO_DB || join(homedir(), '.bravo', 'memory.db')
+export const dbPath = () => process.env.BRAVOGRAM_DB || join(homedir(), '.bravogram', 'memory.db')
 
 const MIGRATIONS = [
   `CREATE TABLE memories (

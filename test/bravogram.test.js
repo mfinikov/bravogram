@@ -9,9 +9,9 @@ import { remember, recall, show, link, forget, graph } from '../src/memory.js'
 import { importDir, exportDir } from '../src/markdown.js'
 import { handle } from '../src/mcp.js'
 
-const tmp = () => mkdtempSync(join(tmpdir(), 'bravo-'))
+const tmp = () => mkdtempSync(join(tmpdir(), 'bravogram-'))
 const fresh = () => open(join(tmp(), 'memory.db'))
-const BIN = new URL('../bin/bravo.js', import.meta.url).pathname
+const BIN = new URL('../bin/bravogram.js', import.meta.url).pathname
 
 test('remember then recall, same title updates instead of duplicating', () => {
   const db = fresh()
@@ -119,11 +119,11 @@ test('MCP: initialize, list tools, call them; agents cannot forget', () => {
 })
 
 test('CLI end to end, and the MCP server over real stdio', async () => {
-  const env = { ...process.env, BRAVO_DB: join(tmp(), 'memory.db') }
-  const bravo = (...a) => execFileSync(process.execPath, [BIN, ...a], { env, encoding: 'utf8' })
-  assert.match(bravo('remember', 'Graph view shows memory as dots', '--type', 'fact'), /saved #1/)
-  assert.match(bravo('recall', 'graph'), /#1 Graph view/)
-  assert.equal(JSON.parse(bravo('recall', 'graph', '--json'))[0].type, 'fact')
+  const env = { ...process.env, BRAVOGRAM_DB: join(tmp(), 'memory.db') }
+  const bravogram = (...a) => execFileSync(process.execPath, [BIN, ...a], { env, encoding: 'utf8' })
+  assert.match(bravogram('remember', 'Graph view shows memory as dots', '--type', 'fact'), /saved #1/)
+  assert.match(bravogram('recall', 'graph'), /#1 Graph view/)
+  assert.equal(JSON.parse(bravogram('recall', 'graph', '--json'))[0].type, 'fact')
   assert.throws(() => execFileSync(process.execPath, [BIN, 'nope'], { env, stdio: 'pipe' }), /unknown command/)
 
   const child = spawn(process.execPath, [BIN, 'mcp'], { env })

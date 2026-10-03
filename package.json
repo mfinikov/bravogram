@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Local memory shared by all your AI agents: CLI, MCP server and a graph view",
   "type": "module",
-  "bin": { "bravo": "bin/bravo.js" },
+  "bin": { "bravogram": "bin/bravogram.js" },
   "files": ["bin", "src"],
   "scripts": { "test": "node --test" },
   "engines": { "node": ">=24" },

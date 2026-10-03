@@ -7,24 +7,24 @@ import { remember, recall, show, link, forget } from '../src/memory.js'
 
 const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
 
-const HELP = `bravo ${version}: local memory shared by all your agents
+const HELP = `bravogram ${version}: local memory shared by all your agents
 
-  bravo remember "text" [--title T] [--type T] [--project P] [--tags a,b]   save (same title updates)
-  bravo remember - < note.md                                                 read the text from stdin
-  bravo recall "words" [--project P] [--type T] [--source S] [--limit 5]   search
-  bravo show <id|title>                                                      one memory with its links
-  bravo link <a> <b> [--kind relates|supersedes|part_of]                     connect two memories
-  bravo forget <id>                                                          delete one memory
-  bravo graph [--port 4747] [--no-open]                                      see your memory as a graph
-  bravo import <folder>                                                      pull in an Obsidian vault
-  bravo export <folder>                                                      write everything out as markdown
-  bravo mcp                                                                  run as an MCP server for agents
+  bravogram remember "text" [--title T] [--type T] [--project P] [--tags a,b]   save (same title updates)
+  bravogram remember - < note.md                                                 read the text from stdin
+  bravogram recall "words" [--project P] [--type T] [--source S] [--limit 5]   search
+  bravogram show <id|title>                                                      one memory with its links
+  bravogram link <a> <b> [--kind relates|supersedes|part_of]                     connect two memories
+  bravogram forget <id>                                                          delete one memory
+  bravogram graph [--port 4747] [--no-open]                                      see your memory as a graph
+  bravogram import <folder>                                                      pull in an Obsidian vault
+  bravogram export <folder>                                                      write everything out as markdown
+  bravogram mcp                                                                  run as an MCP server for agents
 
   --json      machine readable output
-  --source S  who is writing (default: $BRAVO_SOURCE or "cli")
-  memory file: ${dbPath()} (set BRAVO_DB to change)`
+  --source S  who is writing (default: $BRAVOGRAM_SOURCE or "cli")
+  memory file: ${dbPath()} (set BRAVOGRAM_DB to change)`
 
-const fail = e => { console.error(`bravo: ${e.message}`); process.exit(1) }
+const fail = e => { console.error(`bravogram: ${e.message}`); process.exit(1) }
 
 let parsed
 try {
@@ -41,8 +41,8 @@ try {
 const { values: o, positionals: [cmd, ...args] } = parsed
 
 const out = (data, text) => console.log(o.json ? JSON.stringify(data, null, 2) : text(data))
-const need = (n, usage) => { if (args.length < n) throw new Error(`usage: bravo ${usage}`) }
-const source = o.source || process.env.BRAVO_SOURCE || 'cli'
+const need = (n, usage) => { if (args.length < n) throw new Error(`usage: bravogram ${usage}`) }
+const source = o.source || process.env.BRAVOGRAM_SOURCE || 'cli'
 
 async function main() {
   if (o.version) return console.log(version)
@@ -101,7 +101,7 @@ async function main() {
       return serve(db, version)
     }
     default:
-      throw new Error(`unknown command "${cmd}", run: bravo --help`)
+      throw new Error(`unknown command "${cmd}", run: bravogram --help`)
   }
 }
 
