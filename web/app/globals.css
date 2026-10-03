@@ -48,6 +48,7 @@
   --gutter: 24px; /* left and right padding of the column */
   --section-y: clamp(48px, 9vw, 120px); /* top and bottom padding of a section */
   --measure: 640px; /* widest reading text */
+  --target-min: 24px; /* smallest height of a link or control */
   --mock-height: 190px; /* a mock window and the graph drawing inside it */
   /* space: padding, margin and gap. The number is the pixel value */
   --space-2: 2px; --space-4: 4px; --space-6: 6px; --space-8: 8px; --space-12: 12px; --space-14: 14px;
@@ -88,7 +89,7 @@ header.top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb
 .nav { max-width: var(--page-width); margin: 0 auto; height: 56px; padding: 0 var(--gutter); display: flex; align-items: center; gap: var(--space-20); }
 .brand { font: 500 var(--font-size-brand)/1 var(--title); letter-spacing: -.04em; color: var(--ink); text-decoration: none; margin-right: auto; display: flex; align-items: center; gap: 9px; }
 .brand svg { width: 24px; height: 24px; }
-.nav a.link { font-size: var(--font-size-small); font-weight: 500; color: var(--text); text-decoration: none; }
+.nav a.link { font-size: var(--font-size-small); font-weight: 500; color: var(--text); text-decoration: none; min-height: var(--target-min); display: inline-flex; align-items: center; }
 .nav a.link:hover { color: var(--ink); }
 @media (max-width: 520px) { .nav a.wide { display: none; } }
 
