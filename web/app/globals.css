@@ -7,7 +7,7 @@
   /* color: text and lines */
   --ink: rgb(0 0 0 / .92); /* headings, strong text, the install box border and its hover shadow */
   --text: rgb(0 0 0 / .55); /* body text */
-  --soft: rgb(0 0 0 / .4); /* captions, labels, table headers, graph lines */
+  --soft: rgb(0 0 0 / .56); /* captions, labels, table headers. 4.5:1 or more on white */
   --line: rgb(0 0 0 / .08); /* hairline borders and dividers */
   --accent: #2f5bff; /* headline accent, focus ring, search-hit tint */
   --accent-ink: #1f3fc4; /* text on the accent tint */
