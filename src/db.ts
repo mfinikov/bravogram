@@ -1,7 +1,13 @@
-import { DatabaseSync } from 'node:sqlite'
+import { DatabaseSync, type SQLInputValue } from 'node:sqlite'
 import { mkdirSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { dirname, join } from 'node:path'
+
+export type DB = DatabaseSync
+
+// node:sqlite returns untyped rows; these two helpers are the one place we say what a row looks like.
+export const get = <T>(db: DB, sql: string, ...params: SQLInputValue[]) => db.prepare(sql).get(...params) as T | undefined
+export const all = <T>(db: DB, sql: string, ...params: SQLInputValue[]) => db.prepare(sql).all(...params) as T[]
 
 export const dbPath = () => process.env.BRAVOGRAM_DB || join(homedir(), '.bravogram', 'memory.db')
 
@@ -62,7 +68,7 @@ const MIGRATIONS = [
    END;`,
 ]
 
-export function open(path = dbPath()) {
+export function open(path: string = dbPath()): DB {
   if (path !== ':memory:') mkdirSync(dirname(path), { recursive: true })
   const db = new DatabaseSync(path)
   db.exec('PRAGMA busy_timeout = 5000; PRAGMA foreign_keys = ON;')
@@ -70,13 +76,13 @@ export function open(path = dbPath()) {
   // so when several agents create the file at the same moment we retry for up to ~2 seconds.
   for (let i = 0; ; i++) {
     try { db.exec('PRAGMA journal_mode = WAL'); break } catch (e) {
-      if (!/locked|busy/i.test(e.message) || i >= 100) throw e
+      if (!/locked|busy/i.test((e as Error).message) || i >= 100) throw e
       Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 20)
     }
   }
   // Version is re-read inside the lock, so two processes opening a fresh file don't both migrate.
   const step = () => tx(db, () => {
-    const v = db.prepare('PRAGMA user_version').get().user_version
+    const v = get<{ user_version: number }>(db, "PRAGMA user_version")!.user_version
     if (v >= MIGRATIONS.length) return false
     db.exec(MIGRATIONS[v])
     db.exec(`PRAGMA user_version = ${v + 1}`)
@@ -89,7 +95,7 @@ export function open(path = dbPath()) {
 // IMMEDIATE takes the write lock up front, so two agents writing at once wait their turn
 // instead of failing halfway through.
 // Nested calls join the outer transaction, so append can read and write under one lock.
-export function tx(db, fn) {
+export function tx<T>(db: DB, fn: () => T): T {
   if (db.isTransaction) return fn()
   db.exec('BEGIN IMMEDIATE')
   try {

@@ -1,13 +1,20 @@
 import { createInterface } from 'node:readline'
-import { TYPES, LINK_KINDS, remember, recall, show, link, append } from './memory.js'
+import type { DB } from './db.ts'
+import { TYPES, LINK_KINDS, remember, recall, show, link, append } from './memory.ts'
+
+// Tool arguments come from an agent as untyped JSON; each tool reads the fields it needs.
+type Args = Record<string, any>
+interface Tool { name: string; description: string; inputSchema: object; run: (db: DB, a: Args, source: string) => unknown }
+export interface McpState { source?: string; version: string }
+interface RpcMessage { id?: number | string | null; method?: string; params?: Args }
 
 // ponytail: hand-rolled MCP over stdio (newline-delimited JSON-RPC), so the package has zero
 // dependencies. Covers initialize, tools/list, tools/call, ping. Switch to the official SDK if we
 // ever need resources, prompts or HTTP transport.
 const VERSIONS = ['2024-11-05', '2025-03-26', '2025-06-18', '2025-11-25']
 
-const str = description => ({ type: 'string', description })
-const TOOLS = [
+const str = (description: string) => ({ type: 'string', description })
+const TOOLS: Tool[] = [
   {
     name: 'recall',
     description: 'Search the shared memory. Returns the top matches as short snippets. Call this before re-deriving facts about the user, their projects or past decisions.',
@@ -40,7 +47,7 @@ const TOOLS = [
   },
 ]
 
-export function handle(db, msg, state) {
+export function handle(db: DB, msg: RpcMessage, state: McpState): unknown {
   const { id, method, params = {} } = msg
   if (method === 'initialize') {
     state.source = String(params.clientInfo?.name || 'mcp').toLowerCase()
@@ -53,28 +60,29 @@ export function handle(db, msg, state) {
     const tool = TOOLS.find(t => t.name === params.name)
     if (!tool) throw Object.assign(new Error(`unknown tool ${params.name}`), { code: -32602 })
     try {
-      const out = tool.run(db, params.arguments ?? {}, state.source)
+      const out = tool.run(db, params.arguments ?? {}, state.source ?? 'mcp')
       return { content: [{ type: 'text', text: JSON.stringify(out) }] }
     } catch (e) {
-      return { content: [{ type: 'text', text: e.message }], isError: true }
+      return { content: [{ type: 'text', text: (e as Error).message }], isError: true }
     }
   }
   if (id === undefined) return undefined // notifications need no answer
   throw Object.assign(new Error(`method not found: ${method}`), { code: -32601 })
 }
 
-export function serve(db, version) {
-  const state = { source: 'mcp', version }
-  const send = m => process.stdout.write(JSON.stringify({ jsonrpc: '2.0', ...m }) + '\n')
+export function serve(db: DB, version: string): void {
+  const state: McpState = { source: 'mcp', version }
+  const send = (m: object) => process.stdout.write(JSON.stringify({ jsonrpc: '2.0', ...m }) + '\n')
   createInterface({ input: process.stdin }).on('line', line => {
     if (!line.trim()) return
-    let msg
+    let msg: RpcMessage
     try { msg = JSON.parse(line) } catch { return send({ id: null, error: { code: -32700, message: 'parse error' } }) }
     try {
       const result = handle(db, msg, state)
       if (msg.id !== undefined && result !== undefined) send({ id: msg.id, result })
     } catch (e) {
-      if (msg.id !== undefined) send({ id: msg.id, error: { code: e.code ?? -32603, message: e.message } })
+      const err = e as Error & { code?: number }
+      if (msg.id !== undefined) send({ id: msg.id, error: { code: err.code ?? -32603, message: err.message } })
     }
   })
 }

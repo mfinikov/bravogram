@@ -66,6 +66,7 @@ bravogram mcp                                                 run as an MCP serv
 
 ## Stack
 
+- **TypeScript**, compiled to `dist/` for npm (Node refuses to run `.ts` from `node_modules`); tests and local runs use the `.ts` files directly.
 - **Node 24+**. Built in `node:sqlite` with FTS5, so no database dependency. Tested 2026-10-03: Node 24 and 26 work, Node 22.13 lacks FTS5.
 - **Zero dependencies:** the MCP server is a small hand-written stdio JSON-RPC loop, because the official SDK pulls in about 17 packages. Switch to the SDK if we ever need resources, prompts or HTTP transport.
 - **Graph:** one HTML file using the `force-graph` library from a CDN.

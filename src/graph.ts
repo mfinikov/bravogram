@@ -1,14 +1,16 @@
 import { createServer } from 'node:http'
 import { readFileSync } from 'node:fs'
 import { spawn } from 'node:child_process'
-import { graph, show } from './memory.js'
+import type { Server } from 'node:http'
+import type { DB } from './db.ts'
+import { graph, show } from './memory.ts'
 
 const page = readFileSync(new URL('./graph.html', import.meta.url))
 
-export function startGraph(db, { port = 4747, open = true } = {}) {
+export function startGraph(db: DB, { port = 4747, open = true }: { port?: number; open?: boolean } = {}): Promise<{ server: Server; url: string }> {
   const server = createServer((req, res) => {
-    const json = (code, body) => { res.writeHead(code, { 'content-type': 'application/json' }); res.end(JSON.stringify(body)) }
-    const url = new URL(req.url, 'http://localhost')
+    const json = (code: number, body: unknown) => { res.writeHead(code, { 'content-type': 'application/json' }); res.end(JSON.stringify(body)) }
+    const url = new URL(req.url ?? '/', 'http://localhost')
     try {
       if (url.pathname === '/') { res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' }); return res.end(page) }
       if (url.pathname === '/api/graph') return json(200, graph(db))
@@ -16,18 +18,19 @@ export function startGraph(db, { port = 4747, open = true } = {}) {
       if (m) return json(200, show(db, m[1]))
       json(404, { error: 'not found' })
     } catch (e) {
-      json(404, { error: e.message })
+      json(404, { error: (e as Error).message })
     }
   })
   return new Promise((resolve, reject) => {
     let tries = 0
-    server.on('error', e => {
+    server.on('error', (e: NodeJS.ErrnoException) => {
       if (e.code === 'EADDRINUSE' && tries++ < 10) server.listen(++port, '127.0.0.1')
       else reject(e)
     })
     // Localhost only: nobody else on the network can read your memory.
     server.listen(port, '127.0.0.1', () => {
-      const url = `http://127.0.0.1:${server.address().port}`
+      const addr = server.address()
+      const url = `http://127.0.0.1:${typeof addr === 'object' && addr ? addr.port : port}`
       if (open) {
         const cmd = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'explorer' : 'xdg-open'
         spawn(cmd, [url], { stdio: 'ignore', detached: true }).on('error', () => {}).unref()

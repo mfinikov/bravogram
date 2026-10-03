@@ -20,7 +20,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm run typecheck
       - run: npm test
+      - run: npm run build && node dist/bin/bravogram.js --version
 
   publish:
     needs: test
@@ -35,6 +38,7 @@ jobs:
       # Trusted publishing: npm trusts this workflow through GitHub's OIDC token, no NPM_TOKEN secret.
       # It needs npm 11.5.1 or newer.
       - run: npm install -g npm@latest
+      - run: npm ci
       # npm refuses to publish a version twice, so only publish when package.json has a new version.
       - name: publish if this version is not on npm yet
         run: |
@@ -42,5 +46,5 @@ jobs:
           if npm view "bravogram@$v" version >/dev/null 2>&1; then
             echo "bravogram@$v is already on npm, nothing to publish. Bump the version to release."
           else
-            npm publish --access public
+            npm publish --access public # prepublishOnly compiles TypeScript to dist/ first
           fi

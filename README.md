@@ -56,10 +56,15 @@ Agents without MCP can call the CLI directly, for example `bravogram recall "que
 
 ## Develop
 
+Written in TypeScript. Node 24+ runs the `.ts` files directly, so there is no build step while developing.
+
 ```sh
-npm test
+npm install
+npm test            # runs test/*.test.ts
+npm run typecheck
+npm run build       # compiles to dist/, which is what npm ships
 ```
 
-Pushing to `main` runs the tests. If the version in `package.json` isn't on npm yet, CI publishes it. To release, bump the version and push.
+Pushing to `main` type-checks and runs the tests. If the version in `package.json` isn't on npm yet, CI builds and publishes it. To release, bump the version and push.
 
 MIT license.

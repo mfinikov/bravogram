@@ -4,14 +4,16 @@ import { mkdtempSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { spawn, execFileSync } from 'node:child_process'
-import { open } from '../src/db.js'
-import { remember, recall, show, link, forget, graph, append, history, restore, doctor, rebuildIndex } from '../src/memory.js'
-import { importDir, exportDir } from '../src/markdown.js'
-import { handle } from '../src/mcp.js'
+import { open, get, type DB } from '../src/db.ts'
+import { remember, recall, show, link, forget, graph, append, history, restore, doctor, rebuildIndex } from '../src/memory.ts'
+import { importDir, exportDir } from '../src/markdown.ts'
+import { handle, type McpState } from '../src/mcp.ts'
+
+const count = (db: DB) => get<{ n: number }>(db, 'SELECT COUNT(*) AS n FROM memories')!.n
 
 const tmp = () => mkdtempSync(join(tmpdir(), 'bravogram-'))
 const fresh = () => open(join(tmp(), 'memory.db'))
-const BIN = new URL('../bin/bravogram.js', import.meta.url).pathname
+const BIN = new URL('../bin/bravogram.ts', import.meta.url).pathname
 
 test('remember then recall, same title updates instead of duplicating', () => {
   const db = fresh()
@@ -20,7 +22,7 @@ test('remember then recall, same title updates instead of duplicating', () => {
   remember(db, { title: 'stack', body: 'Node 24, node:sqlite with FTS5', type: 'fact', project: 'bravogram' })
   const b = remember(db, { title: 'STACK', body: 'Node 24+, zero dependencies' })
   assert.equal(b.updated, true)
-  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM memories').get().n, 2)
+  assert.equal(count(db), 2)
   assert.equal(recall(db, 'swarm')[0].id, a.id, 'prefix match: swarm finds swarms')
   assert.equal(recall(db, 'dependencies')[0].title, 'stack')
   assert.equal(recall(db, 'Node', { project: 'nope' }).length, 0)
@@ -43,7 +45,7 @@ test('wikilinks become links, ghosts resolve when written, forget cascades', () 
   assert.deepEqual(s.links.map(l => [l.title, l.ghost]), [['Roadmap', true], ['Stack', true]])
   remember(db, { title: 'stack', body: 'zero deps' })
   s = show(db, 'plan')
-  assert.equal(s.links.find(l => l.title === 'Stack').ghost, false)
+  assert.equal(s.links.find(l => l.title === 'Stack')?.ghost, false)
   assert.deepEqual(show(db, 'stack').backlinks.map(b => b.title), ['plan'])
   remember(db, { title: 'roadmap', body: 'v2 is cloud sync' })
   link(db, 'roadmap', 'stack', 'part_of')
@@ -103,35 +105,36 @@ test('import an Obsidian style vault, export it, import again: same result', () 
 
 test('MCP: initialize, list tools, call them; agents cannot forget', () => {
   const db = fresh()
-  const state = { version: '0.0.0' }
-  const init = handle(db, { id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', clientInfo: { name: 'Claude-Code' } } }, state)
+  const state: McpState = { version: '0.0.0' }
+  const rpc = (msg: object) => handle(db, msg, state) as any // replies are untyped JSON
+  const init = rpc({ id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', clientInfo: { name: 'Claude-Code' } } })
   assert.equal(init.protocolVersion, '2025-06-18')
-  assert.equal(handle(db, { method: 'notifications/initialized' }, state), undefined)
-  const names = handle(db, { id: 2, method: 'tools/list' }, state).tools.map(t => t.name)
+  assert.equal(rpc({ method: 'notifications/initialized' }), undefined)
+  const names = rpc({ id: 2, method: 'tools/list' }).tools.map((t: { name: string }) => t.name)
   assert.deepEqual(names.sort(), ['append', 'link', 'recall', 'remember', 'show'])
-  const saved = handle(db, { id: 3, method: 'tools/call', params: { name: 'remember', arguments: { text: 'hello from claude' } } }, state)
+  const saved = rpc({ id: 3, method: 'tools/call', params: { name: 'remember', arguments: { text: 'hello from claude' } } })
   assert.equal(saved.isError, undefined)
   assert.equal(show(db, 'hello from claude').source, 'claude-code', 'source comes from the client name')
-  const found = JSON.parse(handle(db, { id: 4, method: 'tools/call', params: { name: 'recall', arguments: { query: 'hello' } } }, state).content[0].text)
+  const found = JSON.parse(rpc({ id: 4, method: 'tools/call', params: { name: 'recall', arguments: { query: 'hello' } } }).content[0].text)
   assert.equal(found.length, 1)
-  assert.equal(handle(db, { id: 5, method: 'tools/call', params: { name: 'show', arguments: { ref: 'nope' } } }, state).isError, true)
-  assert.throws(() => handle(db, { id: 6, method: 'tools/call', params: { name: 'forget', arguments: {} } }, state), /unknown tool/)
+  assert.equal(rpc({ id: 5, method: 'tools/call', params: { name: 'show', arguments: { ref: 'nope' } } }).isError, true)
+  assert.throws(() => rpc({ id: 6, method: 'tools/call', params: { name: 'forget', arguments: {} } }), /unknown tool/)
 })
 
 test('CLI end to end, and the MCP server over real stdio', async () => {
   const env = { ...process.env, BRAVOGRAM_DB: join(tmp(), 'memory.db') }
-  const bravogram = (...a) => execFileSync(process.execPath, [BIN, ...a], { env, encoding: 'utf8' })
+  const bravogram = (...a: string[]) => execFileSync(process.execPath, [BIN, ...a], { env, encoding: 'utf8' })
   assert.match(bravogram('remember', 'Graph view shows memory as dots', '--type', 'fact'), /saved #1/)
   assert.match(bravogram('recall', 'graph'), /#1 Graph view/)
   assert.equal(JSON.parse(bravogram('recall', 'graph', '--json'))[0].type, 'fact')
   assert.throws(() => execFileSync(process.execPath, [BIN, 'nope'], { env, stdio: 'pipe' }), /unknown command/)
 
   const child = spawn(process.execPath, [BIN, 'mcp'], { env })
-  const lines = []
+  const lines: string[] = []
   child.stdout.on('data', d => lines.push(...d.toString().trim().split('\n')))
   child.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'test' } } }) + '\n')
   child.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'recall', arguments: { query: 'dots' } } }) + '\n')
-  await new Promise(r => { const t = setInterval(() => { if (lines.length >= 2) { clearInterval(t); r() } }, 20) })
+  await new Promise<void>(r => { const t = setInterval(() => { if (lines.length >= 2) { clearInterval(t); r() } }, 20) })
   child.kill()
   const res = JSON.parse(lines[1])
   assert.equal(res.id, 2)
@@ -140,13 +143,13 @@ test('CLI end to end, and the MCP server over real stdio', async () => {
 
 test('two processes writing at the same moment both succeed', async () => {
   const path = join(tmp(), 'memory.db')
-  const script = `import { open } from '${new URL('../src/db.js', import.meta.url)}'
-    import { remember } from '${new URL('../src/memory.js', import.meta.url)}'
+  const script = `import { open } from '${new URL('../src/db.ts', import.meta.url)}'
+    import { remember } from '${new URL('../src/memory.ts', import.meta.url)}'
     const db = open(process.argv[1]); for (let i = 0; i < 100; i++) remember(db, { title: process.argv[2] + i, body: 'x' })`
-  const run = name => new Promise((res, rej) => spawn(process.execPath, ['--input-type=module', '-e', script, path, name], { stdio: 'inherit' })
+  const run = (name: string) => new Promise<void>((res, rej) => spawn(process.execPath, ['--input-type=module', '-e', script, path, name], { stdio: 'inherit' })
     .on('exit', code => code === 0 ? res() : rej(new Error(`${name} exited ${code}`))))
   await Promise.all([run('a'), run('b'), run('c')])
-  assert.equal(open(path).prepare('SELECT COUNT(*) AS n FROM memories').get().n, 300)
+  assert.equal(count(open(path)), 300)
 })
 
 test('history keeps every overwrite and every forget, restore brings them back', () => {
@@ -203,7 +206,7 @@ test('a v1 database upgrades to v2 in place without losing anything', () => {
   db.exec('DROP TRIGGER memories_rev_update; DROP TRIGGER memories_rev_delete; DROP TABLE revisions; PRAGMA user_version = 1')
   db.close()
   const db2 = open(path)
-  assert.equal(db2.prepare('PRAGMA user_version').get().user_version, 2)
+  assert.equal(get<{ user_version: number }>(db2, 'PRAGMA user_version')!.user_version, 2)
   assert.equal(show(db2, 'keep me').body, 'from v1')
   remember(db2, { title: 'keep me', body: 'changed' })
   assert.equal(history(db2, 'keep me').revisions.length, 1)

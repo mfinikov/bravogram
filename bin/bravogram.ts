@@ -2,10 +2,12 @@
 import { parseArgs } from 'node:util'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { open, dbPath } from '../src/db.js'
-import { remember, recall, show, link, forget, append, history, restore, doctor, rebuildIndex } from '../src/memory.js'
+import { open, dbPath } from '../src/db.ts'
+import { remember, recall, show, link, forget, append, history, restore, doctor, rebuildIndex } from '../src/memory.ts'
 
-const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
+// The compiled file lives in dist/bin, one level deeper than this source file.
+const pkg = new URL(import.meta.url.includes('/dist/') ? '../../package.json' : '../package.json', import.meta.url)
+const { version } = JSON.parse(readFileSync(pkg, 'utf8')) as { version: string }
 
 const HELP = `bravogram ${version}: local memory shared by all your agents
 
@@ -28,25 +30,26 @@ const HELP = `bravogram ${version}: local memory shared by all your agents
   --source S  who is writing (default: $BRAVOGRAM_SOURCE or "cli")
   memory file: ${dbPath()} (set BRAVOGRAM_DB to change)`
 
-const fail = e => { console.error(`bravogram: ${e.message}`); process.exit(1) }
+const fail = (e: unknown): never => { console.error(`bravogram: ${(e as Error).message}`); process.exit(1) }
 
-let parsed
-try {
-  parsed = parseArgs({
-    allowPositionals: true,
-    options: {
-      title: { type: 'string' }, type: { type: 'string' }, project: { type: 'string' }, tags: { type: 'string' },
-      source: { type: 'string' }, limit: { type: 'string' }, since: { type: 'string' }, kind: { type: 'string' },
-      port: { type: 'string' }, 'no-open': { type: 'boolean' }, json: { type: 'boolean' }, force: { type: 'boolean' },
-      section: { type: 'string' }, top: { type: 'boolean' }, rev: { type: 'string' }, fix: { type: 'boolean' },
-      help: { type: 'boolean', short: 'h' }, version: { type: 'boolean', short: 'v' },
-    },
-  })
-} catch (e) { fail(e) }
-const { values: o, positionals: [cmd, ...args] } = parsed
+function parse() {
+  try {
+    return parseArgs({
+      allowPositionals: true,
+      options: {
+        title: { type: 'string' }, type: { type: 'string' }, project: { type: 'string' }, tags: { type: 'string' },
+        source: { type: 'string' }, limit: { type: 'string' }, since: { type: 'string' }, kind: { type: 'string' },
+        port: { type: 'string' }, 'no-open': { type: 'boolean' }, json: { type: 'boolean' }, force: { type: 'boolean' },
+        section: { type: 'string' }, top: { type: 'boolean' }, rev: { type: 'string' }, fix: { type: 'boolean' },
+        help: { type: 'boolean', short: 'h' }, version: { type: 'boolean', short: 'v' },
+      },
+    })
+  } catch (e) { return fail(e) }
+}
+const { values: o, positionals: [cmd, ...args] } = parse()
 
-const out = (data, text) => console.log(o.json ? JSON.stringify(data, null, 2) : text(data))
-const need = (n, usage) => { if (args.length < n) throw new Error(`usage: bravogram ${usage}`) }
+const out = <T>(data: T, text: (d: T) => string) => console.log(o.json ? JSON.stringify(data, null, 2) : text(data))
+const need = (n: number, usage: string) => { if (args.length < n) throw new Error(`usage: bravogram ${usage}`) }
 const source = o.source || process.env.BRAVOGRAM_SOURCE || 'cli'
 
 async function main() {
@@ -111,23 +114,23 @@ async function main() {
     }
     case 'import': {
       need(1, 'import <folder>')
-      const { importDir } = await import('../src/markdown.js')
+      const { importDir } = await import('../src/markdown.ts')
       return out(importDir(db, resolve(args[0]), { source: o.source || 'import' }), r =>
         [`imported ${r.notes} new, ${r.updated} updated, ${r.links} links (${r.ghosts} point at notes not written yet)`,
           ...r.skipped.map(s => `skipped ${s}`)].join('\n'))
     }
     case 'export': {
       need(1, 'export <folder>')
-      const { exportDir } = await import('../src/markdown.js')
+      const { exportDir } = await import('../src/markdown.ts')
       return out(exportDir(db, resolve(args[0])), r => `exported ${r.exported} memories to ${r.dir}`)
     }
     case 'graph': {
-      const { startGraph } = await import('../src/graph.js')
+      const { startGraph } = await import('../src/graph.ts')
       const { url } = await startGraph(db, { port: Number(o.port ?? 4747), open: !o['no-open'] })
       return console.log(`graph at ${url}  (ctrl+c to stop)`)
     }
     case 'mcp': {
-      const { serve } = await import('../src/mcp.js')
+      const { serve } = await import('../src/mcp.ts')
       return serve(db, version)
     }
     default:
