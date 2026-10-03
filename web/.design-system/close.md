@@ -48,3 +48,24 @@ From `node scripts/check-system.mjs --root . --no-self-test --no-allowlist` at t
 | / | 17 | 3 | 81 | 13 | 15 | 62 | 3 |
 
 All 16 values left are one-off values named in decision D-06 and listed in scripts/check-allowlist.json. Tokens: 62 in app/globals.css, 0 unused, 47 with their own role comment and the 15 space steps under one shared role comment (counted by script, run.md D-03).
+
+## After the redesign (step 6, 16:25)
+
+`node scripts/check-system.mjs --root . --no-self-test --left` (exit 0)
+
+```
+left: 13 allowlisted finding(s) in 2 file(s): rule/css-px 12, rule/raw-value 1
+left	app/globals.css	rule/css-px	12
+left	app/layout.tsx	rule/raw-value	1
+check-system: 15 file(s) under /Users/arsenii/Documents/bravogram-memory-ds/web, 0 failing, 13 allowlisted
+```
+
+`montage.mjs --root . --dir .design-system/review/redesign --diff --widths 390,1440` (exit 0)
+
+```
+montage: 1 surfaces: 1 changed, 0 unchanged. Wrote /Users/arsenii/Documents/bravogram-memory-ds/web/.design-system/review/redesign/index.html
+```
+
+| Route | Raw colors | Raw px lengths | Tokens | Registry components | Probe findings | Texts under 4.5:1 |
+|---|---|---|---|---|---|---|
+| / | 1 | 12 | 66 | 4 | 0 | 0 of 98 |

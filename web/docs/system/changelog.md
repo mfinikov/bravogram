@@ -5,6 +5,7 @@ Changes to the design system docs and tokens, newest first.
 
 ## 2026-10-03
 
+- Terminal demo: compute line offsets without reassigning during render (`68de533`)
 - Stack a step's number above its text under 521px (G-05) (`8f310fe`)
 - Redesign the landing page on the design system (`2c5fd6f`)
 - Give the table's unit text a named size (F-08) (`e704580`)
