@@ -128,10 +128,10 @@ export default function Home() {
                     <g stroke="var(--soft)" strokeOpacity=".5" strokeWidth="1">
                       <path d="M96 60L190 96M190 96L300 56M190 96L250 150M300 56L360 110M250 150L360 110M96 60L70 130M190 96L140 158M300 56L384 40" />
                     </g>
-                    <circle cx="190" cy="96" r="13" fill="#7aa2ff" /><circle cx="96" cy="60" r="8" fill="#56c2a6" />
-                    <circle cx="300" cy="56" r="10" fill="#f7b955" /><circle cx="250" cy="150" r="7" fill="#ef6f6c" />
-                    <circle cx="360" cy="110" r="8" fill="#b48cf2" /><circle cx="70" cy="130" r="6" fill="#a3abbd" />
-                    <circle cx="140" cy="158" r="6" fill="#a3abbd" /><circle cx="384" cy="40" r="6" stroke="var(--soft)" strokeWidth="1.4" />
+                    <circle cx="190" cy="96" r="13" fill="var(--graph-project)" /><circle cx="96" cy="60" r="8" fill="var(--graph-system)" />
+                    <circle cx="300" cy="56" r="10" fill="var(--graph-decision)" /><circle cx="250" cy="150" r="7" fill="var(--graph-lesson)" />
+                    <circle cx="360" cy="110" r="8" fill="var(--graph-fact)" /><circle cx="70" cy="130" r="6" fill="var(--graph-note)" />
+                    <circle cx="140" cy="158" r="6" fill="var(--graph-note)" /><circle cx="384" cy="40" r="6" stroke="var(--soft)" strokeWidth="1.4" />
                   </svg>
                 </Mock>
               </article>

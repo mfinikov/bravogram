@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 
-// Same colors as the real graph view: project, system, decision, lesson, fact, note.
-const COLORS = ['#7aa2ff', '#56c2a6', '#f7b955', '#ef6f6c', '#b48cf2', '#a3abbd']
+// Same colors as the real graph view, read from the --graph-* tokens in app/globals.css.
+const KINDS = ['project', 'system', 'decision', 'lesson', 'fact', 'note']
 
 interface Node { x: number; y: number; r: number; p: number; s: number; c: string }
 
@@ -12,7 +12,7 @@ function layout() {
   let seed = 7
   const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647
   const nodes: Node[] = Array.from({ length: 46 }, (_, i) => ({
-    x: rand(), y: rand(), r: 2.5 + rand() * 5, p: rand() * 6.28, s: 0.25 + rand() * 0.5, c: COLORS[i % COLORS.length],
+    x: rand(), y: rand(), r: 2.5 + rand() * 5, p: rand() * 6.28, s: 0.25 + rand() * 0.5, c: KINDS[i % KINDS.length],
   }))
   const links: [Node, Node][] = []
   nodes.forEach((a, i) => nodes.forEach((b, j) => {
@@ -32,7 +32,9 @@ export function HeroGraph() {
     if (!canvas || !ctx) return
     const { nodes, links } = layout()
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches
-    const line = getComputedStyle(document.documentElement).getPropertyValue('--soft')
+    const css = getComputedStyle(document.documentElement)
+    const line = css.getPropertyValue('--soft')
+    const color = Object.fromEntries(KINDS.map((k) => [k, css.getPropertyValue(`--graph-${k}`).trim()]))
     let w = 0, h = 0, visible = true, frame = 0
 
     const size = () => {
@@ -52,7 +54,7 @@ export function HeroGraph() {
       ctx.globalAlpha = 0.85
       for (const n of nodes) {
         const [x, y] = at(n)
-        ctx.fillStyle = n.c; ctx.beginPath(); ctx.arc(x, y, n.r, 0, 6.2832); ctx.fill()
+        ctx.fillStyle = color[n.c]; ctx.beginPath(); ctx.arc(x, y, n.r, 0, 6.2832); ctx.fill()
       }
       ctx.globalAlpha = 1
     }
