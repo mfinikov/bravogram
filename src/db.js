@@ -39,6 +39,27 @@ const MIGRATIONS = [
      PRIMARY KEY (from_id, to_title, kind)
    );
    CREATE INDEX links_to ON links(to_title);`,
+
+  // v2: every change and every delete keeps the old version, so nothing an agent overwrites is lost.
+  `CREATE TABLE revisions (
+     rev INTEGER PRIMARY KEY,
+     memory_id INTEGER NOT NULL,
+     title TEXT NOT NULL COLLATE NOCASE,
+     body TEXT NOT NULL, type TEXT NOT NULL, project TEXT, tags TEXT NOT NULL, source TEXT NOT NULL,
+     created TEXT NOT NULL, updated TEXT NOT NULL,
+     replaced_at TEXT NOT NULL,
+     reason TEXT NOT NULL
+   );
+   CREATE INDEX revisions_title ON revisions(title);
+   CREATE TRIGGER memories_rev_update BEFORE UPDATE ON memories
+   WHEN old.body IS NOT new.body OR old.type IS NOT new.type OR old.project IS NOT new.project OR old.tags IS NOT new.tags BEGIN
+     INSERT INTO revisions (memory_id, title, body, type, project, tags, source, created, updated, replaced_at, reason)
+     VALUES (old.id, old.title, old.body, old.type, old.project, old.tags, old.source, old.created, old.updated, strftime('%Y-%m-%dT%H:%M:%fZ'), 'update');
+   END;
+   CREATE TRIGGER memories_rev_delete BEFORE DELETE ON memories BEGIN
+     INSERT INTO revisions (memory_id, title, body, type, project, tags, source, created, updated, replaced_at, reason)
+     VALUES (old.id, old.title, old.body, old.type, old.project, old.tags, old.source, old.created, old.updated, strftime('%Y-%m-%dT%H:%M:%fZ'), 'forget');
+   END;`,
 ]
 
 export function open(path = dbPath()) {
@@ -67,7 +88,9 @@ export function open(path = dbPath()) {
 
 // IMMEDIATE takes the write lock up front, so two agents writing at once wait their turn
 // instead of failing halfway through.
+// Nested calls join the outer transaction, so append can read and write under one lock.
 export function tx(db, fn) {
+  if (db.isTransaction) return fn()
   db.exec('BEGIN IMMEDIATE')
   try {
     const out = fn()

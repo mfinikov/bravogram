@@ -1,5 +1,5 @@
 import { createInterface } from 'node:readline'
-import { TYPES, LINK_KINDS, remember, recall, show, link } from './memory.js'
+import { TYPES, LINK_KINDS, remember, recall, show, link, append } from './memory.js'
 
 // ponytail: hand-rolled MCP over stdio (newline-delimited JSON-RPC), so the package has zero
 // dependencies. Covers initialize, tools/list, tools/call, ping. Switch to the official SDK if we
@@ -25,6 +25,12 @@ const TOOLS = [
     description: 'Read one full memory by id or title, with its links and backlinks.',
     inputSchema: { type: 'object', properties: { ref: str('id or exact title') }, required: ['ref'] },
     run: (db, a) => show(db, a.ref),
+  },
+  {
+    name: 'append',
+    description: 'Add text to an existing memory without rewriting it, at the end or inside one "## Section" (created if missing). Use top=true to put it first in the section, e.g. a new State bullet.',
+    inputSchema: { type: 'object', properties: { ref: str('id or exact title'), text: str('text to add'), section: str('section heading without ##, e.g. State'), top: { type: 'boolean' } }, required: ['ref', 'text'] },
+    run: (db, a, source) => append(db, a.ref, a.text, { section: a.section, top: a.top, source }),
   },
   {
     name: 'link',

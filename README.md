@@ -20,14 +20,18 @@ npm install -g bravogram
 bravogram remember "Bravogram stores memory for agents" --type fact --project bravogram
 bravogram recall "agents memory"
 bravogram show bravogram
+bravogram append bravogram "- shipped 0.1.1" --section State --top
 bravogram link "plan" "roadmap" --kind part_of
 bravogram forget 12
+bravogram history bravogram        # every saved version
+bravogram restore bravogram        # undo the last change (or --rev N)
+bravogram doctor                   # duplicates, broken links, glued headings, huge notes
 bravogram graph                        # opens the graph in your browser
 bravogram import ~/path/to/obsidian    # bring in an existing vault
 bravogram export ./backup              # write everything back out as markdown
 ```
 
-Saving the same title again updates that memory instead of creating a duplicate. Add `--json` to any command for machine-readable output.
+To replace a memory, pass its title explicitly (`--title`). Text alone never overwrites an existing memory; use `append` to add to one. Every change and every `forget` is kept, and `bravogram restore` brings any version back. Add `--json` to any command for machine-readable output.
 
 ## Connect your agents (MCP)
 
@@ -37,7 +41,7 @@ Claude Code:
 claude mcp add bravogram -- bravogram mcp
 ```
 
-Any other MCP client uses the same command (`bravogram mcp`) in its config. Agents get four tools: `recall`, `remember`, `show` and `link`. Deleting is left to you on purpose: agents can't call `forget`.
+Any other MCP client uses the same command (`bravogram mcp`) in its config. Agents get five tools: `recall`, `remember`, `append`, `show` and `link`. Deleting and restoring are left to you on purpose: agents can't call `forget` or `restore`.
 
 Agents without MCP can call the CLI directly, for example `bravogram recall "query" --json`.
 

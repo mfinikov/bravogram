@@ -3,7 +3,7 @@ import { parseArgs } from 'node:util'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { open, dbPath } from '../src/db.js'
-import { remember, recall, show, link, forget } from '../src/memory.js'
+import { remember, recall, show, link, forget, append, history, restore, doctor, rebuildIndex } from '../src/memory.js'
 
 const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
 
@@ -13,8 +13,12 @@ const HELP = `bravogram ${version}: local memory shared by all your agents
   bravogram remember - < note.md                                                 read the text from stdin
   bravogram recall "words" [--project P] [--type T] [--source S] [--limit 5]   search
   bravogram show <id|title>                                                      one memory with its links
+  bravogram append <id|title> "text" [--section State] [--top]                  add to a memory without rewriting it
   bravogram link <a> <b> [--kind relates|supersedes|part_of]                     connect two memories
-  bravogram forget <id>                                                          delete one memory
+  bravogram forget <id>                                                          delete one memory (kept in history)
+  bravogram history <id|title>                                                   every saved version, newest first
+  bravogram restore <id|title> [--rev N]                                         bring back a version (default: the last one)
+  bravogram doctor [--fix]                                                       find duplicates, broken links, glued headings
   bravogram graph [--port 4747] [--no-open]                                      see your memory as a graph
   bravogram import <folder>                                                      pull in an Obsidian vault
   bravogram export <folder>                                                      write everything out as markdown
@@ -34,6 +38,7 @@ try {
       title: { type: 'string' }, type: { type: 'string' }, project: { type: 'string' }, tags: { type: 'string' },
       source: { type: 'string' }, limit: { type: 'string' }, since: { type: 'string' }, kind: { type: 'string' },
       port: { type: 'string' }, 'no-open': { type: 'boolean' }, json: { type: 'boolean' }, force: { type: 'boolean' },
+      section: { type: 'string' }, top: { type: 'boolean' }, rev: { type: 'string' }, fix: { type: 'boolean' },
       help: { type: 'boolean', short: 'h' }, version: { type: 'boolean', short: 'v' },
     },
   })
@@ -70,6 +75,31 @@ async function main() {
         `links: ${m.links.map(l => l.title + (l.ghost ? ' (not written yet)' : '') + (l.kind !== 'wiki' ? ` (${l.kind})` : '')).join(', ') || 'none'}`,
         `backlinks: ${m.backlinks.map(b => b.title).join(', ') || 'none'}`,
       ].join('\n'))
+    }
+    case 'append': {
+      need(2, 'append <id|title> "text" [--section S] [--top]   (text - reads stdin)')
+      const text = args[1] === '-' ? readFileSync(0, 'utf8') : args.slice(1).join(' ')
+      return out(append(db, args[0], text, { section: o.section, top: o.top, source }), r => `appended to #${r.id} ${r.title}`)
+    }
+    case 'history': {
+      need(1, 'history <id|title>')
+      return out(history(db, args.join(' ')), h => [
+        `${h.title}: ${h.current ? `current #${h.current.id}, ${h.current.chars} chars, updated ${h.current.updated}` : 'forgotten (restore brings it back)'}`,
+        ...h.revisions.map(r => `  rev ${r.rev}  ${r.replaced_at.slice(0, 16)}  ${r.reason.padEnd(6)}  by ${r.source}, ${r.chars} chars: ${r.start.replace(/\s+/g, ' ')}`),
+        h.revisions.length ? '' : '  no earlier versions',
+      ].join('\n').trimEnd())
+    }
+    case 'restore': {
+      need(1, 'restore <id|title> [--rev N]')
+      return out(restore(db, args.join(' '), o.rev), r => `restored ${r.title} to rev ${r.rev} (#${r.id}); undo with: bravogram restore "${r.title}"`)
+    }
+    case 'doctor': {
+      if (o.fix) rebuildIndex(db)
+      return out(doctor(db), d => {
+        const order = { error: 0, warn: 1, info: 2 }
+        const lines = d.issues.sort((a, b) => order[a.level] - order[b.level]).map(i => `${i.level.padEnd(5)} ${i.kind.padEnd(13)} ${i.message}`)
+        return [`${d.memories} memories, ${d.issues.length} findings${o.fix ? ' (search index rebuilt)' : ''}`, ...lines].join('\n')
+      })
     }
     case 'link': {
       need(2, 'link <a> <b> [--kind relates|supersedes|part_of]')
