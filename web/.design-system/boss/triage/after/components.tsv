@@ -1,0 +1,6 @@
+app/layout.tsx	RootLayout
+app/page.tsx	Home
+components/hero-scene.tsx	HeroScene
+components/install-button.tsx	InstallButton
+components/logo.tsx	Logo
+components/terminal-demo.tsx	TerminalDemo

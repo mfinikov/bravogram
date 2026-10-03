@@ -69,3 +69,21 @@ montage: 1 surfaces: 1 changed, 0 unchanged. Wrote /Users/arsenii/Documents/brav
 | Route | Raw colors | Raw px lengths | Tokens | Registry components | Probe findings | Texts under 4.5:1 |
 |---|---|---|---|---|---|---|
 | / | 1 | 12 | 66 | 4 | 0 | 0 of 98 |
+
+## Boss close: ds/2026-10-03-full at 388cb19 (16:27)
+
+| Count | Unit | Before | After | Source |
+|---|---|---|---|---|
+| custom_property_defs | definitions | 15 | 66 | boss/triage/signals.tsv, boss/triage/after/signals.tsv |
+| token_refs | references | 60 | 174 | the same |
+| raw_color_lines | lines | 9 | 1 | the same |
+| adoption_pct | percent | 86 | 99 | the same |
+| screens changed | routes | | 1 of 1 | review/redesign/traces.tsv |
+| registry components | components | 0 | 4 | registry.json |
+| allowlisted | violations | | 13 | scripts/check-allowlist.json, `check-system --left` above |
+| texts under 4.5:1 | texts | 15 | 0 of 98 | run.md G-06, the after probe above |
+| clean-clone check | exit code | | 0 | `git clone` of the branch at 388cb19 into /tmp, `npm ci`, `npm run check`, `npm run build`, all exit 0 |
+| gates applied | gates | | 13 | boss/state.md#gates |
+
+## Still raw
+- app/layout.tsx: 1 line, the browser theme color, which Next reads as a string and cannot take a CSS variable (allowlisted, D-06)

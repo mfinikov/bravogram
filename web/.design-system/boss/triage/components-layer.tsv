@@ -1,0 +1,5 @@
+own	RootLayout	app/layout.tsx
+own	Home	app/page.tsx
+own	HeroGraph	components/hero-graph.tsx
+own	InstallButton	components/install-button.tsx
+own	Logo	components/logo.tsx

@@ -25,6 +25,21 @@ jobs:
       - run: npm test
       - run: npm run build && node dist/bin/bravogram.js --version
 
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      # the design system check (tokens, specs, docs freshness, types, lint), then the site build
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+
   publish:
     needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
