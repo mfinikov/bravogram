@@ -7,18 +7,19 @@ Corners, borders, shadow and surface levels. The page is flat and square: boxes 
 ## Tokens
 | Token | Value | Role |
 |---|---|---|
+| `--radius-pill` | `999px` | the headline highlight and the bars |
 | `--radius-mark` | `3px` | search-hit highlight |
 
 Surface levels use the color tokens: the page is `--bg`, a bar track or a command block is `--card`, and a white box on the page (mock window, install box) is `--panel`.
 
 ## Usage
-Light borders are `1px solid var(--line)`: mock windows, chips, rows. Strong borders are `var(--rule) solid var(--ink)`: the install box, the demo, the two tiles and the call to action. Every box is square. The "works with" chips are square too, with the hairline border. The focus ring is `2px solid var(--accent)` at `3px` offset on the install box, links, questions and any code block that takes focus.
+Light borders are `1px solid var(--line)`: mock windows, chips, rows. Strong borders are `var(--rule) solid var(--ink)`: the install box, the demo, the two tiles and the call to action. Every box is square; only the headline highlight and the bars are pills. The "works with" chips are square too, with the hairline border. The focus ring is `2px solid var(--accent)` at `3px` offset on the install box, links, questions and any code block that takes focus.
 
 ## Accessibility
-The focus ring is 8.7:1 on white, computed from the two values. It showed on every tab stop before the 2026-10-03 rework (`.design-system/evidence/home/walk-redesign.json`); the reworked page is not re-probed: NEEDS REVIEW. Two of the tab stops are the scrolling command blocks at 390 wide, which take focus so they can be scrolled by keyboard.
+The focus ring is 5.17:1 on white (`.design-system/evidence/install-button/limit-390.json`). It showed on every tab stop before the 2026-10-03 rework (`.design-system/evidence/home/walk-redesign.json`); the reworked page is not re-probed: NEEDS REVIEW. Two of the tab stops are the scrolling command blocks at 390 wide, which take focus so they can be scrolled by keyboard.
 
 ## Not tokens
 - `1px` and `2px` border and outline widths, and the `3px` outline offset.
 - `box-shadow: 4px 4px 0 var(--ink)` and `translate(-2px, -2px)`: the hover lift of the install box and the call to action.
 - `border-radius: 50%` on the mock title bar dots, and `0` on the install box.
-- The `mask-image` gradients on `.scene`: they fade the field at the sides and open the hole for the hero text.
+- The `mask-image` gradients on `.scene`: they fade the graph at the sides and open the hole for the hero text.

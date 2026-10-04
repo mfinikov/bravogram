@@ -11,10 +11,10 @@ The colors the page uses and the job of each. One theme, light. The source is th
 | `--panel` | `#ffffff` | raised white surface: install box, mock window |
 | `--ink` | `rgb(0 0 0 / .92)` | headings, strong text, the install box border and its hover shadow |
 | `--text` | `rgb(0 0 0 / .7)` | body text |
-| `--soft` | `rgb(0 0 0 / .56)` | captions, labels, the grep bar, lines in the graph card. 4.5:1 or more on white |
+| `--soft` | `rgb(0 0 0 / .56)` | captions, labels, the grep bar, links in the scene and the graph card. 4.5:1 or more on white |
 | `--line` | `rgb(0 0 0 / .08)` | hairline borders and dividers |
-| `--accent` | `#1e40af` | the line-art field, the Bravogram bar, focus ring, search-hit tint |
-| `--accent-ink` | `#1e3a8a` | text on the accent tint |
+| `--accent` | `#2f5bff` | the Bravogram bar, focus ring, search-hit tint |
+| `--accent-ink` | `#1f3fc4` | text on the accent tint |
 | `--graph-project` | `#7aa2ff` | project node |
 | `--graph-system` | `#56c2a6` | system node |
 | `--graph-decision` | `#f7b955` | decision node |
@@ -30,7 +30,7 @@ The colors the page uses and the job of each. One theme, light. The source is th
   - Don't: `.card p { color: var(--soft); }`
   - Do: `.card p { color: var(--text); }`
 
-The six graph colors are for the graph card only (decisions D7 and D10). They are the node kinds of the real graph view, so they stay in step with the product. Everything else is the neutrals plus `--accent`.
+The six graph colors are for the scene and the graph card (decision D11), always as dots, never as text. They are the node kinds of the real graph view, so they stay in step with the product. Everything else is the neutrals plus `--accent`.
 
 ## Accessibility
 Rendered contrast, from `.design-system/review/redesign/home-after-1440.probe.json` (written by the capture script on the production build):
@@ -41,9 +41,9 @@ Rendered contrast, from `.design-system/review/redesign/home-after-1440.probe.js
 | `--ink` | `--card` | 17:1 | card headings |
 | `--text` | `--bg` | 8.59:1 | body text, nav links, chips |
 | `--text` | `--card` | 8.25:1 | card text |
-| `--accent` | `--bg` | 8.7:1, computed from the two values, not probed | the focus ring and the Bravogram bar |
-| `--accent-ink` | the accent tint | 7.9:1, computed, not probed | search hits in a mock window |
-| `--accent-ink` | `--bg` | 10.4:1, computed, not probed | the "5.5x less" line beside a bar |
+| `--accent` | `--bg` | 5.17:1 | the focus ring and the Bravogram bar |
+| `--accent-ink` | the accent tint | 6.53:1 | search hits in a mock window |
+| `--accent-ink` | `--bg` | 8.2:1, computed, not probed | the "5.5x less" line beside a bar |
 | `--soft` | `--bg` | 4.95:1 | 22 small texts at 12 to 14px: meta line, the notes, footer column titles, mock title bars |
 
 No text on the page is under 4.5:1 (0 of 98 at 1440 wide).

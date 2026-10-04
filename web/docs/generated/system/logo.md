@@ -17,7 +17,7 @@ Real uses, 2 call sites (`rg -n "<Logo\b" app`):
 - Nav: beside the wordmark inside the home link. `app/page.tsx:76`
 - Footer: beside the copyright line, 18px. `app/page.tsx:244`
 
-Inside the component folder, HeroScene also renders it as each floating mark, in `--ink`, at 38 to 72px (`components/hero-scene.tsx:84`).
+Inside the component folder, HeroScene also renders it as each hub of the graph, in `--ink`, at 40 to 68px (`components/hero-scene.tsx:69`).
 
 ### Example files
 | File | Covers | Caption |
@@ -93,7 +93,7 @@ Not applicable: the mark renders no text.
 
 ### Anti-slop
 - `rule/logo-current-color`: When the mark needs a color, set `color` on its parent with a token instead of adding a `fill` value to the svg, because the svg draws in `currentColor` and a fixed fill stops following the text beside it. Evidence: app 2/2 uses color the mark through the parent, `--ink` from `.brand` and `--accent` from `.scene`, `rg -n "<Logo\b" app components`; principle platform: an svg with `fill="currentColor"` inherits the CSS `color` of its parent. Check: lint `rule/raw-value` fails a hex fill.
-  - Don't: `<svg viewBox="0 0 1250 1250" fill="#1e40af">`
+  - Don't: `<svg viewBox="0 0 1250 1250" fill="#2f5bff">`
   - Do: `<a className="brand" href="#top"><Logo />bravogram</a>`
 
 ### Limits
@@ -121,4 +121,4 @@ Measured on the rendered page (`.design-system/review/home-after-390.probe.json`
 
 ## Related
 - InstallButton: the page's action. The mark never acts on its own.
-- HeroScene: the drawing that floats the mark in the field.
+- HeroScene: the drawing that uses the mark as the hubs of its graph.

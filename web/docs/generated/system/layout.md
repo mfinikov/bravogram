@@ -11,7 +11,7 @@ The page is one open column, 1280px at most with its gutters, and sections are s
 | `--gutter` | `clamp(20px, 6vw, 96px)` | left and right padding of the column |
 | `--section-y` | `clamp(40px, 6vw, 88px)` | space above a section |
 | `--measure` | `640px` | widest reading text |
-| `--scene-height` | `clamp(96px, 14vw, 180px)` | the field band in the footer |
+| `--scene-height` | `clamp(96px, 14vw, 180px)` | the graph band in the footer |
 | `--rule` | `1.5px` | the strong border: install box, tiles, demo, call to action |
 | `--bar-height` | `12px` | a comparison bar |
 | `--target-min` | `24px` | smallest height of a link or control |
@@ -41,7 +41,7 @@ One-off sizes that place a single thing, listed in `scripts/check-allowlist.json
 - `gap: 9px`: between the mark and the wordmark.
 - `24px` and `16px` and `8px` squares: the mark, the copy icon, the dots in a mock title bar.
 - `max-width: 440px`: card text.
-- `margin-top: -14%` and `-25%` on the hero text, and `width: 130%` on the scene under 721px: they place the text in the hole of the field.
+- `margin-top: -14%` and `-25%` on the hero text, and `width: 130%` on the scene under 721px: they place the text in the hole of the scene.
 - `10ch`, `11ch` and `26ch` columns: the bar rows and the command list.
 
 Off-grid steps kept as approved (decision D5, gate G-09): 9, 14, 18, 22 and 26px.

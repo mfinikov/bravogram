@@ -28,13 +28,13 @@ Tokens by role (app/globals.css):
 - color: --bg, --card, --panel, --ink, --text, --soft, --line, --accent, --accent-ink, --graph-project, --graph-system, --graph-decision, --graph-lesson, --graph-fact, --graph-note
 - type: --font-size-display, --font-size-h2, --font-size-h3, --font-size-brand, --font-size-command, --font-size-question, --font-size-lede, --font-size-body, --font-size-text, --font-size-small, --font-size-code, --font-size-caption, --font-size-mock, --font-size-label, --leading-h3, --leading-intro, --leading-card
 - space: --gutter, --space-2, --space-4, --space-6, --space-8, --space-12, --space-14, --space-16, --space-18, --space-20, --space-22, --space-24, --space-26, --space-28, --space-32, --space-48
-- radius: --radius-mark
-- motion: --motion-micro, --motion-swap, --motion-bob
+- radius: --radius-pill, --radius-mark
+- motion: --motion-micro, --motion-swap, --motion-pulse
 - size: --page-width, --scene-height, --bar-height, --mock-height
 - other: --title, --body, --mono, --section-y, --measure, --target-min, --rule
 
 Components (import, job):
-- HeroScene `@/components/hero-scene`: Draws the line-art scene: the wordmark standing in a field of broken horizontal lines, with Bravogram marks floating in it, and the same ...
+- HeroScene `@/components/hero-scene`: Draws the scene: the wordmark with a memory graph around it, dots in the six graph colors linked by thin lines with Bravogram marks as hu...
 - InstallButton `@/components/install-button`: Copies the install command to the clipboard with one press and confirms it.
 - Logo `@/components/logo`: Draws the Bravogram mark, four leaning ellipses, in the current text color.
 - TerminalDemo `@/components/terminal-demo`: Types two Bravogram commands and shows what the CLI prints, once, when it scrolls into view.

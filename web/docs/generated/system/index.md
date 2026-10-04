@@ -14,7 +14,7 @@ New UI uses a registry component. If none fits, open a gate before writing one. 
 - [Typography](system/typography.md): The typefaces and text sizes of the page.
 
 ## Components
-- [HeroScene](system/hero-scene.md): Draws the line-art scene: the wordmark standing in a field of broken horizontal lines, with Bravogram marks floating in it, and the same ...
+- [HeroScene](system/hero-scene.md): Draws the scene: the wordmark with a memory graph around it, dots in the six graph colors linked by thin lines with Bravogram marks as hu...
 - [InstallButton](system/install-button.md): Copies the install command to the clipboard with one press and confirms it.
 - [Logo](system/logo.md): Draws the Bravogram mark, four leaning ellipses, in the current text color.
 - [TerminalDemo](system/terminal-demo.md): Types two Bravogram commands and shows what the CLI prints, once, when it scrolls into view.

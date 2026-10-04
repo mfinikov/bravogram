@@ -14,4 +14,4 @@ The name, the mark and the typefaces of Bravogram on this page.
 | Code face | Geist Mono | loaded in `app/layout.tsx` |
 
 ## Usage
-The product is written "Bravogram" in sentences and "bravogram" in the wordmark and in commands. The first words of the h1 sit on an `--ink` highlight (`.hl`). The accent blue `--accent` is for the field and the Bravogram bar, not for text.
+The product is written "Bravogram" in sentences and "bravogram" in the wordmark and in commands. The first words of the h1 sit on an `--ink` pill (`.hl`). The accent blue `--accent` is for the Bravogram bar and the focus ring, not for text.

@@ -1,10 +1,10 @@
 # HeroScene
 
 ## Description
-Draws the line-art scene: the wordmark standing in a field of broken horizontal lines, with Bravogram marks floating in it, and the same field as a band in the footer.
+Draws the scene: the wordmark with a memory graph around it, dots in the six graph colors linked by thin lines with Bravogram marks as hubs, and the same graph as a band in the footer.
 
 `import { HeroScene } from "@/components/hero-scene"`, source `components/hero-scene.tsx`, status `ready-with-gaps`.
-Foundation: `hand-rolled`. Traps checked: `trap/reduced-motion-ignored`, `trap/decor-pointer`, `trap/motion-layout-property`, `trap/motion-linear` (the bob eases in and out), `trap/loop-offscreen` (NEEDS REVIEW: the loops are CSS and keep running off screen).
+Foundation: `hand-rolled`. Traps checked: `trap/reduced-motion-ignored`, `trap/decor-pointer`, `trap/motion-layout-property`, `trap/motion-linear` (the swell eases in and out), `trap/loop-offscreen` (NEEDS REVIEW: the loops are CSS and keep running off screen).
 
 ### Foundation
 Not applicable: hand-rolled
@@ -19,21 +19,21 @@ Real uses, 2 call sites (`rg -n "<HeroScene\b" app components`):
 ### Example files
 | File | Covers | Caption |
 |---|---|---|
-| `docs/system/examples/hero-scene/default.tsx` | default | The scene on its own: the wordmark standing in a field of broken lines, with four marks floating in it. |
+| `docs/system/examples/hero-scene/default.tsx` | default | The scene on its own: the wordmark with a memory graph around it, colored dots linked by thin lines, four marks as hubs. |
 | `docs/system/examples/hero-scene/in-hero.tsx` | composition:Hero | The scene opening the hero, with the hero text sitting in the hole at its bottom centre. |
-| `docs/system/examples/hero-scene/band.tsx` | band=true | The footer band: a strip of the same field with five marks and no wordmark. |
+| `docs/system/examples/hero-scene/band.tsx` | band=true | The footer band: a strip of the same graph with three marks and no wordmark. |
 | Not applicable: the still state follows the reduced motion setting of the system, so no prop reaches it | state:still | The same drawing, not moving. |
 
 ## Variants
 | Variant | Prop | What it draws | Used |
 |---|---|---|---|
-| field | default | 64 rows that widen toward the front, the wordmark, four marks | the hero |
-| band | `band` | 19 even rows and five marks, no wordmark, `--scene-height` tall | the footer |
+| graph | default | the wordmark, 28 memories and four marks, clear of the wordmark and the hero text | the hero |
+| band | `band` | 24 memories and three marks, no wordmark, `--scene-height` tall | the footer |
 
 ## States
 | State | Trigger | What the user can do | Shown by, besides color | Checked by |
 |---|---|---|---|---|
-| moving | page load, when motion is allowed | nothing, it is decoration | each mark rises and sinks at its waterline | by hand |
+| moving | page load, when motion is allowed | nothing, it is decoration | each dot swells and settles | by hand |
 | still | the system asks for reduced motion | nothing | the same drawing with no movement | screenshot |
 
 ### State precedence
@@ -42,14 +42,14 @@ Not applicable: the two states exclude each other, since the system setting pick
 ### Motion
 | Trigger | Kind | Preset | Properties | Reduced motion |
 |---|---|---|---|---|
-| page load | announce | `--motion-bob` | transform (translateY) on each mark | no animation, the marks stand still |
+| page load | announce | `--motion-pulse` | transform (scale) on each dot | no animation, the dots stand still |
 
 `transform` is the only animated property, so nothing is laid out again (`trap/motion-layout-property`).
 
 ## Props
 | Prop | Type | Default | What it does |
 |---|---|---|---|
-| `band` | `boolean` | `false` | draws the footer band instead of the hero field |
+| `band` | `boolean` | `false` | draws the footer band instead of the hero graph |
 
 ## Usage
 
@@ -62,28 +62,28 @@ Not applicable: the two states exclude each other, since the system setting pick
 - A third place wants a drawing. Leave it plain instead, per coverage-gaps row "Imagery".
 
 ### Rules
-- `rule/hero-scene-decoration`: When the scene renders, keep `aria-hidden="true"` on the svg and `pointer-events: none` in its CSS, because it carries no information and the install box sits on top of it. Evidence: app 2/2 scenes are drawn by the one hidden svg, components/hero-scene.tsx:68 and app/globals.css:96; principle wcag: 1.1.1 Non-text Content, decoration is hidden from assistive technology. Check: review the svg tag and the `.scene` rule.
+- `rule/hero-scene-decoration`: When the scene renders, keep `aria-hidden="true"` on the svg and `pointer-events: none` in its CSS, because it carries no information and the install box sits on top of it. Evidence: app 2/2 scenes are drawn by the one hidden svg, components/hero-scene.tsx:64 and app/globals.css:97; principle wcag: 1.1.1 Non-text Content, decoration is hidden from assistive technology. Check: review the svg tag and the `.scene` rule.
   - Don't: `<svg className="scene" role="img" viewBox="0 0 1200 520">`
   - Do: `<svg className="scene" viewBox="0 0 1200 520" aria-hidden="true">`
-- `rule/hero-scene-still`: When the scene gets an animation, write it inside `@media (prefers-reduced-motion: no-preference)` instead of at the top level, because the drawing has to hold still for people who ask for less motion. Evidence: single use app/globals.css:107, the one scene animation, inside the no-preference block; principle wcag: 2.3.3 Animation from Interactions, motion can be turned off. Check: probe `node .design-system/scripts/walk.mjs`.
-  - Don't: `.scene .bob { animation: bob var(--motion-bob); }`
-  - Do: `@media (prefers-reduced-motion: no-preference) { .scene .bob { animation: bob var(--motion-bob); } }`
+- `rule/hero-scene-still`: When the scene gets an animation, write it inside `@media (prefers-reduced-motion: no-preference)` instead of at the top level, because the drawing has to hold still for people who ask for less motion. Evidence: single use app/globals.css:108, the one scene animation, inside the no-preference block; principle wcag: 2.3.3 Animation from Interactions, motion can be turned off. Check: probe `node .design-system/scripts/walk.mjs`.
+  - Don't: `.scene circle { animation: pulse var(--motion-pulse); }`
+  - Do: `@media (prefers-reduced-motion: no-preference) { .scene circle { animation: pulse var(--motion-pulse); } }`
 
 ### Content
 Not applicable: the only text is the wordmark "bravogram", lowercase, and it is hidden from assistive tech with the rest of the svg, and the nav link and the h1 carry the name.
 
 ### Anti-slop
-- `rule/hero-scene-one-color`: When the scene gains a shape, draw it as a stroke in `currentColor` or as a `Logo`, instead of a filled shape in a second color, because the scene is accent line art with only the wordmark and the marks in ink. Evidence: person D7 and D10. Check: lint `rule/raw-value` fails a hex stroke or fill.
-  - Don't: `<circle cx="96" cy="60" r="8" fill="#56c2a6" />`
-  - Do: `<path className="water" d="M-26 0H-11" />`
+- `rule/hero-scene-one-color`: When the scene gains a shape, draw it as a dot filled with a `--graph-*` token, a link in `currentColor` or a `Logo`, instead of a shape in a color of its own, because the scene shows the product's graph and its six kinds are the whole palette. Evidence: person D11. Check: lint `rule/raw-value` fails a hex stroke or fill.
+  - Don't: `<circle cx="96" cy="60" r="8" fill="#ff00aa" />`
+  - Do: `<circle cx="96" cy="60" r="8" fill="var(--graph-fact)" />`
 
 ### Limits
-Not applicable: the rows and marks are constants in the source file, and the one prop only picks the band. For the record, the wordmark is nine letters at 160 units in a 1200 wide drawing; a longer word needs a smaller size, checked at 390 wide.
+Not applicable: the memories and marks are constants in the source file, and the one prop only picks the band. For the record, the wordmark is nine letters at 160 units in a 1200 wide drawing; a longer word needs a smaller size, checked at 390 wide.
 
 ## Accessibility
 Rests on an inline `svg` with `aria-hidden="true"`. It takes no focus and no pointer events.
 
-By the code, 9 marks bob when motion is allowed and none under reduced motion; this is not re-probed since the 2026-10-03 rework. The scene moves for as long as the page is open and has no pause control other than the system's reduced motion setting: NEEDS REVIEW against WCAG 2.2.2.
+By the code, 52 dots swell when motion is allowed and none under reduced motion; this is not re-probed since the 2026-10-03 rework. The scene moves for as long as the page is open and has no pause control other than the system's reduced motion setting: NEEDS REVIEW against WCAG 2.2.2.
 
 ### Keyboard
 | Key | Where focus is | Effect | Focus after | Checked by |
@@ -98,12 +98,13 @@ By the code, 9 marks bob when motion is allowed and none under reduced motion; t
 ## Tokens
 | Part | State | Token |
 |---|---|---|
-| every line | all | `--accent`, through `currentColor` |
+| links | all | `--soft`, through `currentColor` |
+| memories | all | the six `--graph-*` tokens, one per kind |
 | wordmark and marks | all | `--ink`, with a `--bg` outline that clears the lines around them |
 | wordmark face | all | `--title` |
 | height | band | `--scene-height` |
-| marks | moving | `--motion-bob` |
+| memories | moving | `--motion-pulse` |
 
 ## Related
-- Logo: the mark that floats in the field.
+- Logo: the mark that is each hub of the graph.
 - TerminalDemo: the other thing on the page that moves.

@@ -1,6 +1,6 @@
 import { Logo } from '@/components/logo'
 
-// A small seeded generator, so the field is the same drawing on every build.
+// A small seeded generator, so the graph is the same drawing on every build.
 function seeded(seed: number) {
   return () => {
     seed = (seed * 1664525 + 1013904223) >>> 0
@@ -9,85 +9,68 @@ function seeded(seed: number) {
 }
 const r1 = (n: number) => Math.round(n * 10) / 10
 
-// One row of the field: broken horizontal strokes from x0 to x1. Depth 0 is the horizon
-// (short strokes, wide gaps) and depth 1 is the front (long strokes, narrow gaps).
-function row(rand: () => number, y: number, x0: number, x1: number, depth: number) {
-  let d = ''
-  let x = x0 + rand() * 20
-  while (x < x1) {
-    const end = Math.min(x + (4 + rand() * 10) * (1 + depth * 8), x1)
-    d += `M${r1(x)} ${r1(y)}H${r1(end)}`
-    x = end + (8 + rand() * 22) * (1 - depth * 0.6)
+// The six memory kinds of the real graph view. A node's color is its kind's token.
+const KINDS = ['project', 'system', 'decision', 'lesson', 'fact', 'note']
+
+type Hub = { x: number; y: number; size: number }
+type Node = { x: number; y: number; r: number; kind?: string; size?: number }
+
+// A memory graph: the hubs are Bravogram marks, the rest are memories scattered where `free`
+// allows, and every node links to its two nearest neighbours.
+function graph(seed: number, hubs: Hub[], count: number, w: number, h: number, free: (x: number, y: number) => boolean) {
+  const rand = seeded(seed)
+  const nodes: Node[] = hubs.map((hub) => ({ ...hub, r: hub.size / 2 }))
+  for (let tries = 0; nodes.length < hubs.length + count && tries < 5000; tries++) {
+    const x = r1(30 + rand() * (w - 60))
+    const y = r1(20 + rand() * (h - 40))
+    if (!free(x, y) || nodes.some((n) => Math.hypot(n.x - x, n.y - y) < 46)) continue
+    nodes.push({ x, y, r: r1(4 + rand() * 5), kind: KINDS[nodes.length % KINDS.length] })
   }
-  return d
+  const links = new Set<string>()
+  nodes.forEach((a, i) => {
+    nodes
+      .map((b, j) => ({ j, d: Math.hypot(a.x - b.x, a.y - b.y) }))
+      .filter((o) => o.j !== i)
+      .sort((p, q) => p.d - q.d)
+      .slice(0, 2)
+      .forEach((o) => links.add(i < o.j ? `${i}-${o.j}` : `${o.j}-${i}`))
+  })
+  const d = [...links]
+    .map((k) => k.split('-').map(Number))
+    .map(([i, j]) => `M${nodes[i].x} ${nodes[i].y}L${nodes[j].x} ${nodes[j].y}`)
+    .join('')
+  return { nodes, d }
 }
 
-const BASELINE = 150 // where the wordmark stands: rows above it are drawn behind the letters, rows below in front
+const BASELINE = 150 // where the wordmark stands
 
-// The hero field: 64 rows that spread out and widen toward the front.
-const FIELD = (() => {
-  const rand = seeded(7)
-  return Array.from({ length: 64 }, (_, i) => {
-    const depth = i / 63
-    const y = 100 + 418 * depth ** 2.2
-    return { y, opacity: r1((0.15 + 0.35 * depth) * 10) / 10, d: row(rand, y, 154 - 190 * depth, 1046 + 190 * depth, depth) }
-  })
-})()
+// The hero graph keeps clear of the wordmark and of the hole at the bottom centre, where the hero text sits.
+const FIELD = graph(
+  7,
+  [{ x: 150, y: 150, size: 40 }, { x: 1062, y: 172, size: 46 }, { x: 118, y: 400, size: 60 }, { x: 1072, y: 438, size: 68 }],
+  28, 1200, 520,
+  (x, y) => !(x > 200 && x < 1000 && y < 300) && ((x - 600) / 470) ** 2 + ((520 - y) / 290) ** 2 >= 1,
+)
+// The footer band: one strip of the same graph.
+const BAND = graph(11, [{ x: 200, y: 84, size: 44 }, { x: 600, y: 70, size: 52 }, { x: 1000, y: 88, size: 44 }], 24, 1200, 160, () => true)
 
-// The footer band: 19 even rows.
-const BAND = (() => {
-  const rand = seeded(11)
-  return Array.from({ length: 19 }, (_, i) => ({ y: 8 + i * 8, opacity: 0.44, d: row(rand, 8 + i * 8, 0, 1200, 0.6) }))
-})()
-
-// Each mark is a memory floating in the field: where its waterline is, its size and its lean.
-const FIELD_MARKS = [
-  { x: 150, y: 160, size: 38, tilt: -6 },
-  { x: 1062, y: 172, size: 44, tilt: 7 },
-  { x: 118, y: 400, size: 62, tilt: 12 },
-  { x: 1072, y: 438, size: 72, tilt: -10 },
-]
-const BAND_MARKS = [
-  { x: 110, y: 30, size: 60, tilt: -6 },
-  { x: 350, y: 26, size: 66, tilt: 5 },
-  { x: 600, y: 32, size: 58, tilt: -8 },
-  { x: 850, y: 26, size: 68, tilt: 7 },
-  { x: 1090, y: 30, size: 62, tilt: -5 },
-]
-
-const rows = (list: typeof FIELD) =>
-  list.map((r) => <path key={r.y} d={r.d} strokeOpacity={r.opacity} />)
-
-// The scene: the wordmark standing in a field of broken horizontal lines, with Bravogram marks
-// floating in it. With `band` it is the footer's strip of the same field, without the wordmark.
-// Decorative, so it is hidden from assistive tech and takes no clicks. The marks bob only when
-// motion is allowed (app/globals.css, .scene).
+// The scene: the wordmark with a memory graph around it. Memories are dots in the six colors of
+// the real graph view, hubs are Bravogram marks, and thin lines link them. With `band` it is the
+// footer's strip of the same graph, without the wordmark. Decorative, so it is hidden from assistive
+// tech and takes no clicks. The dots swell only when motion is allowed (app/globals.css, .scene).
 export function HeroScene({ band = false }: { band?: boolean }) {
-  const field = band ? BAND : FIELD
+  const { nodes, d } = band ? BAND : FIELD
   return (
-    <svg className={band ? 'scene band' : 'scene'} viewBox={band ? '0 -40 1200 200' : '0 0 1200 520'} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      {!band && (
-        <>
-          {rows(field.filter((r) => r.y < BASELINE))}
-          <text className="word" x="600" y={BASELINE} textAnchor="middle" fontSize="160">bravogram</text>
-        </>
+    <svg className={band ? 'scene band' : 'scene'} viewBox={band ? '0 0 1200 160' : '0 0 1200 520'} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path d={d} />
+      {!band && <text className="word" x="600" y={BASELINE} textAnchor="middle" fontSize="160">bravogram</text>}
+      {nodes.map((n, i) =>
+        n.size ? (
+          <g className="mark" key={i} transform={`translate(${n.x - n.size / 2} ${n.y - n.size / 2})`}><Logo size={n.size} /></g>
+        ) : (
+          <circle key={i} cx={n.x} cy={n.y} r={n.r} fill={`var(--graph-${n.kind})`} style={{ animationDelay: `${-0.37 * i}s` }} />
+        ),
       )}
-      {rows(band ? field : field.filter((r) => r.y >= BASELINE))}
-      {(band ? BAND_MARKS : FIELD_MARKS).map((m, i) => {
-        const id = `${band ? 'band' : 'field'}-mark-${i}`
-        const s = m.size
-        return (
-          <g key={id} transform={`translate(${m.x} ${m.y})`}>
-            <clipPath id={id}><rect x={-s} y={-2 * s} width={2 * s} height={2 * s} /></clipPath>
-            <g clipPath={`url(#${id})`}>
-              <g className="bob" style={{ animationDelay: `${-1.7 * i}s` }}>
-                <g className="mark" transform={`rotate(${m.tilt}) translate(${-s / 2} ${-0.72 * s})`}><Logo size={s} /></g>
-              </g>
-            </g>
-            <path className="water" d={`M${r1(-0.68 * s)} 0H${r1(-0.3 * s)}M${r1(-0.14 * s)} 0H${r1(0.26 * s)}M${r1(0.38 * s)} 0H${r1(0.7 * s)}M${r1(-0.44 * s)} ${r1(0.07 * s)}H${r1(-0.24 * s)}M${r1(0.16 * s)} ${r1(0.07 * s)}H${r1(0.4 * s)}`} />
-          </g>
-        )
-      })}
     </svg>
   )
 }
