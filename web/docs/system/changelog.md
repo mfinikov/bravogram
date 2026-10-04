@@ -5,6 +5,7 @@ Changes to the design system docs and tokens, newest first.
 
 ## 2026-10-03
 
+- Landing page: our own scene, a memory graph around the wordmark (`00e7bc9`)
 - Landing page: rework toward boat.dev's layout (`7a250c7`)
 - Show each tool's logo in the "Works with" chips (`597809d`)
 - Terminal demo: compute line offsets without reassigning during render (`68de533`)
