@@ -1,13 +1,13 @@
-// Caption: The scene under the hero text, closing the hero section.
+// Caption: The scene opening the hero, with the hero text sitting in the hole at its bottom centre.
 import { HeroScene } from "@/components/hero-scene";
 
 export default function Example() {
   return (
     <section className="hero">
-      <div className="hero-in">
-        <h1>One memory <span className="accent">for all your agents.</span></h1>
-      </div>
       <HeroScene />
+      <div className="hero-in">
+        <h1><span className="hl">One memory</span> for all your agents</h1>
+      </div>
     </section>
   );
 }

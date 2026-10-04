@@ -1,4 +1,4 @@
-// Caption: The scene on its own: seven sprouts on dashed ground, joined by dashed links.
+// Caption: The scene on its own: the wordmark standing in a field of broken lines, with four marks floating in it.
 import { HeroScene } from "@/components/hero-scene";
 
 export default function Example() {

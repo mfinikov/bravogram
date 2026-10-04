@@ -1,10 +1,10 @@
 # HeroScene
 
 ## Description
-Draws the hero's line-art scene: memories sprouting from dashed ground as small Bravogram marks, joined by dashed links.
+Draws the line-art scene: the wordmark standing in a field of broken horizontal lines, with Bravogram marks floating in it, and the same field as a band in the footer.
 
 `import { HeroScene } from "@/components/hero-scene"`, source `components/hero-scene.tsx`, status `ready-with-gaps`.
-Foundation: `hand-rolled`. Traps checked: `trap/reduced-motion-ignored`, `trap/decor-pointer`, `trap/motion-layout-property`, `trap/motion-linear` (the dash flow is a loop, so linear is right; the sway eases in and out), `trap/loop-offscreen` (NEEDS REVIEW: the loops are CSS and keep running off screen).
+Foundation: `hand-rolled`. Traps checked: `trap/reduced-motion-ignored`, `trap/decor-pointer`, `trap/motion-layout-property`, `trap/motion-linear` (the bob eases in and out), `trap/loop-offscreen` (NEEDS REVIEW: the loops are CSS and keep running off screen).
 
 ### Foundation
 Not applicable: hand-rolled
@@ -12,23 +12,28 @@ Not applicable: hand-rolled
 ## Examples
 The scene on its own: `docs/system/examples/hero-scene/default.tsx`.
 
-Real uses, 1 call sites (`rg -n "<HeroScene\b" app components`):
-- Hero: under the install box and the meta line, closing the hero section. `app/page.tsx:84`
+Real uses, 2 call sites (`rg -n "<HeroScene\b" app components`):
+- Hero: opening the hero section, with the hero text in the hole at its bottom centre. `app/page.tsx:85`
+- Footer: the band under the link columns, ending the page. `app/page.tsx:246`
 
 ### Example files
 | File | Covers | Caption |
 |---|---|---|
-| `docs/system/examples/hero-scene/default.tsx` | default | The scene on its own: seven sprouts on dashed ground, joined by dashed links. |
-| `docs/system/examples/hero-scene/in-hero.tsx` | composition:Hero | The scene under the hero text, closing the hero section. |
+| `docs/system/examples/hero-scene/default.tsx` | default | The scene on its own: the wordmark standing in a field of broken lines, with four marks floating in it. |
+| `docs/system/examples/hero-scene/in-hero.tsx` | composition:Hero | The scene opening the hero, with the hero text sitting in the hole at its bottom centre. |
+| `docs/system/examples/hero-scene/band.tsx` | band=true | The footer band: a strip of the same field with five marks and no wordmark. |
 | Not applicable: the still state follows the reduced motion setting of the system, so no prop reaches it | state:still | The same drawing, not moving. |
 
 ## Variants
-Not applicable: the component takes no props. The sprouts and seeds are constants in the source file.
+| Variant | Prop | What it draws | Used |
+|---|---|---|---|
+| field | default | 64 rows that widen toward the front, the wordmark, four marks | the hero |
+| band | `band` | 19 even rows and five marks, no wordmark, `--scene-height` tall | the footer |
 
 ## States
 | State | Trigger | What the user can do | Shown by, besides color | Checked by |
 |---|---|---|---|---|
-| moving | page load, when motion is allowed | nothing, it is decoration | each sprout leans 1.5 degrees left and right, and dashes run along the links | by hand |
+| moving | page load, when motion is allowed | nothing, it is decoration | each mark rises and sinks at its waterline | by hand |
 | still | the system asks for reduced motion | nothing | the same drawing with no movement | screenshot |
 
 ### State precedence
@@ -37,46 +42,48 @@ Not applicable: the two states exclude each other, since the system setting pick
 ### Motion
 | Trigger | Kind | Preset | Properties | Reduced motion |
 |---|---|---|---|---|
-| page load | announce | `--motion-sway` | transform (rotate) on each sprout | no animation, the sprouts stand still |
-| page load | announce | `--motion-flow` | stroke-dashoffset on each link | no animation, the dashes stand still |
+| page load | announce | `--motion-bob` | transform (translateY) on each mark | no animation, the marks stand still |
 
-`stroke-dashoffset` is a paint-only change on seven thin paths, not layout (`trap/motion-layout-property`).
+`transform` is the only animated property, so nothing is laid out again (`trap/motion-layout-property`).
 
 ## Props
-The component takes no props.
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| `band` | `boolean` | `false` | draws the footer band instead of the hero field |
 
 ## Usage
 
 ### When to use
 - The hero needs its scene.
+- The footer needs its band: pass `band`.
 
 ### When not to use
 - A section wants to show a graph the reader should read. Draw it as an inline `svg` inside a mock window instead, as coverage-gaps row "Cards and mock windows" describes.
-- A second section wants a drawing. Leave it plain instead, per coverage-gaps row "Imagery".
+- A third place wants a drawing. Leave it plain instead, per coverage-gaps row "Imagery".
 
 ### Rules
-- `rule/hero-scene-decoration`: When the scene renders, keep `aria-hidden="true"` on the svg and `pointer-events: none` in its CSS, because it carries no information and sits right under the install box. Evidence: single use components/hero-scene.tsx:24 and app/globals.css:100; principle wcag: 1.1.1 Non-text Content, decoration is hidden from assistive technology. Check: review the svg tag and the `.scene` rule.
-  - Don't: `<svg className="scene" role="img" viewBox="0 0 1152 260">`
-  - Do: `<svg className="scene" viewBox="0 0 1152 260" aria-hidden="true">`
-- `rule/hero-scene-still`: When the scene gets an animation, write it inside `@media (prefers-reduced-motion: no-preference)` instead of at the top level, because the drawing has to hold still for people who ask for less motion. Evidence: measured 0 running animations under reduced motion and 13 without it, .design-system/evidence/home/walk-redesign.json; principle wcag: 2.3.3 Animation from Interactions, motion can be turned off. Check: probe `node .design-system/scripts/walk.mjs`.
-  - Don't: `.scene .sprout { animation: sway var(--motion-sway); }`
-  - Do: `@media (prefers-reduced-motion: no-preference) { .scene .sprout { animation: sway var(--motion-sway); } }`
+- `rule/hero-scene-decoration`: When the scene renders, keep `aria-hidden="true"` on the svg and `pointer-events: none` in its CSS, because it carries no information and the install box sits on top of it. Evidence: app 2/2 scenes are drawn by the one hidden svg, components/hero-scene.tsx:68 and app/globals.css:96; principle wcag: 1.1.1 Non-text Content, decoration is hidden from assistive technology. Check: review the svg tag and the `.scene` rule.
+  - Don't: `<svg className="scene" role="img" viewBox="0 0 1200 520">`
+  - Do: `<svg className="scene" viewBox="0 0 1200 520" aria-hidden="true">`
+- `rule/hero-scene-still`: When the scene gets an animation, write it inside `@media (prefers-reduced-motion: no-preference)` instead of at the top level, because the drawing has to hold still for people who ask for less motion. Evidence: single use app/globals.css:107, the one scene animation, inside the no-preference block; principle wcag: 2.3.3 Animation from Interactions, motion can be turned off. Check: probe `node .design-system/scripts/walk.mjs`.
+  - Don't: `.scene .bob { animation: bob var(--motion-bob); }`
+  - Do: `@media (prefers-reduced-motion: no-preference) { .scene .bob { animation: bob var(--motion-bob); } }`
 
 ### Content
-Not applicable: it renders no text.
+Not applicable: the only text is the wordmark "bravogram", lowercase, and it is hidden from assistive tech with the rest of the svg, and the nav link and the h1 carry the name.
 
 ### Anti-slop
-- `rule/hero-scene-one-color`: When the scene gains a shape, draw it as a stroke in `currentColor` or as a `Logo`, instead of a filled shape in a second color, because the scene is line art in the one accent. Evidence: person D7. Check: lint `rule/raw-value` fails a hex stroke or fill.
+- `rule/hero-scene-one-color`: When the scene gains a shape, draw it as a stroke in `currentColor` or as a `Logo`, instead of a filled shape in a second color, because the scene is accent line art with only the wordmark and the marks in ink. Evidence: person D7 and D10. Check: lint `rule/raw-value` fails a hex stroke or fill.
   - Don't: `<circle cx="96" cy="60" r="8" fill="#56c2a6" />`
-  - Do: `<circle cx="96" cy="206" r="2.5" />`
+  - Do: `<path className="water" d="M-26 0H-11" />`
 
 ### Limits
-Not applicable: the scene has a fixed seven sprouts and eight seeds, and no prop changes them.
+Not applicable: the rows and marks are constants in the source file, and the one prop only picks the band. For the record, the wordmark is nine letters at 160 units in a 1200 wide drawing; a longer word needs a smaller size, checked at 390 wide.
 
 ## Accessibility
 Rests on an inline `svg` with `aria-hidden="true"`. It takes no focus and no pointer events.
 
-Measured on the production build (`.design-system/evidence/home/walk-redesign.json`): 13 animations run when motion is allowed and 0 under reduced motion. The scene sways for as long as the page is open and has no pause control other than the system's reduced motion setting: NEEDS REVIEW against WCAG 2.2.2.
+By the code, 9 marks bob when motion is allowed and none under reduced motion; this is not re-probed since the 2026-10-03 rework. The scene moves for as long as the page is open and has no pause control other than the system's reduced motion setting: NEEDS REVIEW against WCAG 2.2.2.
 
 ### Keyboard
 | Key | Where focus is | Effect | Focus after | Checked by |
@@ -91,11 +98,12 @@ Measured on the production build (`.design-system/evidence/home/walk-redesign.js
 ## Tokens
 | Part | State | Token |
 |---|---|---|
-| every stroke and mark | all | `--accent`, through `currentColor` |
-| height | all | `--scene-height` |
-| sprouts | moving | `--motion-sway` |
-| links | moving | `--motion-flow` |
+| every line | all | `--accent`, through `currentColor` |
+| wordmark and marks | all | `--ink`, with a `--bg` outline that clears the lines around them |
+| wordmark face | all | `--title` |
+| height | band | `--scene-height` |
+| marks | moving | `--motion-bob` |
 
 ## Related
-- Logo: the mark each sprout carries.
+- Logo: the mark that floats in the field.
 - TerminalDemo: the other thing on the page that moves.

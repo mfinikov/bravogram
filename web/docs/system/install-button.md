@@ -12,15 +12,14 @@ Not applicable: hand-rolled
 ## Examples
 The install box on its own: `docs/system/examples/install-button/default.tsx`.
 
-Real uses, 2 call sites (`rg -n "<InstallButton\b" app components`):
-- Hero: the page's main action, under the lede. `app/page.tsx:75`
-- Footer: the same action again under the last label. `app/page.tsx:204`
+Real uses, 1 call sites (`rg -n "<InstallButton\b" app components`):
+- Hero: the page's main action, under the lede. `app/page.tsx:91`
 
 ### Example files
 | File | Covers | Caption |
 |---|---|---|
 | `docs/system/examples/install-button/default.tsx` | default | The install box on its own. One press copies the command. |
-| `docs/system/examples/install-button/in-closing.tsx` | composition:Closing | The install box under the last label, at the top of the footer. |
+| `docs/system/examples/install-button/in-hero.tsx` | composition:Hero | The install box under the lede, on top of the scene. |
 | Not applicable: the copied state is internal, starts on a press and ends 1.6 seconds later, so no prop reaches it | state:copied | The check mark in place of the copy icon. |
 
 ## Variants

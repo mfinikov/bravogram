@@ -2,28 +2,23 @@
 # Materials
 
 ## Description
-Corners, borders, shadow and surface levels. The page is flat: hairlines split it, cards are a tinted fill with no border, and the only shadow is the hard offset under the install box on hover.
+Corners, borders, shadow and surface levels. The page is flat and square: boxes have a border and no fill, and the only shadow is the hard offset under the install box and the call to action on hover.
 
 ## Tokens
 | Token | Value | Role |
 |---|---|---|
-| `--radius-card` | `14px` | cards |
-| `--radius-window` | `16px` | top corners of a mock window |
-| `--radius-code` | `8px` | command blocks |
 | `--radius-mark` | `3px` | search-hit highlight |
 
-Surface levels use the color tokens: the page is `--bg`, a card is `--card`, and a raised white surface on a card (mock window) or on the page (install box) is `--panel`.
+Surface levels use the color tokens: the page is `--bg`, a bar track or a command block is `--card`, and a white box on the page (mock window, install box) is `--panel`.
 
 ## Usage
-Borders are `1px solid var(--line)`, except the install box, which is `1.5px solid var(--ink)` and square. The "works with" chips are square too, with the hairline border. The focus ring is `2px solid var(--accent)` at `3px` offset on the install box, links, questions and any code block that takes focus.
-
-A mock window (16px) sits inside a card (14px) with a 28px inset, so the inner corner is rounder than the outer one. It is kept as approved (decision D5, gate G-09).
+Light borders are `1px solid var(--line)`: mock windows, chips, rows. Strong borders are `var(--rule) solid var(--ink)`: the install box, the demo, the two tiles and the call to action. Every box is square. The "works with" chips are square too, with the hairline border. The focus ring is `2px solid var(--accent)` at `3px` offset on the install box, links, questions and any code block that takes focus.
 
 ## Accessibility
-The focus ring is 5.17:1 on white (`.design-system/evidence/install-button/limit-390.json`) and showed on 17 of 17 tab stops at 390 wide and 15 of 15 at 1440 (`.design-system/evidence/home/walk-redesign.json`). Two of the 17 are the scrolling command blocks at 390 wide, which take focus so they can be scrolled by keyboard.
+The focus ring is 8.7:1 on white, computed from the two values. It showed on every tab stop before the 2026-10-03 rework (`.design-system/evidence/home/walk-redesign.json`); the reworked page is not re-probed: NEEDS REVIEW. Two of the tab stops are the scrolling command blocks at 390 wide, which take focus so they can be scrolled by keyboard.
 
 ## Not tokens
-- `1px`, `1.5px` and `2px` border and outline widths, and the `3px` outline offset.
-- `box-shadow: 4px 4px 0 var(--ink)` and `translate(-2px, -2px)`: the install box's hover lift, used once.
+- `1px` and `2px` border and outline widths, and the `3px` outline offset.
+- `box-shadow: 4px 4px 0 var(--ink)` and `translate(-2px, -2px)`: the hover lift of the install box and the call to action.
 - `border-radius: 50%` on the mock title bar dots, and `0` on the install box.
-- `blur(12px)` behind the sticky header.
+- The `mask-image` gradients on `.scene`: they fade the field at the sides and open the hole for the hero text.

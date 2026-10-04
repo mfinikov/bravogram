@@ -5,6 +5,7 @@ Changes to the design system docs and tokens, newest first.
 
 ## 2026-10-03
 
+- Show each tool's logo in the "Works with" chips (`597809d`)
 - Terminal demo: compute line offsets without reassigning during render (`68de533`)
 - Stack a step's number above its text under 521px (G-05) (`8f310fe`)
 - Redesign the landing page on the design system (`2c5fd6f`)

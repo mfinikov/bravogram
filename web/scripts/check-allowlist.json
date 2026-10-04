@@ -7,9 +7,7 @@
       "height: 56px": 1,
       "height: 8px": 1,
       "left: -999px": 1,
-      "max-width: 400px": 1,
       "max-width: 440px": 1,
-      "padding-bottom: clamp(32px, 5vw, 64px)": 1,
       "width: 16px": 1,
       "width: 24px": 1,
       "width: 8px": 1

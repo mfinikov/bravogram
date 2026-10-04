@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import { HeroScene } from "@/components/hero-scene";
 import { InstallButton } from "@/components/install-button";
@@ -23,10 +24,25 @@ const STEPS = [
 ];
 
 // Measured on 2026-10-03 on one real 19-note vault: grep plus the first 15 lines of each hit, against `bravogram recall`.
+// Characters returned. 0 means the search found nothing.
 const NUMBERS = [
-  { q: "“turso”", grep: "1,696 characters", us: "307", unit: "characters" },
-  { q: "“chapter 2”", grep: "3,962 characters", us: "632", unit: "characters" },
-  { q: "“sqlite lock”", grep: "found nothing", us: "found it", unit: "· 559 characters" },
+  { q: "“turso”", grep: 1696, us: 307 },
+  { q: "“chapter 2”", grep: 3962, us: 632 },
+  { q: "“sqlite lock”", grep: 0, us: 559 },
+];
+const LONGEST = Math.max(...NUMBERS.map((n) => n.grep));
+const chars = (n: number) => `${n.toLocaleString("en-US")} chars`;
+
+const COMMANDS = [
+  { cmd: "remember", does: "Save a fact, a decision or a lesson" },
+  { cmd: "recall", does: "Ranked search, short snippets back" },
+  { cmd: "show", does: "Read one memory in full" },
+  { cmd: "append", does: "Add to a memory without rewriting it" },
+  { cmd: "link", does: "Connect two memories" },
+  { cmd: "history/restore", does: "See old versions, bring one back" },
+  { cmd: "graph", does: "Open the memory graph in a browser" },
+  { cmd: "import/export", does: "Markdown in, Markdown out" },
+  { cmd: "mcp", does: "Serve all of it to any MCP agent" },
 ];
 
 const FAQ = [
@@ -55,7 +71,7 @@ export default function Home() {
     <>
       <a className="skip" href="#main">Skip to content</a>
 
-      <header className="top">
+      <header>
         <nav className="nav" aria-label="Site">
           <a className="brand" href="#top" aria-label="Bravogram, home"><Logo />bravogram</a>
           <a className="link" href={NPM}>npm</a>
@@ -66,9 +82,9 @@ export default function Home() {
       <main id="main">
         <div className="wrap" id="top">
           <section className="hero">
+            <HeroScene />
             <div className="hero-in">
-              <span className="eyebrow">Open source · runs on your machine</span>
-              <h1>One memory <span className="accent">for all your agents.</span></h1>
+              <h1><span className="hl">One memory</span> for all your agents</h1>
               <p className="lede">
                 A local memory shared by Claude, Hermes and any MCP agent. They save what they learn and find it again in milliseconds.
               </p>
@@ -79,14 +95,27 @@ export default function Home() {
                   <li key={w.name}><Image src={w.logo} alt="" width={16} height={16} />{w.name}</li>
                 ))}
               </ul>
-              <p className="meta">Node 24 or newer · zero dependencies · MIT license</p>
+              <p className="meta">Open source · runs on your machine · Node 24 or newer · zero dependencies</p>
             </div>
-            <HeroScene />
+          </section>
+
+          <section className="pad" id="how">
+            <h2 className="sr-only">Three commands to a shared memory</h2>
+            <div className="demo">
+              <Mock label="zsh"><TerminalDemo /></Mock>
+              <div className="steps">
+                {STEPS.map((s) => (
+                  <div className="step" key={s.title}>
+                    <p><b>{s.title}</b></p>
+                    <code className="block">{s.code}</code>
+                  </div>
+                ))}
+              </div>
+            </div>
           </section>
 
           <section className="pad" id="what">
-            <span className="eyebrow">What it does</span>
-            <div className="head"><h2>Four things, one small tool.</h2></div>
+            <h2 className="sr-only">What it does</h2>
             <div className="grid two">
               <article className="card">
                 <div>
@@ -143,53 +172,58 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="pad" id="how">
-            <span className="eyebrow">Live demo</span>
-            <div className="head"><h2>Three commands to a shared memory.</h2></div>
-            <div className="demo">
-              <div className="card">
-                <Mock label="zsh"><TerminalDemo /></Mock>
-              </div>
-              <div className="steps">
-                {STEPS.map((s) => (
-                  <div className="step" key={s.title}>
-                    <p><b>{s.title}</b></p>
-                    <code className="block">{s.code}</code>
-                  </div>
+          <section className="pad bento" id="numbers">
+            <div className="tile">
+              <h2>Less text for the same answer</h2>
+              <p>The same three questions, asked of a folder of Markdown notes with grep and of Bravogram. Text returned:</p>
+              <div className="bars">
+                {NUMBERS.map((n) => (
+                  <Fragment key={n.q}>
+                    <div className="q">{n.q}</div>
+                    <div className="bar">
+                      <span>grep</span>
+                      <span className="track"><i style={{ width: `${(n.grep / LONGEST) * 100}%` }} /></span>
+                      <span className="val">{n.grep ? chars(n.grep) : "found nothing"}</span>
+                    </div>
+                    <div className="bar us">
+                      <span>bravogram</span>
+                      <span className="track"><i style={{ width: `${(n.us / LONGEST) * 100}%` }} /></span>
+                      <span className="val">{chars(n.us)} <small>{n.grep ? `${(n.grep / n.us).toFixed(1)}x less` : "found it"}</small></span>
+                    </div>
+                  </Fragment>
                 ))}
               </div>
+              <p className="note">
+                Measured on October 3, 2026 on one real 19-note vault: grep plus the first 15 lines of each hit, against{" "}
+                <code>bravogram recall</code>. A small sample, so run it on your own notes.
+              </p>
+            </div>
+            <div className="tile">
+              <h2>Simple CLI</h2>
+              <ul className="api">
+                {COMMANDS.map((c) => (
+                  <li key={c.cmd}><code><span>$</span> bravogram {c.cmd}</code>{c.does}</li>
+                ))}
+              </ul>
+              <p className="note">
+                Plus <code>doctor</code>, <code>forget</code> and <code>--json</code> output. Agents get the same tools over MCP.
+              </p>
             </div>
           </section>
 
-          <section className="pad" id="numbers">
-            <span className="eyebrow">Receipts</span>
-            <div className="head split">
-              <h2>Less text for the same answer.</h2>
-              <p>The same three questions, asked of a folder of Markdown notes and of Bravogram.</p>
+          <a className="cta" href={`${GITHUB}#readme`}>
+            <div>
+              <h2>Get started <small>(three commands)</small></h2>
+              <p>Install it, connect an agent, open the graph.</p>
             </div>
-            <table>
-              <thead>
-                <tr><th scope="col">Question</th><th scope="col">Markdown notes, grep</th><th scope="col">Bravogram</th></tr>
-              </thead>
-              <tbody>
-                {NUMBERS.map((n) => (
-                  <tr key={n.q}>
-                    <td>{n.q}</td>
-                    <td>{n.grep}</td>
-                    <td className="win">{n.us} <small>{n.unit}</small></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="note">
-              Measured on October 3, 2026 on one real 19-note vault: grep plus the first 15 lines of each hit, against{" "}
-              <code>bravogram recall</code>. A small sample, so run it on your own notes.
-            </p>
-          </section>
+            <span className="go">
+              Read the docs
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </span>
+          </a>
 
           <section className="pad" id="faq">
-            <span className="eyebrow">You were going to ask</span>
-            <div className="head"><h2>Common questions.</h2></div>
+            <h2>FAQ</h2>
             {FAQ.map((f) => (
               <details key={f.q}>
                 <summary>{f.q}</summary>
@@ -197,21 +231,20 @@ export default function Home() {
               </details>
             ))}
           </section>
-
-          <footer>
-            <div className="closing pad">
-              <span className="eyebrow">That&rsquo;s the whole pitch</span>
-              <InstallButton />
-            </div>
-            <div className="nav">
-              <span>© 2026 Bravogram · MIT license</span>
-              <a className="link" href={GITHUB}>GitHub</a>
-              <a className="link" href={NPM}>npm</a>
-              <a className="link" href={`${GITHUB}#readme`}>Docs</a>
-            </div>
-          </footer>
         </div>
       </main>
+
+      <footer>
+        <div className="foot">
+          <div className="cols">
+            <div><span>Project</span><a className="link" href={GITHUB}>GitHub</a><a className="link" href={NPM}>npm</a></div>
+            <div><span>Help</span><a className="link" href={`${GITHUB}#readme`}>Docs</a><a className="link" href={`${GITHUB}/issues`}>Issues</a></div>
+            <div><span>Legal</span><a className="link" href={`${GITHUB}/blob/main/LICENSE`}>MIT license</a></div>
+          </div>
+          <p><Logo size={18} />© 2026 Bravogram</p>
+        </div>
+        <HeroScene band />
+      </footer>
     </>
   );
 }

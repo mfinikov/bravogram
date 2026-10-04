@@ -14,7 +14,7 @@ Not applicable: hand-rolled
 The demo on its own: `docs/system/examples/terminal-demo/default.tsx`.
 
 Real uses, 1 call sites (`rg -n "<TerminalDemo\b" app components`):
-- Live demo section: inside a mock window on a card, left of the three commands. `app/page.tsx:151`
+- Live demo section: inside a mock window in the bordered demo box, left of the three commands. `app/page.tsx:105`
 
 ### Example files
 | File | Covers | Caption |

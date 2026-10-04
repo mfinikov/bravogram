@@ -8,13 +8,13 @@ New UI uses a registry component. If none fits, open a gate before writing one. 
 ## Foundations
 - [Brand](system/brand.md): The name, the mark and the typefaces of Bravogram on this page.
 - [Colors](system/colors.md): The colors the page uses and the job of each.
-- [Layout](system/layout.md): The page is one bordered column, 1152px at most, with hairlines left and right and sections split by hairlines.
+- [Layout](system/layout.md): The page is one open column, 1280px at most with its gutters, and sections are split by space, not rules (decision D10).
 - [Materials](system/materials.md): Corners, borders, shadow and surface levels.
 - [Motion](system/motion.md): What moves on the page and how.
 - [Typography](system/typography.md): The typefaces and text sizes of the page.
 
 ## Components
-- [HeroScene](system/hero-scene.md): Draws the hero's line-art scene: memories sprouting from dashed ground as small Bravogram marks, joined by dashed links.
+- [HeroScene](system/hero-scene.md): Draws the line-art scene: the wordmark standing in a field of broken horizontal lines, with Bravogram marks floating in it, and the same ...
 - [InstallButton](system/install-button.md): Copies the install command to the clipboard with one press and confirms it.
 - [Logo](system/logo.md): Draws the Bravogram mark, four leaning ellipses, in the current text color.
 - [TerminalDemo](system/terminal-demo.md): Types two Bravogram commands and shows what the CLI prints, once, when it scrolls into view.
